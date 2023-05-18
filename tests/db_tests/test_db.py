@@ -2,6 +2,8 @@ import pytest
 from db.dao.db_interface import DBInterface
 from config import DevConfig
 from datetime import datetime
+import string
+import random
 
 DB_URI = DevConfig.POSTGRES_DATABASE_URI
 
@@ -12,9 +14,15 @@ def user_list():
 
 
 @pytest.fixture
+def city_list():
+    return [{"city_name": "".join(random.choices(string.ascii_letters, k=random.randint(3, 10)))} for _ in range(5)]
+
+
+@pytest.fixture
 def new_dao() -> DBInterface:
     curr_dao = DBInterface(DB_URI)
     curr_dao.delete_all_users()
+    curr_dao.delete_all_cities()
     return curr_dao
 
 
@@ -24,6 +32,14 @@ def dao_with_users(new_dao: DBInterface, user_list: list) -> list[DBInterface, l
         new_dao.add_user(user)
 
     return [new_dao, user_list]
+
+
+@pytest.fixture
+def dao_with_cities(new_dao: DBInterface, city_list: list[dict]) -> list[DBInterface, list]:
+    for city in city_list:
+        new_dao.add_city(city["city_name"])
+
+    return [new_dao, city_list]
 
 
 def test_bad_db_url(capsys):
@@ -130,3 +146,13 @@ def test_delete_user_by_username(dao_with_users: list[DBInterface, list]):
         dao.delete_user_by_username(user["username"])
 
     assert len(dao.get_all_users()) == 0
+
+
+def test_get_all_cities(dao_with_cities: list[DBInterface, list]):
+    dao, city_list = dao_with_cities
+    all_cities = dao.get_all_cities()
+    all_cities_set = set(city["city_name"] for city in all_cities)
+
+    assert len(all_cities) == len(city_list)
+    for city in city_list:
+        assert city["city_name"] in all_cities_set

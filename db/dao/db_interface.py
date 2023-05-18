@@ -4,7 +4,7 @@ import aiosql
 from functools import wraps
 from datetime import datetime
 
-queries = aiosql.from_path('db/sql/user_queries.sql', 'psycopg')
+queries = aiosql.from_path('db/sql', 'psycopg')
 
 
 def check_connection(fn):
@@ -28,6 +28,8 @@ class DBInterface:
                 self._valid_connection = True
         except psycopg.ProgrammingError as e:
             print(f"An error occurred: {e}")
+
+# ------------------------- USERS ---------------------------------------
 
 # ------------------------- GET USERS -----------------------------------
     @check_connection
@@ -106,6 +108,32 @@ class DBInterface:
     def delete_user_by_username(self, username: str) -> None:
         with psycopg.connect(self._connection_url) as conn:
             queries.delete_user_by_username(conn, username=username)
+
+
+# -------------------------- CITIES ---------------------------------------
+
+# -------------------------- GET CITIES -----------------------------------
+
+
+    @check_connection
+    def get_all_cities(self) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return [city for city in queries.get_all_cities(conn)]
+
+# ------------------------ ADD CITIES -----------------------------------
+
+    @check_connection
+    def add_city(self, city_name: str) -> None:
+        with psycopg.connect(self._connection_url) as conn:
+            queries.add_city(conn, city_name=city_name)
+
+
+# ----------------------- DELETE CITIES ---------------------------------
+
+    @check_connection
+    def delete_all_cities(self) -> None:
+        with psycopg.connect(self._connection_url) as conn:
+            queries.delete_all_cities(conn)
 
 
 def main():  # pragma: no cover
