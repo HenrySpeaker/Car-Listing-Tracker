@@ -19,10 +19,16 @@ def city_list():
 
 
 @pytest.fixture
+def make_list():
+    return [{"make_name": "".join(random.choices(string.ascii_letters, k=random.randint(3, 10)))} for _ in range(5)]
+
+
+@pytest.fixture
 def new_dao() -> DBInterface:
     curr_dao = DBInterface(DB_URI)
     curr_dao.delete_all_users()
     curr_dao.delete_all_cities()
+    curr_dao.delete_all_makes()
     return curr_dao
 
 
@@ -55,6 +61,14 @@ def dao_with_cities_and_zips(dao_with_cities: list[DBInterface, list]) -> list[D
             zip_code=zip_code["zip_code"], city_id=zip_code["city_id"])
 
     return [dao, city_list, zips_list]
+
+
+@pytest.fixture
+def dao_with_makes(new_dao: DBInterface, make_list: list) -> list[DBInterface, list]:
+    for make in make_list:
+        new_dao.add_make(make["make_name"])
+
+    return [new_dao, make_list]
 
 
 def test_bad_db_url(capsys):
@@ -212,3 +226,32 @@ def test_delete_specific_zip(dao_with_cities_and_zips: list[DBInterface, list, l
         dao.delete_zip_code(zip_info["zip_code"])
 
     assert len(dao.get_all_zip_codes()) == 0
+
+
+def test_get_all_makes(dao_with_makes: list[DBInterface, list]):
+    dao, makes_list = dao_with_makes
+    makes_name_set = set(make["make_name"] for make in makes_list)
+    all_makes = dao.get_all_makes()
+
+    assert len(all_makes) == len(makes_list)
+
+    for make in makes_list:
+        assert make["make_name"] in makes_name_set
+
+
+def test_get_specific_makes(dao_with_makes: list[DBInterface, list]):
+    dao, makes_list = dao_with_makes
+
+    for make in makes_list:
+        make_info = dao.get_make_info(make["make_name"])
+        assert len(
+            make_info) == 2 and make_info["make_name"] == make["make_name"]
+
+
+def test_delete_make_by_name(dao_with_makes: list[DBInterface, list]):
+    dao, makes_list = dao_with_makes
+
+    for make in makes_list:
+        dao.delete_make_by_name(make["make_name"])
+
+    assert len(dao.get_all_makes()) == 0

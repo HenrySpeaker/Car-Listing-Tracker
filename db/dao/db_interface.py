@@ -54,6 +54,7 @@ class DBInterface:
 
 # ------------------------ ADD USERS ------------------------------------------
 
+
     @check_connection
     def add_user(self, user_info: dict = {}) -> int:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
@@ -63,6 +64,7 @@ class DBInterface:
 
 
 # ----------------------- UPDATE USERS ---------------------------------------
+
 
     @check_connection
     def update_username_by_email(self, email: str = "", new_username: str = "") -> None:
@@ -97,7 +99,6 @@ class DBInterface:
 
 # ----------------------- DELETE USERS ---------------------------------------
 
-
     @check_connection
     def delete_all_users(self) -> None:
         with psycopg.connect(self._connection_url) as conn:
@@ -113,7 +114,6 @@ class DBInterface:
 # -------------------------- CITIES ---------------------------------------
 
 # -------------------------- GET CITIES -----------------------------------
-
 
     @check_connection
     def get_all_cities(self) -> list[dict]:
@@ -136,6 +136,7 @@ class DBInterface:
 
 # ----------------------- DELETE CITIES ---------------------------------
 
+
     @check_connection
     def delete_all_cities(self) -> None:
         with psycopg.connect(self._connection_url) as conn:
@@ -152,7 +153,7 @@ class DBInterface:
 
     @check_connection
     def get_all_zip_codes(self) -> list[dict]:
-        with psycopg.connect(self._connection_url) as conn:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             return [zip_code for zip_code in queries.get_all_zip_codes(conn)]
 
     @check_connection
@@ -178,6 +179,41 @@ class DBInterface:
     def delete_zip_code(self, zip_code: int) -> None:
         with psycopg.connect(self._connection_url) as conn:
             queries.delete_zip_code(conn, zip_code=zip_code)
+
+
+# --------------------- MAKES ------------------------------------
+
+# --------------------- GET MAKES --------------------------------
+
+
+    @check_connection
+    def get_all_makes(self) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return [make for make in queries.get_all_makes(conn)]
+
+    @check_connection
+    def get_make_info(self, make_name: str) -> dict:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return queries.get_make_info(conn, make_name=make_name)
+
+# --------------------- ADD MAKES ---------------------------------
+
+    @check_connection
+    def add_make(self, make_name: str) -> None:
+        with psycopg.connect(self._connection_url) as conn:
+            queries.add_make(conn, make_name=make_name)
+
+# --------------------- DELETE MAKES ------------------------------
+
+    @check_connection
+    def delete_all_makes(self) -> None:
+        with psycopg.connect(self._connection_url) as conn:
+            queries.delete_all_makes(conn)
+
+    @check_connection
+    def delete_make_by_name(self, make_name: str) -> None:
+        with psycopg.connect(self._connection_url) as conn:
+            queries.delete_make_by_name(conn, make_name=make_name)
 
 
 def main():  # pragma: no cover
