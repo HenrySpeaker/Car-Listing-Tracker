@@ -146,6 +146,39 @@ class DBInterface:
         with psycopg.connect(self._connection_url) as conn:
             queries.delete_city_by_name(conn, city_name=city_name)
 
+# ------------------------- ZIP CODES -----------------------------------
+
+# ------------------------- GET ZIP CODES -------------------------------
+
+    @check_connection
+    def get_all_zip_codes(self) -> list[dict]:
+        with psycopg.connect(self._connection_url) as conn:
+            return [zip_code for zip_code in queries.get_all_zip_codes(conn)]
+
+    @check_connection
+    def get_city_id_by_zip_code(self, zip_code: int) -> int:
+        with psycopg.connect(self._connection_url) as conn:
+            return queries.get_city_id_by_zip_code(conn, zip_code=zip_code)
+
+# ---------------------- ADD ZIP CODES ----------------------------------
+
+    @check_connection
+    def add_zip_code(self, zip_code: int, city_id: int) -> None:
+        with psycopg.connect(self._connection_url) as conn:
+            queries.add_zip_code(conn, zip_code=zip_code, city_id=city_id)
+
+# --------------------- DELETE ZIP CODES ---------------------------------
+
+    @check_connection
+    def delete_all_zip_codes(self) -> None:
+        with psycopg.connect(self._connection_url) as conn:
+            queries.delete_all_zip_codes(conn)
+
+    @check_connection
+    def delete_zip_code(self, zip_code: int) -> None:
+        with psycopg.connect(self._connection_url) as conn:
+            queries.delete_zip_code(conn, zip_code=zip_code)
+
 
 def main():  # pragma: no cover
     dao = DBInterface("postgresql://postgres:password@localhost/Car-Listings")
