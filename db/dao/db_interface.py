@@ -120,6 +120,12 @@ class DBInterface:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             return [city for city in queries.get_all_cities(conn)]
 
+    @check_connection
+    def get_city_id(self, city_name: str):
+        with psycopg.connect(self._connection_url) as conn:
+            res = queries.get_city_id(conn, city_name=city_name)
+            return res
+
 # ------------------------ ADD CITIES -----------------------------------
 
     @check_connection
@@ -134,6 +140,11 @@ class DBInterface:
     def delete_all_cities(self) -> None:
         with psycopg.connect(self._connection_url) as conn:
             queries.delete_all_cities(conn)
+
+    @check_connection
+    def delete_city_by_name(self, city_name: str) -> None:
+        with psycopg.connect(self._connection_url) as conn:
+            queries.delete_city_by_name(conn, city_name=city_name)
 
 
 def main():  # pragma: no cover
