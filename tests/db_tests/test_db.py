@@ -1,5 +1,6 @@
 import pytest
 from db.dao.db_interface import DBInterface
+from db.body_styles import body_styles
 from config import DevConfig
 from datetime import datetime
 import string
@@ -69,6 +70,15 @@ def dao_with_makes(new_dao: DBInterface, make_list: list) -> list[DBInterface, l
         new_dao.add_make(make["make_name"])
 
     return [new_dao, make_list]
+
+
+@pytest.fixture
+def dao_with_body_styles(new_dao: DBInterface) -> DBInterface:
+    new_dao.delete_all_body_styles()
+    for style in body_styles:
+        new_dao.add_body_style(style)
+
+    return new_dao
 
 
 def test_bad_db_url(capsys):
@@ -255,3 +265,16 @@ def test_delete_make_by_name(dao_with_makes: list[DBInterface, list]):
         dao.delete_make_by_name(make["make_name"])
 
     assert len(dao.get_all_makes()) == 0
+
+
+def test_get_all_body_styles(dao_with_body_styles: DBInterface):
+    res = dao_with_body_styles.get_all_body_styles()
+
+    for res_body_style in res:
+        assert res_body_style["body_style"] in body_styles
+
+
+def test_get_specific_body_style(dao_with_body_styles: DBInterface):
+    for style in body_styles:
+        assert dao_with_body_styles.get_body_style_info(
+            style)["body_style"] == style
