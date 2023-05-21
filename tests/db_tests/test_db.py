@@ -5,8 +5,14 @@ from config import DevConfig
 from datetime import datetime
 import string
 import random
+import psycopg
 
 DB_URI = DevConfig.POSTGRES_DATABASE_URI
+WEBSITE_NAMES = ["autotrader", "truecar"]
+
+
+def get_random_string(min_len: int, max_len: int) -> str:
+    return "".join(random.choices(string.ascii_letters, k=random.randint(min_len, max_len)))
 
 
 @pytest.fixture
@@ -16,12 +22,12 @@ def user_list():
 
 @pytest.fixture
 def city_list():
-    return [{"city_name": "".join(random.choices(string.ascii_letters, k=random.randint(3, 10)))} for _ in range(5)]
+    return [{"city_name": get_random_string(3, 10)} for _ in range(5)]
 
 
 @pytest.fixture
 def make_list():
-    return [{"make_name": "".join(random.choices(string.ascii_letters, k=random.randint(3, 10)))} for _ in range(5)]
+    return [{"make_name": get_random_string(3, 10)} for _ in range(5)]
 
 
 @pytest.fixture
@@ -79,6 +85,21 @@ def dao_with_body_styles(new_dao: DBInterface) -> DBInterface:
         new_dao.add_body_style(style)
 
     return new_dao
+
+
+@pytest.fixture
+def dao_with_web_body_styles(dao_with_body_styles: DBInterface) -> list[DBInterface, list[dict]]:
+    dao_with_body_styles.delete_all_website_body_styles()
+    web_body_styles = []
+    for body_style in dao_with_body_styles.get_all_body_styles():
+        for website in WEBSITE_NAMES:
+            new_name = get_random_string(3, 10)
+            dao_with_body_styles.add_website_body_style(
+                body_style_id=body_style["id"], website_name=website, website_body_name=new_name)
+            web_body_styles.append(
+                {"website_name": website, "new_name": new_name, "body_style_id": body_style["id"]})
+
+    return [dao_with_body_styles, web_body_styles]
 
 
 def test_bad_db_url(capsys):
@@ -278,3 +299,44 @@ def test_get_specific_body_style(dao_with_body_styles: DBInterface):
     for style in body_styles:
         assert dao_with_body_styles.get_body_style_info(
             style)["body_style"] == style
+
+
+def test_add_invalid_body_style(new_dao: DBInterface):
+    with pytest.raises(psycopg.errors.InvalidTextRepresentation):
+        new_dao.add_body_style("not a valid body style")
+
+
+def test_get_all_web_body_styles(dao_with_web_body_styles: list[DBInterface, list[dict]]):
+    dao, web_body_styles = dao_with_web_body_styles
+    all_web_body_styles = dao.get_all_website_body_styles()
+
+    assert len(all_web_body_styles) == len(body_styles) * len(WEBSITE_NAMES)
+
+    web_body_style_names = set(
+        web_body_style["new_name"] for web_body_style in web_body_styles)
+
+    for style in all_web_body_styles:
+        assert style["website_body_name"] in web_body_style_names
+
+
+def test_get_specific_web_body_style(dao_with_web_body_styles: list[DBInterface, list[dict]]):
+    dao, web_body_styles = dao_with_web_body_styles
+    print(web_body_styles)
+
+    for web_body_style in web_body_styles:
+        retrieved_web_body_styles = dao.get_website_body_style_info(
+            web_body_style["body_style_id"])
+
+        assert len(retrieved_web_body_styles) == len(WEBSITE_NAMES)
+
+
+def test_delete_specific_web_body_style(dao_with_web_body_styles: list[DBInterface, list[dict]]):
+    dao, web_body_styles = dao_with_web_body_styles
+
+    assert len(dao.get_all_website_body_styles()) == len(
+        body_styles) * len(WEBSITE_NAMES)
+
+    for web_body_style in web_body_styles:
+        dao.delete_specific_website_body_style(web_body_style["body_style_id"])
+
+    assert len(dao.get_all_website_body_styles()) == 0
