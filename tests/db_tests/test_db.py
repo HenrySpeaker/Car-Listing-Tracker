@@ -292,13 +292,13 @@ def test_get_all_body_styles(dao_with_body_styles: DBInterface):
     res = dao_with_body_styles.get_all_body_styles()
 
     for res_body_style in res:
-        assert res_body_style["body_style"] in body_styles
+        assert res_body_style["body_style_name"] in body_styles
 
 
 def test_get_specific_body_style(dao_with_body_styles: DBInterface):
     for style in body_styles:
         assert dao_with_body_styles.get_body_style_info(
-            style)["body_style"] == style
+            style)["body_style_name"] == style
 
 
 def test_add_invalid_body_style(new_dao: DBInterface):

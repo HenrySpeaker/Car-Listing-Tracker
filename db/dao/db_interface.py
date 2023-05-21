@@ -226,16 +226,16 @@ class DBInterface:
             return [body_style for body_style in queries.get_all_body_styles(conn)]
 
     @check_connection
-    def get_body_style_info(self, body_style: str) -> dict:
+    def get_body_style_info(self, body_style_name: str) -> dict:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-            return queries.get_body_style_info(conn, body_style=body_style)
+            return queries.get_body_style_info(conn, body_style_name=body_style_name)
 
 # ------------------- ADD BODY STYLES ----------------------------
 
     @check_connection
-    def add_body_style(self, body_style: str) -> None:
+    def add_body_style(self, body_style_name: str) -> None:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-            queries.add_body_style(conn, body_style=body_style)
+            queries.add_body_style(conn, body_style_name=body_style_name)
 
 # ------------------ DELETE BODY STYLES --------------------------
 

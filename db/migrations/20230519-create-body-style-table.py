@@ -21,7 +21,7 @@ steps = [
 
         CREATE TABLE body_style (
             id SERIAL PRIMARY KEY,
-            body_style body_style_type UNIQUE NOT NULL
+            body_style_name body_style_type UNIQUE NOT NULL
         );
     """,
          rollback="""DROP TABLE body_style; DROP TYPE IF EXISTS body_style_type CASCADE;""")
