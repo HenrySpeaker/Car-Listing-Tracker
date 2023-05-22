@@ -6,6 +6,7 @@ from datetime import datetime
 import string
 import random
 import psycopg
+from collections import defaultdict
 
 DB_URI = DevConfig.POSTGRES_DATABASE_URI
 WEBSITE_NAMES = ["autotrader", "truecar"]
@@ -16,18 +17,53 @@ def get_random_string(min_len: int, max_len: int) -> str:
 
 
 @pytest.fixture
-def user_list():
+def user_list() -> list[dict]:
     return [{"username": f"username{i}", "email": f"user{i}@email.com", "password_hash": f"password_hash{i}", "notification_frequency": 7} for i in range(1, 6)]
 
 
 @pytest.fixture
-def city_list():
+def city_list() -> list[dict]:
     return [{"city_name": get_random_string(3, 10)} for _ in range(5)]
 
 
 @pytest.fixture
-def make_list():
+def make_list() -> list[dict]:
     return [{"make_name": get_random_string(3, 10)} for _ in range(5)]
+
+
+def add_body_styles(dao: DBInterface) -> DBInterface:
+    dao.delete_all_body_styles()
+    for style in body_styles:
+        dao.add_body_style(style)
+
+    return dao
+
+
+def add_makes(dao: DBInterface, make_list: list[dict]) -> list[DBInterface, list]:
+    for make in make_list:
+        dao.add_make(make["make_name"])
+
+    return [dao, make_list]
+
+
+def add_models(dao: DBInterface) -> list[DBInterface, list[dict]]:
+    all_makes = dao.get_all_makes()
+    all_body_styles = dao.get_all_body_styles()
+    new_models = []
+
+    for _ in range(random.randint(3, 9)):
+        new_model_name = get_random_string(3, 15)
+        new_make_id = random.choice(all_makes)["id"]
+        new_body_style_id = random.choice(all_body_styles)["id"]
+
+        new_model = {"model_name": new_model_name,
+                     "make_id": new_make_id, "body_style_id": new_body_style_id}
+        new_models.append(new_model)
+
+        dao.add_model(model_name=new_model_name,
+                      make_id=new_make_id, body_style_id=new_body_style_id)
+
+    return [dao, new_models]
 
 
 @pytest.fixture
@@ -35,7 +71,9 @@ def new_dao() -> DBInterface:
     curr_dao = DBInterface(DB_URI)
     curr_dao.delete_all_users()
     curr_dao.delete_all_cities()
+    curr_dao.delete_all_models()
     curr_dao.delete_all_makes()
+
     return curr_dao
 
 
@@ -72,18 +110,12 @@ def dao_with_cities_and_zips(dao_with_cities: list[DBInterface, list]) -> list[D
 
 @pytest.fixture
 def dao_with_makes(new_dao: DBInterface, make_list: list) -> list[DBInterface, list]:
-    for make in make_list:
-        new_dao.add_make(make["make_name"])
-
-    return [new_dao, make_list]
+    return add_makes(new_dao, make_list)
 
 
 @pytest.fixture
 def dao_with_body_styles(new_dao: DBInterface) -> DBInterface:
-    new_dao.delete_all_body_styles()
-    for style in body_styles:
-        new_dao.add_body_style(style)
-
+    new_dao = add_body_styles(new_dao)
     return new_dao
 
 
@@ -100,6 +132,15 @@ def dao_with_web_body_styles(dao_with_body_styles: DBInterface) -> list[DBInterf
                 {"website_name": website, "new_name": new_name, "body_style_id": body_style["id"]})
 
     return [dao_with_body_styles, web_body_styles]
+
+
+@pytest.fixture
+def dao_with_models(new_dao: DBInterface, make_list: list[dict]) -> list[DBInterface, list[dict], list[dict]]:
+    new_dao = add_body_styles(new_dao)
+    new_dao, make_list = add_makes(new_dao, make_list)
+    new_dao, models_list = add_models(new_dao)
+
+    return [new_dao, make_list, models_list]
 
 
 def test_bad_db_url(capsys):
@@ -340,3 +381,94 @@ def test_delete_specific_web_body_style(dao_with_web_body_styles: list[DBInterfa
         dao.delete_specific_website_body_style(web_body_style["body_style_id"])
 
     assert len(dao.get_all_website_body_styles()) == 0
+
+
+def test_get_all_models(dao_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dao_with_models
+
+    all_models_from_dao = dao.get_all_models()
+    model_names_from_dao = {model["model_name"]
+                            for model in all_models_from_dao}
+
+    assert len(all_models_from_dao) == len(models_list)
+
+    for model in models_list:
+        assert model["model_name"] in model_names_from_dao
+
+
+def test_get_model_by_make_id(dao_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dao_with_models
+
+    models_by_make_id = defaultdict(list)
+
+    for model in models_list:
+        models_by_make_id[model["make_id"]].append(model)
+
+    for make_id in models_by_make_id:
+        dao_models_by_make_id = dao.get_models_by_make_id(make_id)
+        assert len(dao_models_by_make_id) == len(models_by_make_id[make_id])
+
+        for dao_model in dao_models_by_make_id:
+            assert dao_model["make_id"] == make_id
+
+
+def test_get_model_by_make_name(dao_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dao_with_models
+
+    dao_make_info = dao.get_all_makes()
+
+    models_by_make_id = defaultdict(list)
+
+    for model in models_list:
+        models_by_make_id[model["make_id"]].append(model)
+
+    for make in dao_make_info:
+        assert len(dao.get_model_by_make_name(make["make_name"])) == len(
+            models_by_make_id[make["id"]])
+
+
+def test_get_model_by_body_style_id(dao_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dao_with_models
+
+    body_style_info = dao.get_all_body_styles()
+
+    models_by_body_style = defaultdict(list)
+
+    for model in models_list:
+        models_by_body_style[model["body_style_id"]].append(model)
+
+    for body_style in body_style_info:
+        assert len(models_by_body_style[body_style["id"]]) == len(
+            dao.get_model_by_body_style_id(body_style["id"]))
+
+
+def test_get_model_by_body_style_name(dao_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dao_with_models
+
+    body_style_info = dao.get_all_body_styles()
+    models_by_body_style = defaultdict(list)
+
+    for model in models_list:
+        models_by_body_style[model["body_style_id"]].append(model)
+
+    for body_style in body_style_info:
+        assert len(models_by_body_style[body_style["id"]]) == len(
+            dao.get_model_by_body_style_name(body_style["body_style_name"]))
+
+
+def test_delete_model_by_model_name(dao_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dao_with_models
+
+    print(models_list)
+    print("\n")
+    print(dao.get_all_models())
+
+    assert len(dao.get_all_models()) > 0
+
+    for model in models_list:
+        dao.delete_model_by_model_name(model["model_name"])
+
+    print("\n")
+    print(dao.get_all_models())
+
+    assert len(dao.get_all_models()) == 0

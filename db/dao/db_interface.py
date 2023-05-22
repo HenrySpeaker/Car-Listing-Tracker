@@ -54,7 +54,6 @@ class DBInterface:
 
 # ------------------------ ADD USERS ------------------------------------------
 
-
     @check_connection
     def add_user(self, user_info: dict = {}) -> int:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
@@ -64,7 +63,6 @@ class DBInterface:
 
 
 # ----------------------- UPDATE USERS ---------------------------------------
-
 
     @check_connection
     def update_username_by_email(self, email: str = "", new_username: str = "") -> None:
@@ -99,6 +97,7 @@ class DBInterface:
 
 # ----------------------- DELETE USERS ---------------------------------------
 
+
     @check_connection
     def delete_all_users(self) -> None:
         with psycopg.connect(self._connection_url) as conn:
@@ -114,6 +113,7 @@ class DBInterface:
 # -------------------------- CITIES ---------------------------------------
 
 # -------------------------- GET CITIES -----------------------------------
+
 
     @check_connection
     def get_all_cities(self) -> list[dict]:
@@ -135,7 +135,6 @@ class DBInterface:
 
 
 # ----------------------- DELETE CITIES ---------------------------------
-
 
     @check_connection
     def delete_all_cities(self) -> None:
@@ -185,7 +184,6 @@ class DBInterface:
 
 # --------------------- GET MAKES --------------------------------
 
-
     @check_connection
     def get_all_makes(self) -> list[dict]:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
@@ -220,6 +218,7 @@ class DBInterface:
 
 # -------------------- GET BODY STYLES ---------------------------
 
+
     @check_connection
     def get_all_body_styles(self) -> list[dict]:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
@@ -248,7 +247,6 @@ class DBInterface:
 # ------------------- WEBSITE BODY STYLES ---------------------------
 
 # ------------------- WEB BODY STYLES GET ---------------------------
-
 
     @check_connection
     def get_all_website_body_styles(self) -> list[dict]:
@@ -280,6 +278,55 @@ class DBInterface:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.delete_specific_website_body_style(
                 conn, body_style_id=body_style_id)
+
+# ----------------- CAR MODELS ----------------------------------------
+
+# ----------------- GET CAR MODELS ------------------------------------
+
+    @check_connection
+    def get_all_models(self) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return [model for model in queries.get_all_models(conn)]
+
+    @check_connection
+    def get_models_by_make_id(self, make_id: int) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return [model for model in queries.get_model_by_make_id(conn, make_id=make_id)]
+
+    @check_connection
+    def get_model_by_make_name(self, make_name: str) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return [model for model in queries.get_model_by_make_name(conn, make_name=make_name)]
+
+    @check_connection
+    def get_model_by_body_style_id(self, body_style_id: int) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return [model for model in queries.get_model_by_body_style_id(conn, body_style_id=body_style_id)]
+
+    @check_connection
+    def get_model_by_body_style_name(self, body_style_name: str) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return [model for model in queries.get_model_by_body_style_name(conn, body_style_name=body_style_name)]
+
+# ---------------------------- ADD MODEL -------------------------------------
+
+    @check_connection
+    def add_model(self, model_name: str, make_id: int, body_style_id: int) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            queries.add_model(conn, model_name=model_name,
+                              make_id=make_id, body_style_id=body_style_id)
+
+# ---------------------------- DELETE MODELS -------------------------------
+
+    @check_connection
+    def delete_all_models(self) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            queries.delete_all_models(conn)
+
+    @check_connection
+    def delete_model_by_model_name(self, model_name: str) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            queries.delete_model_by_model_name(conn, model_name=model_name)
 
 
 def main():  # pragma: no cover
