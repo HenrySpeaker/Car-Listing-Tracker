@@ -31,6 +31,11 @@ def make_list() -> list[dict]:
     return [{"make_name": get_random_string(3, 10)} for _ in range(5)]
 
 
+@pytest.fixture
+def watched_car_list() -> list[dict]:
+    return [{"vin": get_random_string(10, 25), "listing_url": get_random_string(30, 100), "last_price": random.randint(100, 100000)} for _ in range(random.randint(5, 10))]
+
+
 def add_body_styles(dao: DBInterface) -> DBInterface:
     dao.delete_all_body_styles()
     for style in body_styles:
@@ -73,6 +78,7 @@ def new_dao() -> DBInterface:
     curr_dao.delete_all_cities()
     curr_dao.delete_all_models()
     curr_dao.delete_all_makes()
+    curr_dao.delete_all_watched_cars()
 
     return curr_dao
 
@@ -141,6 +147,15 @@ def dao_with_models(new_dao: DBInterface, make_list: list[dict]) -> list[DBInter
     new_dao, models_list = add_models(new_dao)
 
     return [new_dao, make_list, models_list]
+
+
+@pytest.fixture
+def dao_with_watched_cars(new_dao: DBInterface, watched_car_list: list[dict]) -> list[DBInterface, list[dict]]:
+    for car in watched_car_list:
+        new_dao.add_watched_car(
+            vin=car["vin"], listing_url=car["listing_url"], last_price=car["last_price"])
+
+    return [new_dao, watched_car_list]
 
 
 def test_bad_db_url(capsys):
@@ -472,3 +487,37 @@ def test_delete_model_by_model_name(dao_with_models: list[DBInterface, list[dict
     print(dao.get_all_models())
 
     assert len(dao.get_all_models()) == 0
+
+
+def test_get_all_watched_cars(dao_with_watched_cars: list[DBInterface, list[dict]]):
+    dao, watched_cars = dao_with_watched_cars
+
+    dao_watched_cars = dao.get_all_watched_cars()
+
+    dao_watched_car_vins = {car["vin"] for car in dao_watched_cars}
+
+    assert len(dao_watched_cars) == len(watched_cars)
+
+    for car in watched_cars:
+        assert car["vin"] in dao_watched_car_vins
+
+
+def test_get_watched_car_by_vin(dao_with_watched_cars: list[DBInterface, list[dict]]):
+    dao, watched_cars = dao_with_watched_cars
+
+    for car in watched_cars:
+        dao_car = dao.get_watched_car_by_vin(car["vin"])
+        assert dao_car["vin"] == car["vin"]
+        assert dao_car["listing_url"] == car["listing_url"]
+        assert dao_car["last_price"] == car["last_price"]
+
+
+def test_delete_watched_car_by_vin(dao_with_watched_cars: list[DBInterface, list[dict]]):
+    dao, watched_cars = dao_with_watched_cars
+
+    assert len(dao.get_all_watched_cars()) == len(watched_cars)
+
+    for car in watched_cars:
+        dao.delete_watched_car_by_vin(car["vin"])
+
+    assert len(dao.get_all_watched_cars()) == 0
