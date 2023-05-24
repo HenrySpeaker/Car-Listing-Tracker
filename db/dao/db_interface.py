@@ -365,6 +365,119 @@ class DBInterface:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.delete_watched_car_by_vin(conn, vin=vin)
 
+# --------------------- CRITERIA -------------------------------------------
+
+# ------------------------ GET CRITERIA ------------------------------------
+
+    @check_connection
+    def get_all_criteria(self) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return [criteria for criteria in queries.get_all_criteria(conn)]
+
+    @check_connection
+    def get_criteria_by_info(self,
+                             min_year=None,
+                             max_year: int | None = None,
+                             min_price: int | None = None,
+                             max_price: int | None = None,
+                             max_mileage: int | None = None,
+                             search_distance: int | None = None,
+                             no_accidents: bool | None = True,
+                             single_owner: bool | None = False,
+                             user_id: int | None = None,
+                             city_id: int | None = None,
+                             model_id: int | None = None,
+                             body_style_id: int | None = None
+                             ) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            res = queries.get_criteria_by_info(conn,
+                                               min_year=min_year,
+                                               max_year=max_year,
+                                               min_price=min_price,
+                                               max_price=max_price,
+                                               max_mileage=max_mileage,
+                                               search_distance=search_distance,
+                                               no_accidents=no_accidents,
+                                               single_owner=single_owner,
+                                               user_id=user_id,
+                                               city_id=city_id,
+                                               model_id=model_id,
+                                               body_style_id=body_style_id)
+
+            return [criteria for criteria in res]
+
+# ------------------------------- ADD CRITERIA ----------------------------------
+
+    @check_connection
+    def add_criteria(self,
+
+                     min_year: int,
+                     max_year: int,
+                     min_price: int,
+                     max_price: int,
+                     max_mileage: int,
+                     search_distance: int,
+                     no_accidents: bool,
+                     single_owner: bool,
+                     user_id: int,
+                     city_id: int,
+                     model_id: int,
+                     body_style_id: int
+                     ) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            queries.add_criteria(conn,
+
+                                 min_year=min_year,
+                                 max_year=max_year,
+                                 min_price=min_price,
+                                 max_price=max_price,
+                                 max_mileage=max_mileage,
+                                 search_distance=search_distance,
+                                 no_accidents=no_accidents,
+                                 single_owner=single_owner,
+                                 user_id=user_id,
+                                 city_id=city_id,
+                                 model_id=model_id,
+                                 body_style_id=body_style_id)
+
+# --------------------- DELETE CRITERIA ------------------------------------------
+
+    @check_connection
+    def delete_all_criteria(self) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            queries.delete_all_criteria(conn)
+
+    @check_connection
+    def delete_criteria_by_info(self,
+                                min_year: int,
+                                max_year: int,
+                                min_price: int,
+                                max_price: int,
+                                max_mileage: int,
+                                search_distance: int,
+                                no_accidents: bool,
+                                single_owner: bool,
+                                user_id: int,
+                                city_id: int,
+                                model_id: int,
+                                body_style_id: int
+                                ) -> None:
+
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            queries.delete_criteria_by_info(conn,
+                                            min_year=min_year,
+                                            max_year=max_year,
+                                            min_price=min_price,
+                                            max_price=max_price,
+                                            max_mileage=max_mileage,
+                                            search_distance=search_distance,
+                                            no_accidents=no_accidents,
+                                            single_owner=single_owner,
+                                            user_id=user_id,
+                                            city_id=city_id,
+                                            model_id=model_id,
+                                            body_style_id=body_style_id)
+
 
 def main():  # pragma: no cover
     dao = DBInterface("postgresql://postgres:password@localhost/Car-Listings")
