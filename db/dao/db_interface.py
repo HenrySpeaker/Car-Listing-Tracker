@@ -479,6 +479,43 @@ class DBInterface:
                                             body_style_id=body_style_id)
 
 
+# ------------------------------ Watched Car Criteria --------------------------------
+
+# ------------------------------ Add Watched Car Criteria ----------------------------
+
+    @check_connection
+    def get_all_watched_car_criteria(self) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return [row for row in queries.get_all_watched_car_criteria(conn)]
+
+    @check_connection
+    def get_watched_car_criteria_by_info(self, criteria_id: int | None = None, watched_car_id: int | None = None) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return [row for row in queries.get_watched_car_criteria_by_info(conn, criteria_id=criteria_id, watched_car_id=watched_car_id)]
+
+
+# ---------------------------- Add Watched Car Criteria ------------------------------
+
+    @check_connection
+    def add_watched_car_criteria(self, criteria_id: int, watched_car_id: int) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            queries.add_watched_car_criteria(
+                conn, criteria_id=criteria_id, watched_car_id=watched_car_id)
+
+# --------------------------- Delete Watched Car Criteria ----------------------------
+
+    @check_connection
+    def delete_all_watched_car_criteria(self) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            queries.delete_all_watched_car_criteria(conn)
+
+    @check_connection
+    def delete_watched_car_criteria_by_info(self, criteria_id: int | None = None, watched_car_id: int | None = None) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            queries.delete_watched_car_criteria_by_info(
+                conn, criteria_id=criteria_id, watched_car_id=watched_car_id)
+
+
 def main():  # pragma: no cover
     dao = DBInterface("postgresql://postgres:password@localhost/Car-Listings")
     dao.delete_all_users()
