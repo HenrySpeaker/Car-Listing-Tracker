@@ -1,5 +1,5 @@
 import pytest
-from db.dao.db_interface import DBInterface
+from db.dbi.db_interface import DBInterface
 from db.body_styles import body_styles
 from config import DevConfig
 from datetime import datetime
