@@ -9,7 +9,7 @@ import psycopg
 from collections import defaultdict
 
 DB_URI = DevConfig.POSTGRES_DATABASE_URI
-WEBSITE_NAMES = ["autotrader", "truecar"]
+WEBSITE_NAMES = ["autotrader", "cargurus", "usnews", "driveway", "capitolone"]
 
 
 def get_random_string(min_len: int, max_len: int) -> str:

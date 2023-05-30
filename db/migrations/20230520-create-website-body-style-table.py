@@ -9,8 +9,11 @@ __depends__ = {'20230519-create-body-style-table'}
 steps = [
     step(apply="""
         CREATE TYPE website_name_type AS ENUM (
-            'truecar',
-            'autotrader'
+            'autotrader',
+            'cargurus',
+            'capitolone',
+            'usnews',
+            'driveway'
         );
 
         CREATE TABLE website_body_style (
