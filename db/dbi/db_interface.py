@@ -54,7 +54,6 @@ class DBInterface:
 
 # ------------------------ ADD USERS ------------------------------------------
 
-
     @check_connection
     def add_user(self, user_info: dict = {}) -> int:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
@@ -64,7 +63,6 @@ class DBInterface:
 
 
 # ----------------------- UPDATE USERS ---------------------------------------
-
 
     @check_connection
     def update_username_by_email(self, email: str = "", new_username: str = "") -> None:
@@ -99,6 +97,7 @@ class DBInterface:
 
 # ----------------------- DELETE USERS ---------------------------------------
 
+
     @check_connection
     def delete_all_users(self) -> None:
         with psycopg.connect(self._connection_url) as conn:
@@ -114,6 +113,7 @@ class DBInterface:
 # -------------------------- CITIES ---------------------------------------
 
 # -------------------------- GET CITIES -----------------------------------
+
 
     @check_connection
     def get_all_cities(self) -> list[dict]:
@@ -135,7 +135,6 @@ class DBInterface:
 
 
 # ----------------------- DELETE CITIES ---------------------------------
-
 
     @check_connection
     def delete_all_cities(self) -> None:
@@ -185,7 +184,6 @@ class DBInterface:
 
 # --------------------- GET MAKES --------------------------------
 
-
     @check_connection
     def get_all_makes(self) -> list[dict]:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
@@ -220,6 +218,7 @@ class DBInterface:
 
 # -------------------- GET BODY STYLES ---------------------------
 
+
     @check_connection
     def get_all_body_styles(self) -> list[dict]:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
@@ -248,7 +247,6 @@ class DBInterface:
 # ------------------- WEBSITE BODY STYLES ---------------------------
 
 # ------------------- WEB BODY STYLES GET ---------------------------
-
 
     @check_connection
     def get_all_website_body_styles(self) -> list[dict]:
@@ -334,6 +332,7 @@ class DBInterface:
 # ------------------------ WATCHED CAR -------------------------------------
 
 # ------------------------ WATCHED CAR GET ---------------------------------
+
 
     @check_connection
     def get_all_watched_cars(self) -> list[dict]:
@@ -483,6 +482,7 @@ class DBInterface:
 
 # ------------------------------ Add Watched Car Criteria ----------------------------
 
+
     @check_connection
     def get_all_watched_car_criteria(self) -> list[dict]:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
@@ -495,6 +495,7 @@ class DBInterface:
 
 
 # ---------------------------- Add Watched Car Criteria ------------------------------
+
 
     @check_connection
     def add_watched_car_criteria(self, criteria_id: int, watched_car_id: int) -> None:
@@ -514,6 +515,26 @@ class DBInterface:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.delete_watched_car_criteria_by_info(
                 conn, criteria_id=criteria_id, watched_car_id=watched_car_id)
+
+
+# ----------------------------- Listing Alerts --------------------------------------
+
+
+    @check_connection
+    def get_all_alerts(self) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return [row for row in queries.get_all_alerts(conn)]
+
+    @check_connection
+    def add_alert(self, car_id: int, user_id: int, change: str) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            queries.add_alert(conn, car_id=car_id,
+                              user_id=user_id, change=change)
+
+    @check_connection
+    def delete_all_alerts(self) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            queries.delete_all_alerts(conn)
 
 
 def main():  # pragma: no cover

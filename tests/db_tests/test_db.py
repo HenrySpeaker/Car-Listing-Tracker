@@ -10,6 +10,7 @@ from collections import defaultdict
 
 DB_URI = DevConfig.POSTGRES_DATABASE_URI
 WEBSITE_NAMES = ["autotrader", "cargurus", "usnews", "driveway", "capitolone"]
+LISTING_CHANGES = ["price_drop", "new_listing"]
 
 
 def get_random_string(min_len: int, max_len: int) -> str:
@@ -100,6 +101,7 @@ def new_dao() -> DBInterface:
     curr_dao.delete_all_watched_cars()
     curr_dao.delete_all_criteria()
     curr_dao.delete_all_watched_car_criteria()
+    curr_dao.delete_all_alerts()
 
     return curr_dao
 
@@ -286,6 +288,32 @@ def dao_with_watched_car_criteria(dao_with_criteria: list[DBInterface, list[dict
     new_dao, watched_car_criteria = add_watched_car_criteria(new_dao)
 
     return [new_dao, city_list, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria]
+
+
+def add_listing_alerts(dao: DBInterface) -> list[DBInterface, list[dict]]:
+
+    new_alerts = []
+    user_list = dao.get_all_users()
+    watched_car_list = dao.get_all_watched_cars()
+
+    for _ in range(random.randint(5, 10)):
+        new_alert = {}
+        new_alert["car_id"] = random.choice(watched_car_list)["id"]
+        new_alert["user_id"] = random.choice(user_list)["id"]
+        new_alert["change"] = random.choice(LISTING_CHANGES)
+        new_alerts.append(new_alert)
+
+        dao.add_alert(**new_alert)
+
+    return [dao, new_alerts]
+
+
+@pytest.fixture
+def dao_with_listing_alerts(dao_with_users: list[DBInterface, list], watched_car_list: list[dict]) -> list[DBInterface, list[dict], list[dict], list[dict]]:
+    dao, users = dao_with_users
+    dao, watched_car_list = add_watched_cars(dao, watched_car_list)
+    dao, listing_alerts = add_listing_alerts(dao)
+    return [dao, users, watched_car_list, listing_alerts]
 
 
 def test_bad_db_url(capsys):
@@ -716,3 +744,13 @@ def test_delete_watched_car_criteria_by_info(dao_with_watched_car_criteria: list
         dao.delete_watched_car_criteria_by_info(**crit)
 
     assert len(dao.get_all_watched_car_criteria()) == 0
+
+
+def test_get_all_listing_alerts(dao_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]]):
+    dao, users, watched_cars, alerts = dao_with_listing_alerts
+
+    alerts_data = dao.get_all_alerts()
+
+    assert len(alerts_data) == len(alerts)
+
+    assert compare_data(alerts, alerts_data)
