@@ -56,6 +56,11 @@ def watched_car_list() -> list[dict]:
     return [{"vin": get_random_string(10, 25), "listing_url": get_random_string(30, 100), "last_price": random.randint(100, 100000)} for _ in range(random.randint(5, 10))]
 
 
+@pytest.fixture
+def state_list() -> list[dict]:
+    return [{"state_name": get_random_string(5, 12)} for _ in range(random.randint(5, 10))]
+
+
 def add_body_styles(dao: DBInterface) -> DBInterface:
     dao.delete_all_body_styles()
     for style in body_styles:
@@ -102,6 +107,7 @@ def new_dao() -> DBInterface:
     curr_dao.delete_all_criteria()
     curr_dao.delete_all_watched_car_criteria()
     curr_dao.delete_all_alerts()
+    curr_dao.delete_all_states()
 
     return curr_dao
 
@@ -119,21 +125,24 @@ def dao_with_users(new_dao: DBInterface, user_list: list) -> list[DBInterface, l
     return add_users(new_dao, user_list)
 
 
-def add_cities(dao: DBInterface, cities: list[dict]):
+def add_cities(dao: DBInterface, cities: list[dict], states: list[dict]) -> list[DBInterface, list, list]:
+    state_data = dao.get_all_states()
     for city in cities:
-        dao.add_city(city["city_name"])
+        dao.add_city(city_name=city["city_name"],
+                     state_id=random.choice(state_data)["id"])
 
-    return [dao, cities]
-
-
-@pytest.fixture
-def dao_with_cities(new_dao: DBInterface, city_list: list[dict]) -> list[DBInterface, list]:
-    return add_cities(new_dao, city_list)
+    return [dao, cities, states]
 
 
 @pytest.fixture
-def dao_with_cities_and_zips(dao_with_cities: list[DBInterface, list]) -> list[DBInterface, list, list]:
-    dao, city_list = dao_with_cities
+def dao_with_cities(dao_with_states: list[DBInterface, list[dict]], city_list: list[dict]) -> list[DBInterface, list, list]:
+    dao, states = dao_with_states
+    return add_cities(dao, city_list, states)
+
+
+@pytest.fixture
+def dao_with_cities_and_zips(dao_with_cities: list[DBInterface, list, list, list]) -> list[DBInterface, list, list, list]:
+    dao, city_list, states = dao_with_cities
     dao.delete_all_zip_codes()
     city_id_list = [city["id"] for city in dao.get_all_cities()]
     zips_list = [{"zip_code": random.randint(
@@ -143,7 +152,7 @@ def dao_with_cities_and_zips(dao_with_cities: list[DBInterface, list]) -> list[D
         dao.add_zip_code(
             zip_code=zip_code["zip_code"], city_id=zip_code["city_id"])
 
-    return [dao, city_list, zips_list]
+    return [dao, city_list, zips_list, states]
 
 
 @pytest.fixture
@@ -247,8 +256,9 @@ def add_criteria(dao: DBInterface, criteria_list: list[dict]) -> list[DBInterfac
 
 
 @pytest.fixture
-def dao_with_criteria(new_dao: DBInterface, make_list: list[dict], city_list: list[dict], user_list: list[dict]) -> list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]:
-    new_dao, city_list = add_cities(new_dao, city_list)
+def dao_with_criteria(new_dao: DBInterface, make_list: list[dict], city_list: list[dict], user_list: list[dict], state_list: list[dict]) -> list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]:
+    new_dao, state_list = add_states(new_dao, state_list)
+    new_dao, city_list, state_list = add_cities(new_dao, city_list, state_list)
     new_dao = add_body_styles(new_dao)
     new_dao, make_list = add_makes(new_dao, make_list)
     new_dao, models_list = add_models(new_dao)
@@ -260,7 +270,7 @@ def dao_with_criteria(new_dao: DBInterface, make_list: list[dict], city_list: li
 
     new_dao, criteria = add_criteria(new_dao, criteria)
 
-    return [new_dao, city_list, criteria, make_list, models_list, user_list]
+    return [new_dao, city_list, criteria, make_list, models_list, user_list, state_list]
 
 
 def add_watched_car_criteria(dao: DBInterface) -> list[DBInterface, list[dict], list[dict]]:
@@ -280,8 +290,8 @@ def add_watched_car_criteria(dao: DBInterface) -> list[DBInterface, list[dict], 
 
 
 @pytest.fixture
-def dao_with_watched_car_criteria(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]], watched_car_list: list[dict]) -> list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]:
-    new_dao, city_list, criteria, make_list, models_list, user_list = dao_with_criteria
+def dao_with_watched_car_criteria(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]], watched_car_list: list[dict]) -> list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]:
+    new_dao, city_list, criteria, make_list, models_list, user_list, states = dao_with_criteria
 
     new_dao, watched_cars = add_watched_cars(new_dao, watched_car_list)
 
@@ -314,6 +324,18 @@ def dao_with_listing_alerts(dao_with_users: list[DBInterface, list], watched_car
     dao, watched_car_list = add_watched_cars(dao, watched_car_list)
     dao, listing_alerts = add_listing_alerts(dao)
     return [dao, users, watched_car_list, listing_alerts]
+
+
+def add_states(dao: DBInterface, states: list[dict]) -> list[DBInterface, list[dict]]:
+    for state in states:
+        dao.add_state(state["state_name"])
+
+    return [dao, states]
+
+
+@pytest.fixture
+def dao_with_states(new_dao: DBInterface, state_list: list[dict]) -> list[DBInterface, list[dict]]:
+    return add_states(new_dao, state_list)
 
 
 def test_bad_db_url(capsys):
@@ -422,8 +444,8 @@ def test_delete_user_by_username(dao_with_users: list[DBInterface, list]):
     assert len(dao.get_all_users()) == 0
 
 
-def test_get_all_cities(dao_with_cities: list[DBInterface, list]):
-    dao, city_list = dao_with_cities
+def test_get_all_cities(dao_with_cities: list[DBInterface, list, list]):
+    dao, city_list, states = dao_with_cities
     all_cities = dao.get_all_cities()
     all_cities_set = set(city["city_name"] for city in all_cities)
 
@@ -432,38 +454,38 @@ def test_get_all_cities(dao_with_cities: list[DBInterface, list]):
         assert city["city_name"] in all_cities_set
 
 
-def test_delete_cities_by_name(dao_with_cities: list[DBInterface, list]):
-    dao, city_list = dao_with_cities
+def test_delete_cities_by_name(dao_with_cities: list[DBInterface, list, list]):
+    dao, city_list, states = dao_with_cities
     for city in city_list:
         dao.delete_city_by_name(city["city_name"])
 
     assert len(dao.get_all_cities()) == 0
 
 
-def test_get_city_id(dao_with_cities: list[DBInterface, list]):
-    dao, city_list = dao_with_cities
+def test_get_city_id(dao_with_cities: list[DBInterface, list, list]):
+    dao, city_list, states = dao_with_cities
     all_cities = dao.get_all_cities()
     for city in all_cities:
         returned_city_id = dao.get_city_id(city["city_name"])
         assert city["id"] == returned_city_id
 
 
-def test_get_all_zip_codes(dao_with_cities_and_zips: list[DBInterface, list, list]):
-    dao, city_list, zip_list = dao_with_cities_and_zips
+def test_get_all_zip_codes(dao_with_cities_and_zips: list[DBInterface, list, list, list]):
+    dao, city_list, zip_list, states = dao_with_cities_and_zips
 
     assert len(dao.get_all_zip_codes()) == len(zip_list)
 
 
-def test_get_specific_zip_codes(dao_with_cities_and_zips: list[DBInterface, list, list]):
-    dao, city_list, zip_list = dao_with_cities_and_zips
+def test_get_specific_zip_codes(dao_with_cities_and_zips: list[DBInterface, list, list, list]):
+    dao, city_list, zip_list, states = dao_with_cities_and_zips
 
     for zip_info in zip_list:
         assert dao.get_city_id_by_zip_code(
             zip_info["zip_code"]) == zip_info["city_id"]
 
 
-def test_delete_specific_zip(dao_with_cities_and_zips: list[DBInterface, list, list]):
-    dao, city_list, zip_list = dao_with_cities_and_zips
+def test_delete_specific_zip(dao_with_cities_and_zips: list[DBInterface, list, list, list]):
+    dao, city_list, zip_list, states = dao_with_cities_and_zips
 
     assert len(dao.get_all_zip_codes()) > 0
 
@@ -681,8 +703,8 @@ def test_delete_watched_car_by_vin(dao_with_watched_cars: list[DBInterface, list
     assert len(dao.get_all_watched_cars()) == 0
 
 
-def test_get_all_criteria(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, cities, criteria, makes, models, users = dao_with_criteria
+def test_get_all_criteria(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]):
+    dao, cities, criteria, makes, models, users, states = dao_with_criteria
 
     db_criteria = dao.get_all_criteria()
     assert len(db_criteria) == len(criteria)
@@ -693,8 +715,8 @@ def test_get_all_criteria(dao_with_criteria: list[DBInterface, list[dict], list[
     assert compare_data(criteria, db_criteria)
 
 
-def test_get_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, cities, criteria, makes, models, users = dao_with_criteria
+def test_get_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]):
+    dao, cities, criteria, makes, models, users, states = dao_with_criteria
 
     identical_criteria_count = defaultdict(int)
 
@@ -707,8 +729,8 @@ def test_get_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], l
             db_criteria)] == identical_criteria_count[get_tuple_from_dict(crit)]
 
 
-def test_delete_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, cities, criteria, makes, models, users = dao_with_criteria
+def test_delete_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]):
+    dao, cities, criteria, makes, models, users, states = dao_with_criteria
 
     assert len(dao.get_all_criteria()) == len(criteria)
 
@@ -754,3 +776,25 @@ def test_get_all_listing_alerts(dao_with_listing_alerts: list[DBInterface, list[
     assert len(alerts_data) == len(alerts)
 
     assert compare_data(alerts, alerts_data)
+
+
+def test_get_all_states(dao_with_states: list[DBInterface, list[dict]]):
+    dao, states = dao_with_states
+
+    states_data = dao.get_all_states()
+
+    assert len(states_data) == len(states)
+
+    assert compare_data(states, states_data)
+
+
+def test_get_state_by_name(dao_with_states: list[DBInterface, list[dict]]):
+    dao, states = dao_with_states
+
+    for state in states:
+        returned_data = dao.get_state_by_name(state["state_name"])
+        assert returned_data != None
+        assert returned_data["state_name"] == state["state_name"]
+
+    assert dao.get_state_by_name(
+        "*************** not a state *******************") == None

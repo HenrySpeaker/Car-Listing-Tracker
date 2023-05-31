@@ -5,7 +5,7 @@ SELECT * FROM city;
 SELECT id FROM city WHERE city_name = :city_name;
 
 -- name: add_city!
-INSERT INTO city(city_name) VALUES (:city_name);
+INSERT INTO city(city_name, state_id) VALUES (:city_name, :state_id);
 
 -- name: delete_all_cities!
 DELETE FROM city;

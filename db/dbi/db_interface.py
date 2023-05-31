@@ -129,9 +129,9 @@ class DBInterface:
 # ------------------------ ADD CITIES -----------------------------------
 
     @check_connection
-    def add_city(self, city_name: str) -> None:
+    def add_city(self, city_name: str, state_id: int) -> None:
         with psycopg.connect(self._connection_url) as conn:
-            queries.add_city(conn, city_name=city_name)
+            queries.add_city(conn, city_name=city_name, state_id=state_id)
 
 
 # ----------------------- DELETE CITIES ---------------------------------
@@ -535,6 +535,29 @@ class DBInterface:
     def delete_all_alerts(self) -> None:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.delete_all_alerts(conn)
+
+
+# ----------------------- States -------------------------------------------------
+
+    @check_connection
+    def get_all_states(self) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return [row for row in queries.get_all_states(conn)]
+
+    @check_connection
+    def get_state_by_name(self, state_name: str) -> dict | None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return queries.get_state_by_name(conn, state_name=state_name)
+
+    @check_connection
+    def add_state(self, state_name: str) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            queries.add_state(conn, state_name=state_name)
+
+    @check_connection
+    def delete_all_states(self) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            queries.delete_all_states(conn)
 
 
 def main():  # pragma: no cover
