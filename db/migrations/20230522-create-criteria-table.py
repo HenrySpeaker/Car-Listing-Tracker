@@ -21,7 +21,9 @@ steps = [
             user_id INTEGER REFERENCES user_account(id) ON DELETE CASCADE NOT NULL,
             city_id INTEGER REFERENCES city(id) ON DELETE CASCADE NOT NULL,
             model_id INTEGER REFERENCES model(id) ON DELETE CASCADE,
-            body_style_id INTEGER REFERENCES body_style(id) ON DELETE CASCADE
+            body_style_id INTEGER REFERENCES body_style(id) ON DELETE CASCADE,
+            CHECK (min_year <= max_year),
+            CHECK (min_price <= max_price)
         );
     
     """,
