@@ -3,7 +3,7 @@ from psycopg.rows import dict_row
 import aiosql
 from functools import wraps
 from datetime import datetime
-
+from db.body_styles import body_styles
 
 queries = aiosql.from_path('db/sql', 'psycopg')
 
@@ -30,9 +30,19 @@ class DBInterface:
         except psycopg.ProgrammingError as e:
             print(f"An error occurred: {e}")
 
+        if self._valid_connection:
+            # check to see if body_styles have been added to the table already
+            with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+                curr_body_styles = self.get_all_body_styles()
+                if not curr_body_styles:
+                    for body_style in body_styles:
+                        self.add_body_style(body_style_name=body_style)
+
+
 # ------------------------- USERS ---------------------------------------
 
 # ------------------------- GET USERS -----------------------------------
+
     @check_connection
     def get_all_users(self) -> list:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
@@ -55,6 +65,7 @@ class DBInterface:
 
 # ------------------------ ADD USERS ------------------------------------------
 
+
     @check_connection
     def add_user(self, user_info: dict = {}) -> int:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
@@ -64,6 +75,7 @@ class DBInterface:
 
 
 # ----------------------- UPDATE USERS ---------------------------------------
+
 
     @check_connection
     def update_username_by_email(self, email: str = "", new_username: str = "") -> None:
@@ -98,7 +110,6 @@ class DBInterface:
 
 # ----------------------- DELETE USERS ---------------------------------------
 
-
     @check_connection
     def delete_all_users(self) -> None:
         with psycopg.connect(self._connection_url) as conn:
@@ -114,7 +125,6 @@ class DBInterface:
 # -------------------------- CITIES ---------------------------------------
 
 # -------------------------- GET CITIES -----------------------------------
-
 
     @check_connection
     def get_all_cities(self) -> list[dict]:
@@ -136,6 +146,7 @@ class DBInterface:
 
 
 # ----------------------- DELETE CITIES ---------------------------------
+
 
     @check_connection
     def delete_all_cities(self) -> None:
@@ -185,6 +196,7 @@ class DBInterface:
 
 # --------------------- GET MAKES --------------------------------
 
+
     @check_connection
     def get_all_makes(self) -> list[dict]:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
@@ -219,7 +231,6 @@ class DBInterface:
 
 # -------------------- GET BODY STYLES ---------------------------
 
-
     @check_connection
     def get_all_body_styles(self) -> list[dict]:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
@@ -248,6 +259,7 @@ class DBInterface:
 # ------------------- WEBSITE BODY STYLES ---------------------------
 
 # ------------------- WEB BODY STYLES GET ---------------------------
+
 
     @check_connection
     def get_all_website_body_styles(self) -> list[dict]:
@@ -333,7 +345,6 @@ class DBInterface:
 # ------------------------ WATCHED CAR -------------------------------------
 
 # ------------------------ WATCHED CAR GET ---------------------------------
-
 
     @check_connection
     def get_all_watched_cars(self) -> list[dict]:
@@ -483,7 +494,6 @@ class DBInterface:
 
 # ------------------------------ Add Watched Car Criteria ----------------------------
 
-
     @check_connection
     def get_all_watched_car_criteria(self) -> list[dict]:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
@@ -496,7 +506,6 @@ class DBInterface:
 
 
 # ---------------------------- Add Watched Car Criteria ------------------------------
-
 
     @check_connection
     def add_watched_car_criteria(self, criteria_id: int, watched_car_id: int) -> None:
@@ -520,7 +529,6 @@ class DBInterface:
 
 # ----------------------------- Listing Alerts --------------------------------------
 
-
     @check_connection
     def get_all_alerts(self) -> list[dict]:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
@@ -539,6 +547,7 @@ class DBInterface:
 
 
 # ----------------------- States -------------------------------------------------
+
 
     @check_connection
     def get_all_states(self) -> list[dict]:
