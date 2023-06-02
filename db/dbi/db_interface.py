@@ -4,6 +4,7 @@ import aiosql
 from functools import wraps
 from datetime import datetime
 
+
 queries = aiosql.from_path('db/sql', 'psycopg')
 
 
