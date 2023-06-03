@@ -109,7 +109,9 @@ def new_dao() -> DBInterface:
     curr_dao.delete_all_alerts()
     curr_dao.delete_all_states()
 
-    return curr_dao
+    yield curr_dao
+
+    curr_dao.delete_all_body_styles()
 
 
 def add_users(dao: DBInterface, users: list[dict]) -> list[DBInterface, list[dict]]:
