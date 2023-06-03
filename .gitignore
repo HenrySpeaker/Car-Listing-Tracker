@@ -100,4 +100,4 @@ ENV/
 
 # Project-specific additions
 .vscode
-Available-sites.txt
+*.txt
