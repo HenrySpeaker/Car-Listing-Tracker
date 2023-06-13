@@ -101,3 +101,4 @@ ENV/
 # Project-specific additions
 .vscode
 *.txt
+car-data/

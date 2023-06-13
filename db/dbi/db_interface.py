@@ -27,7 +27,7 @@ class DBInterface:
         try:
             with psycopg.connect(self._connection_url) as conn:
                 self._valid_connection = True
-        except psycopg.ProgrammingError as e:
+        except (psycopg.ProgrammingError, psycopg.OperationalError) as e:
             print(f"An error occurred: {e}")
 
         if self._valid_connection:

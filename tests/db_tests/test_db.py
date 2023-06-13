@@ -229,8 +229,13 @@ def criteria_list(body_styles: list[dict], cities: list[dict], models: list[dict
         new_criteria["single_owner"] = random.choice((True, False, None))
         new_criteria["user_id"] = random.choice(users)["id"]
         new_criteria["city_id"] = random.choice(cities)["id"]
-        new_criteria["model_id"] = random.choice(models)["id"]
-        new_criteria["body_style_id"] = random.choice(body_styles)["id"]
+
+        if random.randint(0, 1) == 0:
+            new_criteria["model_id"] = random.choice(models)["id"]
+            new_criteria["body_style_id"] = None
+        else:
+            new_criteria["body_style_id"] = random.choice(body_styles)["id"]
+            new_criteria["model_id"] = None
 
         criteria.append(new_criteria)
 

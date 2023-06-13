@@ -1,8 +1,8 @@
-body_styles = {'convertible': {"autotrader": "convertible"},
-               'coupe': {"autotrader": "coupe"},
-               'hatchback': {"autotrader": "hatchback"},
-               'minivan': {"autotrader": "van-minivan"},
-               'sedan': {"autotrader": "sedan"},
-               'suv': {"autotrader": "suv-crossover"},
-               'truck': {"autotrader": "truck"},
-               'wagon': {"autotrader": "wagon"}}
+body_styles = {'Convertible': {"autotrader": "convertible", "iseecars": "CONVERTIBLE"},
+               'Coupe': {"autotrader": "coupe", "iseecars": "COUPE"},
+               'Hatchback': {"autotrader": "hatchback", "iseecars": "HATCHBACK"},
+               'Van/Minivan': {"autotrader": "van-minivan", "iseecars": "MINIVAN"},
+               'Sedan': {"autotrader": "sedan", "iseecars": "SEDAN"},
+               'SUV': {"autotrader": "suv-crossover", "iseecars": "SUV"},
+               'Pickup': {"autotrader": "truck", "iseecars": "TRUCK"},
+               'Wagon': {"autotrader": "wagon", "iseecars": "WAGON"}}
