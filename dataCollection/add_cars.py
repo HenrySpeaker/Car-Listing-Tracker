@@ -9,6 +9,7 @@ dbi = DBInterface(db_uri)
 
 
 def add_models_to_db():
+    """Clears DB body style, make, and model contents and adds all contents from the raw car model data"""
     dbi.delete_all_body_styles()
     dbi.delete_all_makes()
     dbi.delete_all_models()
