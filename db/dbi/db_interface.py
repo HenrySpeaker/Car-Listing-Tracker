@@ -62,6 +62,12 @@ class DBInterface:
             res = queries.get_user_by_email(conn, email=email)
             return res
 
+    @check_connection
+    def get_user_by_id(self, id: int) -> dict:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            res = queries.get_user_by_id(conn, id=id)
+            return res
+
 
 # ------------------------ ADD USERS ------------------------------------------
 
@@ -396,7 +402,7 @@ class DBInterface:
                              no_accidents: bool | None = True,
                              single_owner: bool | None = False,
                              user_id: int | None = None,
-                             city_id: int | None = None,
+                             zip_code_id: int | None = None,
                              model_id: int | None = None,
                              body_style_id: int | None = None
                              ) -> list[dict]:
@@ -411,7 +417,7 @@ class DBInterface:
                                                no_accidents=no_accidents,
                                                single_owner=single_owner,
                                                user_id=user_id,
-                                               city_id=city_id,
+                                               zip_code_id=zip_code_id,
                                                model_id=model_id,
                                                body_style_id=body_style_id)
 
@@ -431,7 +437,7 @@ class DBInterface:
                      no_accidents: bool,
                      single_owner: bool,
                      user_id: int,
-                     city_id: int,
+                     zip_code_id: int,
                      model_id: int,
                      body_style_id: int
                      ) -> None:
@@ -447,7 +453,7 @@ class DBInterface:
                                  no_accidents=no_accidents,
                                  single_owner=single_owner,
                                  user_id=user_id,
-                                 city_id=city_id,
+                                 zip_code_id=zip_code_id,
                                  model_id=model_id,
                                  body_style_id=body_style_id)
 
@@ -469,7 +475,7 @@ class DBInterface:
                                 no_accidents: bool,
                                 single_owner: bool,
                                 user_id: int,
-                                city_id: int,
+                                zip_code_id: int,
                                 model_id: int,
                                 body_style_id: int
                                 ) -> None:
@@ -485,7 +491,7 @@ class DBInterface:
                                             no_accidents=no_accidents,
                                             single_owner=single_owner,
                                             user_id=user_id,
-                                            city_id=city_id,
+                                            zip_code_id=zip_code_id,
                                             model_id=model_id,
                                             body_style_id=body_style_id)
 

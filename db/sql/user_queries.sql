@@ -7,6 +7,9 @@ SELECT * FROM user_account WHERE username = :username LIMIT 1;
 -- name: get_user_by_email^
 SELECT * FROM user_account WHERE email = :email LIMIT 1;
 
+-- name: get_user_by_id^
+SELECT * FROM user_account WHERE id = :id LIMIT 1;
+
 -- name: add_user!
 INSERT INTO user_account(username, email, password_hash, notification_frequency) VALUES (:username, :email, :password_hash, :notification_frequency);
 

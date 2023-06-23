@@ -13,7 +13,7 @@ WHERE
     (:no_accidents::boolean IS NULL OR no_accidents=:no_accidents) AND
     (:single_owner::boolean IS NULL OR single_owner=:single_owner) AND
     (:user_id::integer IS NULL OR user_id=:user_id) AND    
-    (:city_id::integer IS NULL OR city_id=:city_id) AND
+    (:zip_code_id::integer IS NULL OR zip_code_id=:zip_code_id) AND
     (:model_id::integer IS NULL OR model_id=:model_id) AND
     (:body_style_id::integer IS NULL OR body_style_id=:body_style_id);
 
@@ -28,7 +28,7 @@ INSERT INTO criteria (
     no_accidents,
     single_owner,
     user_id,
-    city_id,
+    zip_code_id,
     model_id,
     body_style_id
 )
@@ -43,7 +43,7 @@ VALUES
     :no_accidents,
     :single_owner,
     :user_id,    
-    :city_id,
+    :zip_code_id,
     :model_id,
     :body_style_id
 );
@@ -63,6 +63,6 @@ WHERE
     (:no_accidents::boolean IS NULL OR no_accidents=:no_accidents) AND
     (:single_owner::boolean IS NULL OR single_owner=:single_owner) AND
     (:user_id::integer IS NULL OR user_id=:user_id) AND    
-    (:city_id::integer IS NULL OR city_id=:city_id) AND
+    (:zip_code_id::integer IS NULL OR zip_code_id=:zip_code_id) AND
     (:model_id::integer IS NULL OR model_id=:model_id) AND
     (:body_style_id::integer IS NULL OR body_style_id=:body_style_id);

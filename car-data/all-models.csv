@@ -1,0 +1,1413 @@
+make,model,body_style
+Acura,Legend,Sedan
+Acura,NSX,Coupe
+Acura,Vigor,Sedan
+Acura,TL,Sedan
+Acura,RL,Sedan
+Acura,SLX,SUV
+Acura,Integra,Coupe
+Acura,MDX,SUV
+Acura,RSX,Coupe
+Acura,TSX,Sedan
+Acura,RDX,SUV
+Acura,ZDX,SUV
+Acura,RLX,Sedan
+Acura,RLX Sport Hybrid,Sedan
+Acura,TLX,Sedan
+Acura,MDX Sport Hybrid,SUV
+Alfa Romeo,164,Sedan
+Alfa Romeo,Spider,Convertible
+Alfa Romeo,4C,Coupe
+Alfa Romeo,4C Spider,Convertible
+Alfa Romeo,Giulia,Sedan
+Alfa Romeo,Stelvio,SUV
+Alfa Romeo,Tonale,SUV
+Audi,100,Sedan
+Audi,80,Sedan
+Audi,Quattro,Sedan
+Audi,S4,Sedan
+Audi,90,Sedan
+Audi,Cabriolet,Convertible
+Audi,A6,Wagon
+Audi,S6,Wagon
+Audi,A4,Sedan
+Audi,A8,Sedan
+Audi,TT,Coupe
+Audi,allroad,Wagon
+Audi,S8,Sedan
+Audi,RS 6,Sedan
+Audi,A4 (2005.5),Sedan
+Audi,S4 (2005.5),Sedan
+Audi,A3,Wagon
+Audi,Q7,SUV
+Audi,RS 4,Sedan
+Audi,A5,Coupe
+Audi,R8,Coupe
+Audi,S5,Coupe
+Audi,Q5,SUV
+Audi,A7,Sedan
+Audi,RS 5,Coupe
+Audi,S7,Sedan
+Audi,RS 7,Sedan
+Audi,SQ5,SUV
+Audi,Q3,SUV
+Audi,S3,Sedan
+Audi,A3 Sportback e-tron,Wagon
+Audi,A4 allroad,Wagon
+Audi,A5 Sport,Convertible
+Audi,RS 3,Sedan
+Audi,e-tron,SUV
+Audi,Q8,SUV
+Audi,A6 allroad,Wagon
+Audi,e-tron Sportback,SUV
+Audi,Q5 Sportback,SUV
+Audi,RS Q8,SUV
+Audi,SQ5 Sportback,SUV
+Audi,SQ7,SUV
+Audi,SQ8,SUV
+Audi,e-tron GT,Sedan
+Audi,e-tron S,SUV
+Audi,e-tron S Sportback,SUV
+Audi,Q4 e-tron,SUV
+Audi,Q4 Sportback e-tron,SUV
+Audi,RS e-tron GT,Sedan
+BMW,3 Series,Coupe
+BMW,5 Series,Sedan
+BMW,7 Series,Sedan
+BMW,8 Series,Coupe
+BMW,M5,Sedan
+BMW,M3,Coupe
+BMW,Z3,Convertible
+BMW,M,Hatchback
+BMW,X5,SUV
+BMW,Z8,Convertible
+BMW,Z4,Convertible
+BMW,6 Series,Convertible
+BMW,X3,SUV
+BMW,M6,Coupe
+BMW,Z4 M,Convertible
+BMW,Alpina B7,Sedan
+BMW,1 Series,Coupe
+BMW,X6,SUV
+BMW,X5 M,SUV
+BMW,X6 M,SUV
+BMW,X1,SUV
+BMW,2 Series,Coupe
+BMW,4 Series,Coupe
+BMW,i3,Hatchback
+BMW,i8,Coupe
+BMW,M4,Coupe
+BMW,X4,SUV
+BMW,M2,Coupe
+BMW,X2,SUV
+BMW,X7,SUV
+BMW,X3 M,SUV
+BMW,M8,Hatchback
+BMW,X4 M,SUV
+BMW,i4,Coupe
+BMW,iX,SUV
+BMW,i7,Sedan
+Buick,Century,Coupe
+Buick,LeSabre,Sedan
+Buick,Park Avenue,Sedan
+Buick,Regal,Coupe
+Buick,Riviera,Coupe
+Buick,Roadmaster,Sedan
+Buick,Skylark,Sedan
+Buick,Rendezvous,SUV
+Buick,Rainier,SUV
+Buick,LaCrosse,Sedan
+Buick,Terraza,Van/Minivan
+Buick,Lucerne,Sedan
+Buick,Enclave,SUV
+Buick,Verano,Sedan
+Buick,Encore,SUV
+Buick,Cascada,Convertible
+Buick,Envision,SUV
+Buick,Regal Sportback,Sedan
+Buick,Regal TourX,Wagon
+Buick,Encore GX,SUV
+Cadillac,Allante,Convertible
+Cadillac,Brougham,Sedan
+Cadillac,DeVille,Sedan
+Cadillac,Eldorado,Coupe
+Cadillac,Fleetwood,Sedan
+Cadillac,Seville,Sedan
+Cadillac,Sixty Special,Sedan
+Cadillac,Catera,Sedan
+Cadillac,Escalade,SUV
+Cadillac,Escalade EXT,Pickup
+Cadillac,CTS,Sedan
+Cadillac,Escalade ESV,SUV
+Cadillac,SRX,SUV
+Cadillac,XLR,Convertible
+Cadillac,STS,Sedan
+Cadillac,DTS,Sedan
+Cadillac,ATS,Sedan
+Cadillac,XTS,Sedan
+Cadillac,ELR,Coupe
+Cadillac,ATS-V,Sedan
+Cadillac,CT6,Sedan
+Cadillac,CTS-V,Sedan
+Cadillac,XT5,SUV
+Cadillac,CT6-V,Sedan
+Cadillac,XT4,SUV
+Cadillac,CT4,Sedan
+Cadillac,CT5,Sedan
+Cadillac,XT6,SUV
+Cadillac,LYRIQ,SUV
+Chevrolet,1500 Extended Cab,Pickup
+Chevrolet,1500 Regular Cab,Pickup
+Chevrolet,2500 Extended Cab,Pickup
+Chevrolet,2500 Regular Cab,Pickup
+Chevrolet,3500 Crew Cab,Pickup
+Chevrolet,3500 Extended Cab,Pickup
+Chevrolet,3500 Regular Cab,Pickup
+Chevrolet,APV Cargo,Van/Minivan
+Chevrolet,Astro Cargo,Van/Minivan
+Chevrolet,Astro Passenger,Van/Minivan
+Chevrolet,Beretta,Coupe
+Chevrolet,Blazer,SUV
+Chevrolet,Camaro,Hatchback
+Chevrolet,Caprice,Sedan
+Chevrolet,Cavalier,Coupe
+Chevrolet,Corsica,Sedan
+Chevrolet,Corvette,Hatchback
+Chevrolet,G-Series G10,Van/Minivan
+Chevrolet,G-Series G20,Van/Minivan
+Chevrolet,G-Series G30,Van/Minivan
+Chevrolet,Lumina,Sedan
+Chevrolet,Lumina APV,Van/Minivan
+Chevrolet,S10 Blazer,SUV
+Chevrolet,S10 Extended Cab,Pickup
+Chevrolet,S10 Regular Cab,Pickup
+Chevrolet,Sportvan G10,Van/Minivan
+Chevrolet,Sportvan G20,Van/Minivan
+Chevrolet,Sportvan G30,Van/Minivan
+Chevrolet,Suburban 1500,SUV
+Chevrolet,Suburban 2500,SUV
+Chevrolet,Caprice Classic,Sedan
+Chevrolet,Impala,Sedan
+Chevrolet,Lumina Cargo,Van/Minivan
+Chevrolet,Lumina Passenger,Van/Minivan
+Chevrolet,3500 HD Extended Cab,Pickup
+Chevrolet,3500 HD Regular Cab,Pickup
+Chevrolet,Monte Carlo,Coupe
+Chevrolet,Tahoe,SUV
+Chevrolet,2500 HD Extended Cab,Pickup
+Chevrolet,Express 1500 Passenger,Van/Minivan
+Chevrolet,Express 2500 Passenger,Van/Minivan
+Chevrolet,Express 3500 Passenger,Van/Minivan
+Chevrolet,G-Series 1500,Van/Minivan
+Chevrolet,G-Series 2500,Van/Minivan
+Chevrolet,G-Series 3500,Van/Minivan
+Chevrolet,Malibu,Sedan
+Chevrolet,Venture Passenger,Van/Minivan
+Chevrolet,Metro,Hatchback
+Chevrolet,Prizm,Sedan
+Chevrolet,Tracker,SUV
+Chevrolet,Venture Cargo,Van/Minivan
+Chevrolet,2500 Crew Cab,Pickup
+Chevrolet,2500 HD Regular Cab,Pickup
+Chevrolet,Express 1500 Cargo,Van/Minivan
+Chevrolet,Express 2500 Cargo,Van/Minivan
+Chevrolet,Express 3500 Cargo,Van/Minivan
+Chevrolet,Silverado 1500 Extended Cab,Pickup
+Chevrolet,Silverado 1500 Regular Cab,Pickup
+Chevrolet,Silverado 2500 Extended Cab,Pickup
+Chevrolet,Silverado 2500 HD Extended Cab,Pickup
+Chevrolet,Silverado 2500 HD Regular Cab,Pickup
+Chevrolet,Silverado 2500 Regular Cab,Pickup
+Chevrolet,Tahoe (New),SUV
+Chevrolet,S10 Crew Cab,Pickup
+Chevrolet,Silverado 1500 HD Crew Cab,Pickup
+Chevrolet,Silverado 2500 HD Crew Cab,Pickup
+Chevrolet,Silverado 3500 Crew Cab,Pickup
+Chevrolet,Silverado 3500 Extended Cab,Pickup
+Chevrolet,Silverado 3500 Regular Cab,Pickup
+Chevrolet,Avalanche 1500,Pickup
+Chevrolet,Avalanche 2500,Pickup
+Chevrolet,TrailBlazer,SUV
+Chevrolet,SSR,Pickup
+Chevrolet,Aveo,Sedan
+Chevrolet,Classic,Sedan
+Chevrolet,Colorado Crew Cab,Pickup
+Chevrolet,Colorado Extended Cab,Pickup
+Chevrolet,Colorado Regular Cab,Pickup
+Chevrolet,Silverado 1500 Crew Cab,Pickup
+Chevrolet,Silverado 2500 Crew Cab,Pickup
+Chevrolet,Cobalt,Sedan
+Chevrolet,Equinox,SUV
+Chevrolet,Uplander Cargo,Van/Minivan
+Chevrolet,Uplander Passenger,Van/Minivan
+Chevrolet,HHR,Wagon
+Chevrolet,Avalanche,Pickup
+Chevrolet,Silverado (Classic) 1500 Crew Cab,Pickup
+Chevrolet,Silverado (Classic) 1500 Extended Cab,Pickup
+Chevrolet,Silverado (Classic) 1500 HD Crew Cab,Pickup
+Chevrolet,Silverado (Classic) 1500 Regular Cab,Pickup
+Chevrolet,Silverado (Classic) 2500 HD Crew Cab,Pickup
+Chevrolet,Silverado (Classic) 2500 HD Extended Cab,Pickup
+Chevrolet,Silverado (Classic) 2500 HD Regular Cab,Pickup
+Chevrolet,Silverado (Classic) 3500 Crew Cab,Pickup
+Chevrolet,Silverado (Classic) 3500 Extended Cab,Pickup
+Chevrolet,Silverado (Classic) 3500 Regular Cab,Pickup
+Chevrolet,Silverado 3500 HD Crew Cab,Pickup
+Chevrolet,Silverado 3500 HD Extended Cab,Pickup
+Chevrolet,Silverado 3500 HD Regular Cab,Pickup
+Chevrolet,Malibu (Classic),Sedan
+Chevrolet,Traverse,SUV
+Chevrolet,Cruze,Sedan
+Chevrolet,Volt,Sedan
+Chevrolet,Captiva Sport,SUV
+Chevrolet,Sonic,Sedan
+Chevrolet,Spark,Hatchback
+Chevrolet,Impala Limited,Sedan
+Chevrolet,Silverado 1500 Double Cab,Pickup
+Chevrolet,Spark EV,Hatchback
+Chevrolet,SS,Sedan
+Chevrolet,City Express,Van/Minivan
+Chevrolet,Silverado 2500 HD Double Cab,Pickup
+Chevrolet,Silverado 3500 HD Double Cab,Pickup
+Chevrolet,Suburban,SUV
+Chevrolet,Trax,SUV
+Chevrolet,Cruze Limited,Sedan
+Chevrolet,Malibu Limited,Sedan
+Chevrolet,Suburban 3500HD,SUV
+Chevrolet,Bolt EV,Hatchback
+Chevrolet,Silverado 1500 LD Double Cab,Pickup
+Chevrolet,Trailblazer,SUV
+Chevrolet,Bolt EUV,Hatchback
+Chevrolet,Silverado 1500 Limited Crew Cab,Pickup
+Chevrolet,Silverado 1500 Limited Double Cab,Pickup
+Chevrolet,Silverado 1500 Limited Regular Cab,Pickup
+Chevrolet,Equinox EV,SUV
+Chevrolet,Silverado EV,Pickup
+Chrysler,Fifth Ave,Sedan
+Chrysler,Imperial,Sedan
+Chrysler,LeBaron,Sedan
+Chrysler,New Yorker,Sedan
+Chrysler,Town & Country,Van/Minivan
+Chrysler,Concorde,Sedan
+Chrysler,LHS,Sedan
+Chrysler,Cirrus,Sedan
+Chrysler,Sebring,Coupe
+Chrysler,300,Sedan
+Chrysler,300M,Sedan
+Chrysler,Grand Voyager,Van/Minivan
+Chrysler,Voyager,Van/Minivan
+Chrysler,Prowler,Convertible
+Chrysler,PT Cruiser,Wagon
+Chrysler,Crossfire,Coupe
+Chrysler,Pacifica,Wagon
+Chrysler,Aspen,SUV
+Chrysler,200,Convertible
+Chrysler,Pacifica Hybrid,Van/Minivan
+Daihatsu,Charade,Sedan
+Daihatsu,Rocky,SUV
+Dodge,Caravan Cargo,Van/Minivan
+Dodge,Caravan Passenger,Van/Minivan
+Dodge,Colt,Hatchback
+Dodge,D150 Club Cab,Pickup
+Dodge,D150 Regular Cab,Pickup
+Dodge,D250 Club Cab,Pickup
+Dodge,D250 Regular Cab,Pickup
+Dodge,D350 Club Cab,Pickup
+Dodge,D350 Regular Cab,Pickup
+Dodge,Dakota Club Cab,Pickup
+Dodge,Dakota Regular Cab,Pickup
+Dodge,Daytona,Hatchback
+Dodge,Dynasty,Sedan
+Dodge,Grand Caravan Passenger,Van/Minivan
+Dodge,Monaco,Sedan
+Dodge,Ram 50 Regular Cab,Pickup
+Dodge,Ram Van B150,Van/Minivan
+Dodge,Ram Van B250,Van/Minivan
+Dodge,Ram Van B350,Van/Minivan
+Dodge,Ram Wagon B150,Van/Minivan
+Dodge,Ram Wagon B250,Van/Minivan
+Dodge,Ram Wagon B350,Van/Minivan
+Dodge,Ramcharger,SUV
+Dodge,Shadow,Hatchback
+Dodge,Spirit,Sedan
+Dodge,Stealth,Hatchback
+Dodge,Viper,Convertible
+Dodge,Intrepid,Sedan
+Dodge,Ram 1500 Regular Cab,Pickup
+Dodge,Ram 2500 Regular Cab,Pickup
+Dodge,Ram 3500 Regular Cab,Pickup
+Dodge,Avenger,Coupe
+Dodge,Neon,Sedan
+Dodge,Ram 1500 Club Cab,Pickup
+Dodge,Ram 2500 Club Cab,Pickup
+Dodge,Ram 3500 Club Cab,Pickup
+Dodge,Ram Van 1500,Van/Minivan
+Dodge,Ram Van 2500,Van/Minivan
+Dodge,Ram Van 3500,Van/Minivan
+Dodge,Ram Wagon 1500,Van/Minivan
+Dodge,Ram Wagon 2500,Van/Minivan
+Dodge,Ram Wagon 3500,Van/Minivan
+Dodge,Stratus,Sedan
+Dodge,Durango,SUV
+Dodge,Ram 1500 Quad Cab,Pickup
+Dodge,Ram 2500 Quad Cab,Pickup
+Dodge,Ram 3500 Quad Cab,Pickup
+Dodge,Dakota Quad Cab,Pickup
+Dodge,Grand Caravan Cargo,Van/Minivan
+Dodge,Sprinter 2500 Cargo,Van/Minivan
+Dodge,Sprinter 2500 Passenger,Van/Minivan
+Dodge,Sprinter 3500 Cargo,Van/Minivan
+Dodge,Magnum,Wagon
+Dodge,Charger,Sedan
+Dodge,Ram 1500 Mega Cab,Pickup
+Dodge,Ram 2500 Mega Cab,Pickup
+Dodge,Ram 3500 Mega Cab,Pickup
+Dodge,Caliber,Wagon
+Dodge,Nitro,SUV
+Dodge,Challenger,Coupe
+Dodge,Dakota Crew Cab,Pickup
+Dodge,Dakota Extended Cab,Pickup
+Dodge,Journey,SUV
+Dodge,Ram 1500 Crew Cab,Pickup
+Dodge,Ram 2500 Crew Cab,Pickup
+Dodge,Ram 3500 Crew Cab,Pickup
+Dodge,Dart,Sedan
+Dodge,Hornet,SUV
+Eagle,Premier,Sedan
+Eagle,Summit,Sedan
+Eagle,Talon,Hatchback
+Eagle,Vision,Sedan
+Ford,Aerostar Cargo,Van/Minivan
+Ford,Aerostar Passenger,Van/Minivan
+Ford,Bronco,SUV
+Ford,Club Wagon,Van/Minivan
+Ford,Crown Victoria,Sedan
+Ford,Econoline E150 Cargo,Van/Minivan
+Ford,Econoline E250 Cargo,Van/Minivan
+Ford,Econoline E350 Cargo,Van/Minivan
+Ford,Escort,Hatchback
+Ford,Explorer,SUV
+Ford,F150 Regular Cab,Pickup
+Ford,F150 Super Cab,Pickup
+Ford,F250 Regular Cab,Pickup
+Ford,F250 Super Cab,Pickup
+Ford,F350 Crew Cab,Pickup
+Ford,F350 Regular Cab,Pickup
+Ford,F350 Super Cab,Pickup
+Ford,Festiva,Hatchback
+Ford,Mustang,Coupe
+Ford,Probe,Hatchback
+Ford,Ranger Regular Cab,Pickup
+Ford,Ranger Super Cab,Pickup
+Ford,Taurus,Sedan
+Ford,Tempo,Sedan
+Ford,Thunderbird,Coupe
+Ford,Aspire,Hatchback
+Ford,Contour,Sedan
+Ford,Windstar Cargo,Van/Minivan
+Ford,Windstar Passenger,Van/Minivan
+Ford,F250 Crew Cab,Pickup
+Ford,Expedition,SUV
+Ford,Econoline E150 Passenger,Van/Minivan
+Ford,Econoline E350 Super Duty Cargo,Van/Minivan
+Ford,Econoline E350 Super Duty Passenger,Van/Minivan
+Ford,F250 Super Duty Crew Cab,Pickup
+Ford,F250 Super Duty Regular Cab,Pickup
+Ford,F250 Super Duty Super Cab,Pickup
+Ford,F350 Super Duty Crew Cab,Pickup
+Ford,F350 Super Duty Regular Cab,Pickup
+Ford,F350 Super Duty Super Cab,Pickup
+Ford,Excursion,SUV
+Ford,Explorer Sport,SUV
+Ford,Focus,Sedan
+Ford,Escape,SUV
+Ford,Explorer Sport Trac,Pickup
+Ford,F150 SuperCrew Cab,Pickup
+Ford,ZX2,Coupe
+Ford,E150 Passenger,Van/Minivan
+Ford,E150 Super Duty Cargo,Van/Minivan
+Ford,E250 Super Duty Cargo,Van/Minivan
+Ford,E350 Super Duty Cargo,Van/Minivan
+Ford,E350 Super Duty Passenger,Van/Minivan
+Ford,F150 (Heritage) Regular Cab,Pickup
+Ford,F150 (Heritage) Super Cab,Pickup
+Ford,Freestar Cargo,Van/Minivan
+Ford,Freestar Passenger,Van/Minivan
+Ford,E150 Super Duty Passenger,Van/Minivan
+Ford,Five Hundred,Sedan
+Ford,Freestyle,SUV
+Ford,GT,Coupe
+Ford,Fusion,Sedan
+Ford,Edge,SUV
+Ford,Expedition EL,SUV
+Ford,E150 Cargo,Van/Minivan
+Ford,E250 Cargo,Van/Minivan
+Ford,F450 Super Duty Crew Cab,Pickup
+Ford,Taurus X,SUV
+Ford,Flex,SUV
+Ford,Transit Connect Cargo,Van/Minivan
+Ford,Transit Connect Passenger,Van/Minivan
+Ford,Fiesta,Sedan
+Ford,C-MAX Energi,Wagon
+Ford,C-MAX Hybrid,Wagon
+Ford,Focus ST,Hatchback
+Ford,Fusion Energi,Sedan
+Ford,Transit 150 Van,Van/Minivan
+Ford,Transit 150 Wagon,Van/Minivan
+Ford,Transit 250 Van,Van/Minivan
+Ford,Transit 350 HD Van,Van/Minivan
+Ford,Transit 350 Van,Van/Minivan
+Ford,Transit 350 Wagon,Van/Minivan
+Ford,EcoSport,SUV
+Ford,Expedition MAX,SUV
+Ford,F450 Super Duty Regular Cab,Pickup
+Ford,Ranger SuperCab,Pickup
+Ford,Ranger SuperCrew,Pickup
+Ford,Fusion Plug-in Hybrid,Sedan
+Ford,Transit 250 Cargo Van,Van/Minivan
+Ford,Transit 350 Passenger Van,Van/Minivan
+Ford,Transit Connect Cargo Van,Van/Minivan
+Ford,Transit Connect Passenger Wagon,Van/Minivan
+Ford,Bronco Sport,SUV
+Ford,Escape Plug-in Hybrid,SUV
+Ford,Mustang MACH-E,SUV
+Ford,Transit 150 Cargo Van,Van/Minivan
+Ford,Transit 150 Crew Van,Van/Minivan
+Ford,Transit 150 Passenger Van,Van/Minivan
+Ford,Transit 250 Crew Van,Van/Minivan
+Ford,Transit 350 Cargo Van,Van/Minivan
+Ford,Transit 350 Crew Van,Van/Minivan
+Ford,Transit 350 HD Cargo Van,Van/Minivan
+Ford,Transit 350 HD Crew Van,Van/Minivan
+Ford,E-Transit 350 Cargo Van,Van/Minivan
+Ford,F150 Lightning,Pickup
+Ford,Maverick,Pickup
+Geo,Metro,Hatchback
+Geo,Prizm,Sedan
+Geo,Storm,Coupe
+Geo,Tracker,SUV
+GMC,1500 Club Coupe,Pickup
+GMC,1500 Regular Cab,Pickup
+GMC,2500 Club Coupe,Pickup
+GMC,2500 Regular Cab,Pickup
+GMC,3500 Club Coupe,Pickup
+GMC,3500 Crew Cab,Pickup
+GMC,3500 Regular Cab,Pickup
+GMC,Jimmy,SUV
+GMC,Rally Wagon 1500,Van/Minivan
+GMC,Rally Wagon 2500,Van/Minivan
+GMC,Rally Wagon 3500,Van/Minivan
+GMC,Safari Cargo,Van/Minivan
+GMC,Safari Passenger,Van/Minivan
+GMC,Sonoma Club Cab,Pickup
+GMC,Sonoma Regular Cab,Pickup
+GMC,Suburban 1500,SUV
+GMC,Suburban 2500,SUV
+GMC,Vandura 1500,Van/Minivan
+GMC,Vandura 2500,Van/Minivan
+GMC,Vandura 3500,Van/Minivan
+GMC,Yukon,SUV
+GMC,Sonoma Club Coupe Cab,Pickup
+GMC,Rally Wagon G2500,Van/Minivan
+GMC,Rally Wagon G3500,Van/Minivan
+GMC,Vandura G1500,Van/Minivan
+GMC,Vandura G2500,Van/Minivan
+GMC,Vandura G3500,Van/Minivan
+GMC,Savana 1500 Cargo,Van/Minivan
+GMC,Savana 1500 Passenger,Van/Minivan
+GMC,Savana 2500 Cargo,Van/Minivan
+GMC,Savana 2500 Passenger,Van/Minivan
+GMC,Savana 3500 Cargo,Van/Minivan
+GMC,Savana 3500 Passenger,Van/Minivan
+GMC,2500 HD Club Coupe,Pickup
+GMC,Envoy,SUV
+GMC,2500 Crew Cab,Pickup
+GMC,2500 HD Extended Cab,Pickup
+GMC,2500 HD Regular Cab,Pickup
+GMC,3500 Extended Cab,Pickup
+GMC,Sierra 1500 Extended Cab,Pickup
+GMC,Sierra 1500 Regular Cab,Pickup
+GMC,Sierra 2500 Extended Cab,Pickup
+GMC,Sierra 2500 HD Extended Cab,Pickup
+GMC,Sierra 2500 HD Regular Cab,Pickup
+GMC,Sierra 2500 Regular Cab,Pickup
+GMC,Sonoma Extended Cab,Pickup
+GMC,Sierra (Classic) 2500 Crew Cab,Pickup
+GMC,Sierra (Classic) 2500 HD Extended Cab,Pickup
+GMC,Sierra (Classic) 2500 HD Regular Cab,Pickup
+GMC,Sierra (Classic) 3500 Crew Cab,Pickup
+GMC,Sierra (Classic) 3500 Extended Cab,Pickup
+GMC,Sierra (Classic) 3500 Regular Cab,Pickup
+GMC,Yukon Denali,SUV
+GMC,Yukon XL 1500,SUV
+GMC,Yukon XL 2500,SUV
+GMC,Sierra 1500 HD Crew Cab,Pickup
+GMC,Sierra 2500 HD Crew Cab,Pickup
+GMC,Sierra 3500 Crew Cab,Pickup
+GMC,Sierra 3500 Extended Cab,Pickup
+GMC,Sierra 3500 Regular Cab,Pickup
+GMC,Sonoma Crew Cab,Pickup
+GMC,Envoy XL,SUV
+GMC,Canyon Crew Cab,Pickup
+GMC,Canyon Extended Cab,Pickup
+GMC,Canyon Regular Cab,Pickup
+GMC,Envoy XUV,SUV
+GMC,Sierra 1500 Crew Cab,Pickup
+GMC,Sierra 2500 Crew Cab,Pickup
+GMC,Acadia,SUV
+GMC,Sierra (Classic) 1500 Crew Cab,Pickup
+GMC,Sierra (Classic) 1500 Extended Cab,Pickup
+GMC,Sierra (Classic) 1500 HD Crew Cab,Pickup
+GMC,Sierra (Classic) 1500 Regular Cab,Pickup
+GMC,Sierra (Classic) 2500 HD Crew Cab,Pickup
+GMC,Sierra 3500 HD Crew Cab,Pickup
+GMC,Sierra 3500 HD Extended Cab,Pickup
+GMC,Sierra 3500 HD Regular Cab,Pickup
+GMC,Terrain,SUV
+GMC,Sierra 1500 Double Cab,Pickup
+GMC,Sierra 2500 HD Double Cab,Pickup
+GMC,Sierra 3500 HD Double Cab,Pickup
+GMC,Yukon XL,SUV
+GMC,Acadia Limited,SUV
+GMC,Sierra 1500 Limited Double Cab,Pickup
+GMC,Hummer EV Pickup,Pickup
+GMC,Sierra 1500 Limited Crew Cab,Pickup
+GMC,Sierra 1500 Limited Regular Cab,Pickup
+GMC,Hummer EV SUV,SUV
+Honda,Accord,Coupe
+Honda,Civic,Hatchback
+Honda,Prelude,Coupe
+Honda,del Sol,Coupe
+Honda,Passport,SUV
+Honda,Odyssey,Van/Minivan
+Honda,CR-V,SUV
+Honda,Insight,Hatchback
+Honda,S2000,Convertible
+Honda,Element,SUV
+Honda,Pilot,SUV
+Honda,Ridgeline,Pickup
+Honda,Fit,Hatchback
+Honda,Accord Crosstour,SUV
+Honda,CR-Z,Coupe
+Honda,Crosstour,SUV
+Honda,Accord Hybrid,Sedan
+Honda,HR-V,SUV
+Honda,Civic Type R,Hatchback
+Honda,Clarity Plug-in Hybrid,Sedan
+Honda,Clarity Electric,Sedan
+Honda,Clarity Fuel Cell,Sedan
+Honda,CR-V Hybrid,SUV
+Honda,Prologue,SUV
+Hyundai,Elantra,Sedan
+Hyundai,Excel,Sedan
+Hyundai,Scoupe,Coupe
+Hyundai,Sonata,Sedan
+Hyundai,Accent,Hatchback
+Hyundai,Tiburon,Hatchback
+Hyundai,Santa Fe,SUV
+Hyundai,XG300,Sedan
+Hyundai,XG350,Sedan
+Hyundai,Tucson,SUV
+Hyundai,Azera,Sedan
+Hyundai,Entourage,Van/Minivan
+Hyundai,Veracruz,SUV
+Hyundai,Genesis,Sedan
+Hyundai,Genesis Coupe,Coupe
+Hyundai,Equus,Sedan
+Hyundai,Veloster,Coupe
+Hyundai,Santa Fe Sport,SUV
+Hyundai,Elantra GT,Hatchback
+Hyundai,Tucson Fuel Cell,SUV
+Hyundai,Sonata Hybrid,Sedan
+Hyundai,Sonata Plug-in Hybrid,Sedan
+Hyundai,Ioniq Electric,Hatchback
+Hyundai,Ioniq Hybrid,Hatchback
+Hyundai,Ioniq Plug-in Hybrid,Hatchback
+Hyundai,Kona,SUV
+Hyundai,Kona Electric,SUV
+Hyundai,NEXO,SUV
+Hyundai,Santa Fe XL,SUV
+Hyundai,Palisade,SUV
+Hyundai,Venue,SUV
+Hyundai,Santa Fe Hybrid,SUV
+Hyundai,Elantra N,Sedan
+Hyundai,IONIQ 5,SUV
+Hyundai,Kona N,SUV
+Hyundai,Santa Cruz,Pickup
+Hyundai,Santa Fe Plug-in Hybrid,SUV
+Hyundai,Tucson Hybrid,SUV
+Hyundai,Tucson Plug-in Hybrid,SUV
+Hyundai,Elantra Hybrid,Sedan
+Hyundai,IONIQ 6,Sedan
+Hyundai,IONIQ 7,SUV
+INFINITI,G,Sedan
+INFINITI,M,Coupe
+INFINITI,Q,Sedan
+INFINITI,J,Sedan
+INFINITI,I,Sedan
+INFINITI,QX,SUV
+INFINITI,FX,SUV
+INFINITI,EX,SUV
+INFINITI,JX,SUV
+INFINITI,Q50,Sedan
+INFINITI,Q60,Coupe
+INFINITI,Q70,Sedan
+INFINITI,QX50,SUV
+INFINITI,QX60,SUV
+INFINITI,QX70,SUV
+INFINITI,QX80,SUV
+INFINITI,Q40,Sedan
+INFINITI,QX30,SUV
+INFINITI,QX55,SUV
+Isuzu,Amigo,SUV
+Isuzu,Impulse,Hatchback
+Isuzu,Regular Cab,Pickup
+Isuzu,Rodeo,SUV
+Isuzu,Spacecab,Pickup
+Isuzu,Stylus,Sedan
+Isuzu,Trooper,SUV
+Isuzu,Hombre Regular Cab,Pickup
+Isuzu,Oasis,Van/Minivan
+Isuzu,Hombre Spacecab,Pickup
+Isuzu,VehiCROSS,SUV
+Isuzu,Rodeo Sport,SUV
+Isuzu,Axiom,SUV
+Isuzu,Ascender,SUV
+Isuzu,i-280 Extended Cab,Pickup
+Isuzu,i-350 Crew Cab,Pickup
+Isuzu,i-290 Extended Cab,Pickup
+Isuzu,i-370 Crew Cab,Pickup
+Isuzu,i-370 Extended Cab,Pickup
+Jaguar,XJ,Sedan
+Jaguar,XK,Convertible
+Jaguar,S-Type,Sedan
+Jaguar,X-Type,Sedan
+Jaguar,XF,Sedan
+Jaguar,F-TYPE,Convertible
+Jaguar,F-PACE,SUV
+Jaguar,XE,Sedan
+Jaguar,E-PACE,SUV
+Jaguar,I-PACE,SUV
+Jeep,Cherokee,SUV
+Jeep,Comanche Regular Cab,Pickup
+Jeep,Wrangler,SUV
+Jeep,Grand Cherokee,SUV
+Jeep,Liberty,SUV
+Jeep,Commander,SUV
+Jeep,Compass,SUV
+Jeep,Patriot,SUV
+Jeep,Renegade,SUV
+Jeep,Wrangler Unlimited,SUV
+Jeep,Gladiator,Pickup
+Jeep,Grand Cherokee L,SUV
+Jeep,Wrangler Unlimited 4xe,SUV
+Jeep,Grand Cherokee 4xe,SUV
+Jeep,Grand Wagoneer,SUV
+Jeep,Wagoneer,SUV
+Jeep,Grand Wagoneer L,SUV
+Jeep,Wagoneer L,SUV
+Jeep,Recon,SUV
+Land Rover,Range Rover,SUV
+Land Rover,Defender 110,SUV
+Land Rover,Defender 90,SUV
+Land Rover,Discovery,SUV
+Land Rover,Discovery Series II,SUV
+Land Rover,Freelander,SUV
+Land Rover,LR3,SUV
+Land Rover,Range Rover Sport,SUV
+Land Rover,LR2,SUV
+Land Rover,LR4,SUV
+Land Rover,Range Rover Evoque,SUV
+Land Rover,Discovery Sport,SUV
+Land Rover,Range Rover Velar,SUV
+Land Rover,Defender 130,SUV
+Lexus,ES,Sedan
+Lexus,LS,Sedan
+Lexus,SC,Coupe
+Lexus,GS,Sedan
+Lexus,LX,SUV
+Lexus,RX,SUV
+Lexus,IS,Sedan
+Lexus,GX,SUV
+Lexus,IS F,Sedan
+Lexus,HS,Sedan
+Lexus,CT,Hatchback
+Lexus,LFA,Coupe
+Lexus,NX,SUV
+Lexus,RC,Coupe
+Lexus,LC,Coupe
+Lexus,UX,SUV
+Lexus,RZ,SUV
+Lexus,TX,SUV
+Lincoln,Continental,Sedan
+Lincoln,Mark VII,Coupe
+Lincoln,Town Car,Sedan
+Lincoln,Mark VIII,Coupe
+Lincoln,Navigator,SUV
+Lincoln,LS,Sedan
+Lincoln,Blackwood,Pickup
+Lincoln,Aviator,SUV
+Lincoln,Mark LT,Pickup
+Lincoln,Zephyr,Sedan
+Lincoln,MKX,SUV
+Lincoln,MKZ,Sedan
+Lincoln,Navigator L,SUV
+Lincoln,MKS,Sedan
+Lincoln,MKT,SUV
+Lincoln,MKC,SUV
+Lincoln,Nautilus,SUV
+Lincoln,Corsair,SUV
+MAZDA,323,Hatchback
+MAZDA,626,Sedan
+MAZDA,929,Sedan
+MAZDA,B-Series Cab Plus,Pickup
+MAZDA,B-Series Regular Cab,Pickup
+MAZDA,MPV,Van/Minivan
+MAZDA,MX-3,Hatchback
+MAZDA,MX-5 Miata,Convertible
+MAZDA,MX-6,Coupe
+MAZDA,Navajo,SUV
+MAZDA,Protege,Sedan
+MAZDA,RX-7,Hatchback
+MAZDA,Millenia,Sedan
+MAZDA,Tribute,SUV
+MAZDA,Protege5,Hatchback
+MAZDA,MAZDA6,Sedan
+MAZDA,MAZDA3,Sedan
+MAZDA,RX-8,Coupe
+MAZDA,B-Series Extended Cab,Pickup
+MAZDA,MAZDA5,Van/Minivan
+MAZDA,CX-7,SUV
+MAZDA,CX-9,SUV
+MAZDA,MAZDA2,Hatchback
+MAZDA,CX-5,SUV
+MAZDA,CX-3,SUV
+MAZDA,MX-5 Miata RF,Convertible
+MAZDA,CX-30,SUV
+MAZDA,MX-30,SUV
+MAZDA,CX-50,SUV
+MAZDA,CX-90,SUV
+MAZDA,CX-70,SUV
+Mercedes-Benz,190 E,Sedan
+Mercedes-Benz,300 CE,Coupe
+Mercedes-Benz,300 D,Sedan
+Mercedes-Benz,300 E,Sedan
+Mercedes-Benz,300 SD,Sedan
+Mercedes-Benz,300 SE,Sedan
+Mercedes-Benz,300 SL,Convertible
+Mercedes-Benz,300 TE,Wagon
+Mercedes-Benz,400 E,Sedan
+Mercedes-Benz,400 SE,Sedan
+Mercedes-Benz,500 E,Sedan
+Mercedes-Benz,500 SEL,Sedan
+Mercedes-Benz,500 SL,Convertible
+Mercedes-Benz,600 SEL,Sedan
+Mercedes-Benz,400 SEL,Sedan
+Mercedes-Benz,500 SEC,Coupe
+Mercedes-Benz,600 SEC,Coupe
+Mercedes-Benz,600 SL,Convertible
+Mercedes-Benz,C-Class,Sedan
+Mercedes-Benz,E-Class,Coupe
+Mercedes-Benz,S-Class,Sedan
+Mercedes-Benz,SL-Class,Convertible
+Mercedes-Benz,CL-Class,Coupe
+Mercedes-Benz,CLK-Class,Coupe
+Mercedes-Benz,M-Class,SUV
+Mercedes-Benz,SLK-Class,Convertible
+Mercedes-Benz,G-Class,SUV
+Mercedes-Benz,SLR McLaren,Coupe
+Mercedes-Benz,CLS-Class,Coupe
+Mercedes-Benz,R-Class,Wagon
+Mercedes-Benz,GL-Class,SUV
+Mercedes-Benz,GLK-Class,SUV
+Mercedes-Benz,SLS-Class,Coupe
+Mercedes-Benz,Sprinter 2500 Cargo,Van/Minivan
+Mercedes-Benz,Sprinter 2500 Crew,Van/Minivan
+Mercedes-Benz,Sprinter 2500 Passenger,Van/Minivan
+Mercedes-Benz,Sprinter 3500 Cargo,Van/Minivan
+Mercedes-Benz,B-Class,Hatchback
+Mercedes-Benz,CLA-Class,Sedan
+Mercedes-Benz,GLA-Class,SUV
+Mercedes-Benz,CLA,Sedan
+Mercedes-Benz,GLA,SUV
+Mercedes-Benz,GLC,SUV
+Mercedes-Benz,GLE,SUV
+Mercedes-Benz,GLE Coupe,SUV
+Mercedes-Benz,Mercedes-AMG CLA,Sedan
+Mercedes-Benz,Mercedes-AMG GLA,SUV
+Mercedes-Benz,Mercedes-AMG GLE,SUV
+Mercedes-Benz,Mercedes-AMG GLE Coupe,SUV
+Mercedes-Benz,Mercedes-AMG GT,Coupe
+Mercedes-Benz,Mercedes-AMG SL,Convertible
+Mercedes-Benz,Mercedes-AMG SLK,Convertible
+Mercedes-Benz,Mercedes-Maybach S 600,Sedan
+Mercedes-Benz,Metris Cargo,Van/Minivan
+Mercedes-Benz,Metris Passenger,Van/Minivan
+Mercedes-Benz,SL,Convertible
+Mercedes-Benz,SLK,Convertible
+Mercedes-Benz,CLS,Sedan
+Mercedes-Benz,GLC Coupe,SUV
+Mercedes-Benz,GLS,SUV
+Mercedes-Benz,Mercedes-AMG C-Class,Convertible
+Mercedes-Benz,Mercedes-AMG CLS,Sedan
+Mercedes-Benz,Mercedes-AMG E-Class,Sedan
+Mercedes-Benz,Mercedes-AMG G-Class,SUV
+Mercedes-Benz,Mercedes-AMG GLC,SUV
+Mercedes-Benz,Mercedes-AMG GLC Coupe,SUV
+Mercedes-Benz,Mercedes-AMG GLS,SUV
+Mercedes-Benz,Mercedes-AMG S-Class,Sedan
+Mercedes-Benz,Mercedes-AMG SLC,Convertible
+Mercedes-Benz,Mercedes-Maybach S-Class,Sedan
+Mercedes-Benz,Metris WORKER Cargo,Van/Minivan
+Mercedes-Benz,Metris WORKER Passenger,Van/Minivan
+Mercedes-Benz,SLC,Convertible
+Mercedes-Benz,Sprinter 3500 XD Cargo,Van/Minivan
+Mercedes-Benz,Sprinter WORKER Cargo,Van/Minivan
+Mercedes-Benz,Sprinter WORKER Passenger,Van/Minivan
+Mercedes-Benz,A-Class,Sedan
+Mercedes-Benz,Sprinter 1500 Cargo,Van/Minivan
+Mercedes-Benz,Sprinter 1500 Passenger,Van/Minivan
+Mercedes-Benz,Sprinter 3500 Crew,Van/Minivan
+Mercedes-Benz,Sprinter 3500 XD Crew,Van/Minivan
+Mercedes-Benz,Sprinter 4500 Cargo,Van/Minivan
+Mercedes-Benz,Sprinter 4500 Crew,Van/Minivan
+Mercedes-Benz,GLB,SUV
+Mercedes-Benz,Mercedes-AMG A-Class,Sedan
+Mercedes-Benz,Mercedes-AMG GLB,SUV
+Mercedes-Benz,Mercedes-Maybach GLS,SUV
+Mercedes-Benz,Mercedes-AMG EQS,Sedan
+Mercedes-Benz,Mercedes-EQ EQB,SUV
+Mercedes-Benz,Mercedes-EQ EQS,Sedan
+Mercedes-Benz,Mercedes-EQ EQE,Sedan
+Mercedes-Benz,Mercedes-EQ EQE SUV,SUV
+Mercedes-Benz,Mercedes-EQ EQS SUV,SUV
+Mercury,Capri,Convertible
+Mercury,Cougar,Coupe
+Mercury,Grand Marquis,Sedan
+Mercury,Sable,Sedan
+Mercury,Topaz,Sedan
+Mercury,Tracer,Sedan
+Mercury,Villager,Van/Minivan
+Mercury,Mystique,Sedan
+Mercury,Mountaineer,SUV
+Mercury,Marauder,Sedan
+Mercury,Monterey,Van/Minivan
+Mercury,Mariner,SUV
+Mercury,Montego,Sedan
+Mercury,Milan,Sedan
+Mitsubishi,3000GT,Hatchback
+Mitsubishi,Diamante,Sedan
+Mitsubishi,Eclipse,Hatchback
+Mitsubishi,Expo,Wagon
+Mitsubishi,Galant,Sedan
+Mitsubishi,Mighty Max Macro Cab,Pickup
+Mitsubishi,Mighty Max Regular Cab,Pickup
+Mitsubishi,Mirage,Hatchback
+Mitsubishi,Montero,SUV
+Mitsubishi,Precis,Hatchback
+Mitsubishi,Montero Sport,SUV
+Mitsubishi,Lancer,Sedan
+Mitsubishi,Outlander,SUV
+Mitsubishi,Endeavor,SUV
+Mitsubishi,Raider Double Cab,Pickup
+Mitsubishi,Raider Extended Cab,Pickup
+Mitsubishi,Outlander Sport,SUV
+Mitsubishi,i-MiEV,Hatchback
+Mitsubishi,Lancer Evolution,Sedan
+Mitsubishi,Mirage G4,Sedan
+Mitsubishi,Eclipse Cross,SUV
+Mitsubishi,Outlander PHEV,SUV
+Nissan,240SX,Hatchback
+Nissan,300ZX,Hatchback
+Nissan,King Cab,Pickup
+Nissan,Maxima,Sedan
+Nissan,NX,Hatchback
+Nissan,Pathfinder,SUV
+Nissan,Regular Cab,Pickup
+Nissan,Sentra,Coupe
+Nissan,Stanza,Sedan
+Nissan,Altima,Sedan
+Nissan,Quest,Van/Minivan
+Nissan,200SX,Coupe
+Nissan,Frontier King Cab,Pickup
+Nissan,Frontier Regular Cab,Pickup
+Nissan,Frontier Crew Cab,Pickup
+Nissan,Xterra,SUV
+Nissan,350Z,Coupe
+Nissan,Murano,SUV
+Nissan,Pathfinder Armada,SUV
+Nissan,Titan Crew Cab,Pickup
+Nissan,Titan King Cab,Pickup
+Nissan,Armada,SUV
+Nissan,Versa,Hatchback
+Nissan,Rogue,SUV
+Nissan,370Z,Coupe
+Nissan,cube,Wagon
+Nissan,GT-R,Coupe
+Nissan,JUKE,SUV
+Nissan,LEAF,Hatchback
+Nissan,NV1500 Cargo,Van/Minivan
+Nissan,NV2500 HD Cargo,Van/Minivan
+Nissan,NV3500 HD Cargo,Van/Minivan
+Nissan,NV3500 HD Passenger,Van/Minivan
+Nissan,NV200,Van/Minivan
+Nissan,Rogue Select,SUV
+Nissan,NV200 Taxi,Van/Minivan
+Nissan,TITAN XD Crew Cab,Pickup
+Nissan,Versa Note,Hatchback
+Nissan,Rogue Sport,SUV
+Nissan,TITAN Single Cab,Pickup
+Nissan,TITAN XD King Cab,Pickup
+Nissan,TITAN XD Single Cab,Pickup
+Nissan,Kicks,SUV
+Nissan,400Z,Coupe
+Nissan,Ariya,SUV
+Nissan,Z,Coupe
+Oldsmobile,88,Sedan
+Oldsmobile,98,Sedan
+Oldsmobile,Achieva,Sedan
+Oldsmobile,Bravada,SUV
+Oldsmobile,Custom Cruiser,Wagon
+Oldsmobile,Cutlass Ciera,Sedan
+Oldsmobile,Cutlass Supreme,Sedan
+Oldsmobile,Silhouette,Van/Minivan
+Oldsmobile,Toronado,Coupe
+Oldsmobile,Cutlass Cruiser,Wagon
+Oldsmobile,Aurora,Sedan
+Oldsmobile,Ciera,Sedan
+Oldsmobile,Cutlass,Sedan
+Oldsmobile,LSS,Sedan
+Oldsmobile,Regency,Sedan
+Oldsmobile,Intrigue,Sedan
+Oldsmobile,Alero,Sedan
+Plymouth,Acclaim,Sedan
+Plymouth,Colt,Hatchback
+Plymouth,Colt Vista,Wagon
+Plymouth,Grand Voyager,Van/Minivan
+Plymouth,Laser,Hatchback
+Plymouth,Sundance,Hatchback
+Plymouth,Voyager,Van/Minivan
+Plymouth,Neon,Sedan
+Plymouth,Breeze,Sedan
+Plymouth,Prowler,Convertible
+Pontiac,Bonneville,Sedan
+Pontiac,Firebird,Hatchback
+Pontiac,Grand Am,Sedan
+Pontiac,Grand Prix,Coupe
+Pontiac,LeMans,Hatchback
+Pontiac,Sunbird,Sedan
+Pontiac,Trans Sport,Van/Minivan
+Pontiac,Sunfire,Coupe
+Pontiac,Montana,Van/Minivan
+Pontiac,Aztek,SUV
+Pontiac,Vibe,Wagon
+Pontiac,GTO,Coupe
+Pontiac,G6,Sedan
+Pontiac,Montana SV6,Van/Minivan
+Pontiac,Solstice,Convertible
+Pontiac,Torrent,SUV
+Pontiac,G5,Coupe
+Pontiac,G8,Sedan
+Pontiac,G3,Hatchback
+Pontiac,G6 (2009.5),Coupe
+Porsche,911,Coupe
+Porsche,968,Coupe
+Porsche,928,Hatchback
+Porsche,Boxster,Convertible
+Porsche,Cayenne,SUV
+Porsche,Carrera GT,Convertible
+Porsche,Cayman,Coupe
+Porsche,Panamera,Sedan
+Porsche,Macan,SUV
+Porsche,718 Boxster,Convertible
+Porsche,718 Cayman,Coupe
+Porsche,718 Spyder,Convertible
+Porsche,Cayenne Coupe,SUV
+Porsche,Taycan,Sedan
+Porsche,Taycan Cross Turismo,Sedan
+Saab,900,Sedan
+Saab,9000,Sedan
+Saab,9-3,Hatchback
+Saab,9-5,Sedan
+Saab,9-2X,Wagon
+Saab,9-7X,SUV
+Saab,9-4X,SUV
+Saturn,S-Series,Coupe
+Saturn,L-Series,Sedan
+Saturn,VUE,SUV
+Saturn,Ion,Sedan
+Saturn,Relay,Van/Minivan
+Saturn,Aura,Sedan
+Saturn,Outlook,SUV
+Saturn,SKY,Convertible
+Saturn,Astra,Hatchback
+Subaru,Justy,Hatchback
+Subaru,Legacy,Sedan
+Subaru,Loyale,Sedan
+Subaru,SVX,Coupe
+Subaru,Impreza,Wagon
+Subaru,Forester,SUV
+Subaru,Outback,Wagon
+Subaru,Baja,Pickup
+Subaru,B9 Tribeca,SUV
+Subaru,Tribeca,SUV
+Subaru,BRZ,Coupe
+Subaru,XV Crosstrek,SUV
+Subaru,WRX,Sedan
+Subaru,Crosstrek,SUV
+Subaru,Ascent,SUV
+Subaru,Solterra,SUV
+Suzuki,Samurai,SUV
+Suzuki,Sidekick,SUV
+Suzuki,Swift,Sedan
+Suzuki,Esteem,Sedan
+Suzuki,X-90,SUV
+Suzuki,Grand Vitara,SUV
+Suzuki,Vitara,SUV
+Suzuki,XL-7,SUV
+Suzuki,Aerio,Wagon
+Suzuki,Forenza,Sedan
+Suzuki,Verona,Sedan
+Suzuki,Reno,Hatchback
+Suzuki,SX4,Hatchback
+Suzuki,XL7,SUV
+Suzuki,Equator Crew Cab,Pickup
+Suzuki,Equator Extended Cab,Pickup
+Suzuki,Kizashi,Sedan
+Toyota,4Runner,SUV
+Toyota,Camry,Sedan
+Toyota,Celica,Coupe
+Toyota,Corolla,Sedan
+Toyota,Cressida,Sedan
+Toyota,Land Cruiser,SUV
+Toyota,MR2,Coupe
+Toyota,Paseo,Coupe
+Toyota,Previa,Van/Minivan
+Toyota,Regular Cab,Pickup
+Toyota,Supra,Hatchback
+Toyota,Tercel,Sedan
+Toyota,Xtra Cab,Pickup
+Toyota,T100 Regular Cab,Pickup
+Toyota,Avalon,Sedan
+Toyota,T100 Xtracab,Pickup
+Toyota,Tacoma Regular Cab,Pickup
+Toyota,Tacoma Xtracab,Pickup
+Toyota,RAV4,SUV
+Toyota,Sienna,Van/Minivan
+Toyota,Solara,Coupe
+Toyota,Echo,Sedan
+Toyota,Tundra Access Cab,Pickup
+Toyota,Tundra Regular Cab,Pickup
+Toyota,Highlander,SUV
+Toyota,Prius,Sedan
+Toyota,Sequoia,SUV
+Toyota,Tacoma Double Cab,Pickup
+Toyota,Matrix,Wagon
+Toyota,Tundra Double Cab,Pickup
+Toyota,Tacoma Access Cab,Pickup
+Toyota,FJ Cruiser,SUV
+Toyota,Tundra CrewMax,Pickup
+Toyota,Yaris,Hatchback
+Toyota,Venza,Wagon
+Toyota,Prius c,Hatchback
+Toyota,Prius Plug-in Hybrid,Hatchback
+Toyota,Prius v,Wagon
+Toyota,Mirai,Sedan
+Toyota,86,Coupe
+Toyota,Avalon Hybrid,Sedan
+Toyota,Camry Hybrid,Sedan
+Toyota,Corolla iM,Hatchback
+Toyota,Highlander Hybrid,SUV
+Toyota,Prius Prime,Hatchback
+Toyota,RAV4 Hybrid,SUV
+Toyota,Yaris iA,Sedan
+Toyota,C-HR,SUV
+Toyota,Corolla Hatchback,Hatchback
+Toyota,Corolla Hybrid,Sedan
+Toyota,GR Supra,Coupe
+Toyota,Yaris Hatchback,Hatchback
+Toyota,RAV4 Prime,SUV
+Toyota,Corolla Cross,SUV
+Toyota,GR86,Coupe
+Toyota,Tundra Hybrid CrewMax,Pickup
+Toyota,bZ4X,SUV
+Toyota,Corolla Cross Hybrid,SUV
+Toyota,Crown,Sedan
+Volkswagen,Cabriolet,Convertible
+Volkswagen,Corrado,Coupe
+Volkswagen,Fox,Sedan
+Volkswagen,Golf,Hatchback
+Volkswagen,GTI,Hatchback
+Volkswagen,Jetta,Sedan
+Volkswagen,Passat,Sedan
+Volkswagen,Eurovan,Van/Minivan
+Volkswagen,Golf III,Hatchback
+Volkswagen,Jetta III,Sedan
+Volkswagen,Cabrio,Convertible
+Volkswagen,New Beetle,Hatchback
+Volkswagen,Cabrio (New),Convertible
+Volkswagen,Golf (New),Hatchback
+Volkswagen,GTI (New),Hatchback
+Volkswagen,Jetta (New),Sedan
+Volkswagen,Passat (New),Sedan
+Volkswagen,Phaeton,Sedan
+Volkswagen,R32,Hatchback
+Volkswagen,Touareg,SUV
+Volkswagen,Rabbit,Hatchback
+Volkswagen,Eos,Convertible
+Volkswagen,GLI,Sedan
+Volkswagen,Touareg 2,SUV
+Volkswagen,CC,Sedan
+Volkswagen,Routan,Van/Minivan
+Volkswagen,Tiguan,SUV
+Volkswagen,Beetle,Hatchback
+Volkswagen,Jetta SportWagen,Wagon
+Volkswagen,e-Golf,Hatchback
+Volkswagen,Golf GTI,Hatchback
+Volkswagen,Golf R,Hatchback
+Volkswagen,Golf SportWagen,Wagon
+Volkswagen,Golf Alltrack,Wagon
+Volkswagen,Tiguan Limited,SUV
+Volkswagen,Atlas,SUV
+Volkswagen,Arteon,Sedan
+Volkswagen,Jetta GLI,Sedan
+Volkswagen,Atlas Cross Sport,SUV
+Volkswagen,ID.4,SUV
+Volkswagen,Taos,SUV
+Volkswagen,ID.Buzz,Van/Minivan
+Volvo,240,Wagon
+Volvo,740,Wagon
+Volvo,940,Sedan
+Volvo,960,Sedan
+Volvo,850,Sedan
+Volvo,S90,Sedan
+Volvo,V90,Wagon
+Volvo,C70,Coupe
+Volvo,S70,Sedan
+Volvo,V70,Wagon
+Volvo,S80,Sedan
+Volvo,S40,Sedan
+Volvo,V40,Wagon
+Volvo,S60,Sedan
+Volvo,XC70,Wagon
+Volvo,XC90,SUV
+Volvo,S40 (New),Sedan
+Volvo,V50,Wagon
+Volvo,C30,Hatchback
+Volvo,XC60,SUV
+Volvo,V60,Wagon
+Volvo,XC40,SUV
+Volvo,XC40 Recharge,SUV
+Volvo,C40 Recharge,SUV
+Volvo,EX90,SUV
+HUMMER,H1,SUV
+HUMMER,H2,SUV
+HUMMER,H3,SUV
+HUMMER,H3T,Pickup
+Kia,Sephia,Sedan
+Kia,Sportage,SUV
+Kia,Spectra,Hatchback
+Kia,Optima,Sedan
+Kia,Rio,Sedan
+Kia,Sedona,Van/Minivan
+Kia,Sorento,SUV
+Kia,Amanti,Sedan
+Kia,Optima (2006.5),Sedan
+Kia,Rondo,Wagon
+Kia,Borrego,SUV
+Kia,Forte,Sedan
+Kia,Soul,Wagon
+Kia,Cadenza,Sedan
+Kia,Forte Koup,Coupe
+Kia,Forte5,Hatchback
+Kia,K900,Sedan
+Kia,Optima Hybrid,Sedan
+Kia,Soul EV,Wagon
+Kia,Niro,Wagon
+Kia,Optima Plug-in Hybrid,Sedan
+Kia,Niro Plug-in Hybrid,Wagon
+Kia,Stinger,Sedan
+Kia,Niro EV,Wagon
+Kia,Telluride,SUV
+Kia,K5,Sedan
+Kia,Seltos,SUV
+Kia,Sorento Hybrid,SUV
+Kia,Carnival,Van/Minivan
+Kia,EV6,SUV
+Kia,Sorento Plug-in Hybrid,SUV
+Kia,Sportage Hybrid,SUV
+Kia,Sportage Plug-in Hybrid,SUV
+Kia,EV9,SUV
+Daewoo,Lanos,Hatchback
+Daewoo,Leganza,Sedan
+Daewoo,Nubira,Wagon
+MINI,Cooper,Hatchback
+MINI,Convertible,Convertible
+MINI,Clubman,Hatchback
+MINI,Hardtop,Hatchback
+MINI,Countryman,Hatchback
+MINI,Coupe,Coupe
+MINI,Roadster,Convertible
+MINI,Paceman,Hatchback
+MINI,Hardtop 2 Door,Hatchback
+MINI,Hardtop 4 Door,Hatchback
+Scion,xA,Hatchback
+Scion,xB,Hatchback
+Scion,tC,Coupe
+Scion,xD,Hatchback
+Scion,iQ,Hatchback
+Scion,FR-S,Coupe
+Scion,iA,Sedan
+Scion,iM,Hatchback
+Aston Martin,DB9,Convertible
+Aston Martin,Vanquish S,Coupe
+Aston Martin,Vantage,Coupe
+Aston Martin,DBS,Coupe
+Aston Martin,Rapide,Sedan
+Aston Martin,Virage,Coupe
+Aston Martin,Rapide S,Sedan
+Aston Martin,Vanquish,Coupe
+Aston Martin,DB9 GT,Coupe
+Aston Martin,DB11,Coupe
+Aston Martin,DBS Superleggera,Coupe
+Aston Martin,DBX,SUV
+Bentley,Arnage,Sedan
+Bentley,Continental,Coupe
+Bentley,Azure,Convertible
+Bentley,Brooklands,Coupe
+Bentley,Azure T,Convertible
+Bentley,Mulsanne,Sedan
+Bentley,Flying Spur,Sedan
+Bentley,Bentayga,SUV
+Bentley,Continental GT,Convertible
+Lotus,Elise,Coupe
+Lotus,Exige,Coupe
+Lotus,Exige S,Coupe
+Lotus,Evora,Coupe
+Lotus,Evora 400,Coupe
+Lotus,Evora GT,Coupe
+Maserati,Coupe,Coupe
+Maserati,GranSport,Coupe
+Maserati,Quattroporte,Sedan
+Maserati,GranTurismo,Coupe
+Maserati,Ghibli,Sedan
+Maserati,Levante,SUV
+Maserati,MC20,Coupe
+Maserati,Grecale,SUV
+Maybach,57,Sedan
+Maybach,62,Sedan
+Panoz,Esperante,Coupe
+Rolls-Royce,Phantom,Sedan
+Rolls-Royce,Ghost,Sedan
+Rolls-Royce,Wraith,Coupe
+Rolls-Royce,Dawn,Convertible
+Rolls-Royce,Cullinan,SUV
+Ferrari,612 Scaglietti,Coupe
+Ferrari,F430,Convertible
+Ferrari,599 GTB Fiorano,Coupe
+Ferrari,430 Scuderia,Coupe
+Ferrari,California,Convertible
+Ferrari,458 Italia,Coupe
+Ferrari,599 GTO,Coupe
+Ferrari,FF,Coupe
+Ferrari,458 Spider,Convertible
+Ferrari,F12berlinetta,Coupe
+Ferrari,458 Speciale,Coupe
+Ferrari,488 GTB,Coupe
+Ferrari,488 Spider,Convertible
+Ferrari,GTC4Lusso,Hatchback
+Ferrari,812 Superfast,Coupe
+Ferrari,488 Pista,Convertible
+Ferrari,812 GTS,Convertible
+Ferrari,F8,Coupe
+Ferrari,Portofino,Convertible
+Ferrari,Roma,Coupe
+Ferrari,SF90,Coupe
+Ferrari,296 GTB,Coupe
+Ferrari,812 Competizione,Coupe
+Ferrari,812 Competizione A,Coupe
+Lamborghini,Gallardo,Coupe
+Lamborghini,Murcielago,Convertible
+Lamborghini,Murcielago LP640,Coupe
+Lamborghini,Aventador,Coupe
+Lamborghini,Huracan,Coupe
+Lamborghini,Urus,SUV
+smart,fortwo,Hatchback
+smart,fortwo electric drive,Hatchback
+smart,fortwo cabrio,Convertible
+smart,fortwo electric drive cabrio,Convertible
+smart,fortwo EQ cabrio,Convertible
+smart,fortwo EQ coupe,Hatchback
+Ram,1500 Crew Cab,Pickup
+Ram,1500 Quad Cab,Pickup
+Ram,1500 Regular Cab,Pickup
+Ram,2500 Crew Cab,Pickup
+Ram,2500 Mega Cab,Pickup
+Ram,2500 Regular Cab,Pickup
+Ram,3500 Crew Cab,Pickup
+Ram,3500 Mega Cab,Pickup
+Ram,3500 Regular Cab,Pickup
+Ram,Dakota Crew Cab,Pickup
+Ram,Dakota Extended Cab,Pickup
+Ram,C/V,Van/Minivan
+Ram,C/V Tradesman,Van/Minivan
+Ram,ProMaster 1500 Cargo,Van/Minivan
+Ram,ProMaster 2500 Cargo,Van/Minivan
+Ram,ProMaster 3500 Cargo,Van/Minivan
+Ram,ProMaster Cargo Van,Van/Minivan
+Ram,ProMaster City,Van/Minivan
+Ram,ProMaster Window Van,Van/Minivan
+Ram,1500 Classic Crew Cab,Pickup
+Ram,1500 Classic Quad Cab,Pickup
+Ram,1500 Classic Regular Cab,Pickup
+FIAT,500,Hatchback
+FIAT,500e,Hatchback
+FIAT,500 Abarth,Hatchback
+FIAT,500c,Convertible
+FIAT,500L,Hatchback
+FIAT,500X,SUV
+FIAT,124 Spider,Convertible
+FIAT,500c Abarth,Convertible
+Fisker,Karma,Sedan
+McLaren,MP4-12C,Coupe
+McLaren,650S,Coupe
+McLaren,570S,Coupe
+McLaren,675LT,Coupe
+McLaren,570GT,Coupe
+McLaren,720S,Coupe
+McLaren,600LT,Coupe
+Tesla,Model S,Sedan
+Tesla,Model X,SUV
+Tesla,Model 3,Sedan
+Tesla,Model Y,SUV
+Tesla,Cybertruck,Pickup
+Freightliner,Sprinter 2500 Cargo,Van/Minivan
+Freightliner,Sprinter 2500 Crew,Van/Minivan
+Freightliner,Sprinter 2500 Passenger,Van/Minivan
+Freightliner,Sprinter 3500 Cargo,Van/Minivan
+Freightliner,Sprinter 3500XD Cargo,Van/Minivan
+Freightliner,Sprinter WORKER Cargo,Van/Minivan
+Freightliner,Sprinter WORKER Passenger,Van/Minivan
+Freightliner,Sprinter 1500 Cargo,Van/Minivan
+Freightliner,Sprinter 1500 Passenger,Van/Minivan
+Freightliner,Sprinter 3500 Crew,Van/Minivan
+Freightliner,Sprinter 3500 XD Crew,Van/Minivan
+Freightliner,Sprinter 4500 Cargo,Van/Minivan
+Freightliner,Sprinter 4500 Crew,Van/Minivan
+SRT,Viper,Coupe
+Genesis,G80,Sedan
+Genesis,G90,Sedan
+Genesis,G70,Sedan
+Genesis,GV80,SUV
+Genesis,Electrified G80,Sedan
+Genesis,GV60,SUV
+Genesis,GV70,SUV
+Polestar,1,Coupe
+Polestar,2,Hatchback
+Polestar,3,SUV
+Polestar,5,Sedan
+Rivian,R1S,SUV
+Rivian,R1T,Pickup
+Lucid,Air,Sedan
+VinFast,VF 8,SUV
+VinFast,VF 9,SUV

@@ -108,6 +108,7 @@ def new_dao() -> DBInterface:
     curr_dao.delete_all_watched_car_criteria()
     curr_dao.delete_all_alerts()
     curr_dao.delete_all_states()
+    curr_dao.delete_all_zip_codes()
 
     yield curr_dao
 
@@ -142,10 +143,7 @@ def dao_with_cities(dao_with_states: list[DBInterface, list[dict]], city_list: l
     return add_cities(dao, city_list, states)
 
 
-@pytest.fixture
-def dao_with_cities_and_zips(dao_with_cities: list[DBInterface, list, list, list]) -> list[DBInterface, list, list, list]:
-    dao, city_list, states = dao_with_cities
-    dao.delete_all_zip_codes()
+def add_zips(dao: DBInterface, cities: list[dict]):
     city_id_list = [city["id"] for city in dao.get_all_cities()]
     zips_list = [{"zip_code": random.randint(
         10000, 99999), "city_id": random.choice(city_id_list)}]
@@ -153,6 +151,14 @@ def dao_with_cities_and_zips(dao_with_cities: list[DBInterface, list, list, list
     for zip_code in zips_list:
         dao.add_zip_code(
             zip_code=zip_code["zip_code"], city_id=zip_code["city_id"])
+
+    return [dao, cities, zips_list]
+
+
+@pytest.fixture
+def dao_with_cities_and_zips(dao_with_cities: list[DBInterface, list, list, list]) -> list[DBInterface, list, list, list]:
+    dao, city_list, states = dao_with_cities
+    dao, city_list, zips_list = add_zips(dao, city_list)
 
     return [dao, city_list, zips_list, states]
 
@@ -205,7 +211,7 @@ def dao_with_watched_cars(new_dao: DBInterface, watched_car_list: list[dict]) ->
     return add_watched_cars(new_dao, watched_car_list)
 
 
-def criteria_list(body_styles: list[dict], cities: list[dict], models: list[dict], users: list[dict]) -> list[dict]:
+def criteria_list(body_styles: list[dict], zips: list[dict], models: list[dict], users: list[dict]) -> list[dict]:
     criteria = []
 
     for _ in range(random.randint(5, 11)):
@@ -228,7 +234,7 @@ def criteria_list(body_styles: list[dict], cities: list[dict], models: list[dict
         new_criteria["no_accidents"] = random.choice((True, False, None))
         new_criteria["single_owner"] = random.choice((True, False, None))
         new_criteria["user_id"] = random.choice(users)["id"]
-        new_criteria["city_id"] = random.choice(cities)["id"]
+        new_criteria["zip_code_id"] = random.choice(zips)["id"]
 
         if random.randint(0, 1) == 0:
             new_criteria["model_id"] = random.choice(models)["id"]
@@ -254,7 +260,7 @@ def add_criteria(dao: DBInterface, criteria_list: list[dict]) -> list[DBInterfac
             no_accidents=criteria["no_accidents"],
             single_owner=criteria["single_owner"],
             user_id=criteria["user_id"],
-            city_id=criteria["city_id"],
+            zip_code_id=criteria["zip_code_id"],
             model_id=criteria["model_id"],
             body_style_id=criteria["body_style_id"]
         )
@@ -266,6 +272,7 @@ def add_criteria(dao: DBInterface, criteria_list: list[dict]) -> list[DBInterfac
 def dao_with_criteria(new_dao: DBInterface, make_list: list[dict], city_list: list[dict], user_list: list[dict], state_list: list[dict]) -> list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]:
     new_dao, state_list = add_states(new_dao, state_list)
     new_dao, city_list, state_list = add_cities(new_dao, city_list, state_list)
+    new_dao, city_list, zips_list = add_zips(new_dao, city_list)
     new_dao = add_body_styles(new_dao)
     new_dao, make_list = add_makes(new_dao, make_list)
     new_dao, models_list = add_models(new_dao)
@@ -273,11 +280,11 @@ def dao_with_criteria(new_dao: DBInterface, make_list: list[dict], city_list: li
     new_dao, user_list = add_users(new_dao, user_list)
 
     criteria = criteria_list(new_dao.get_all_body_styles(
-    ), new_dao.get_all_cities(), new_dao.get_all_models(), new_dao.get_all_users())
+    ), new_dao.get_all_zip_codes(), new_dao.get_all_models(), new_dao.get_all_users())
 
     new_dao, criteria = add_criteria(new_dao, criteria)
 
-    return [new_dao, city_list, criteria, make_list, models_list, user_list, state_list]
+    return [new_dao, zips_list, criteria, make_list, models_list, user_list, state_list]
 
 
 def add_watched_car_criteria(dao: DBInterface) -> list[DBInterface, list[dict], list[dict]]:
@@ -298,13 +305,13 @@ def add_watched_car_criteria(dao: DBInterface) -> list[DBInterface, list[dict], 
 
 @pytest.fixture
 def dao_with_watched_car_criteria(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]], watched_car_list: list[dict]) -> list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]:
-    new_dao, city_list, criteria, make_list, models_list, user_list, states = dao_with_criteria
+    new_dao, zips_list, criteria, make_list, models_list, user_list, states = dao_with_criteria
 
     new_dao, watched_cars = add_watched_cars(new_dao, watched_car_list)
 
     new_dao, watched_car_criteria = add_watched_car_criteria(new_dao)
 
-    return [new_dao, city_list, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria]
+    return [new_dao, zips_list, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria]
 
 
 def add_listing_alerts(dao: DBInterface) -> list[DBInterface, list[dict]]:
@@ -349,6 +356,16 @@ def test_bad_db_url(capsys):
     curr_dao = DBInterface("Not a valid db url")
     assert capsys.readouterr(
     ).out == 'An error occurred: missing "=" after "Not" in connection info string\n\n'
+
+
+def test_get_user_by_id(dao_with_users: list[DBInterface, list]):
+    dao, users = dao_with_users
+    users_list = dao.get_all_users()
+
+    for user in users_list:
+        poss_match = dao.get_user_by_id(user["id"])
+        for key in user:
+            assert user[key] == poss_match[key]
 
 
 def test_add_user(new_dao, user_list):
@@ -711,7 +728,7 @@ def test_delete_watched_car_by_vin(dao_with_watched_cars: list[DBInterface, list
 
 
 def test_get_all_criteria(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, cities, criteria, makes, models, users, states = dao_with_criteria
+    dao, zips, criteria, makes, models, users, states = dao_with_criteria
 
     db_criteria = dao.get_all_criteria()
     assert len(db_criteria) == len(criteria)
@@ -723,7 +740,7 @@ def test_get_all_criteria(dao_with_criteria: list[DBInterface, list[dict], list[
 
 
 def test_get_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, cities, criteria, makes, models, users, states = dao_with_criteria
+    dao, zips, criteria, makes, models, users, states = dao_with_criteria
 
     identical_criteria_count = defaultdict(int)
 
@@ -737,7 +754,7 @@ def test_get_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], l
 
 
 def test_delete_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, cities, criteria, makes, models, users, states = dao_with_criteria
+    dao, zips, criteria, makes, models, users, states = dao_with_criteria
 
     assert len(dao.get_all_criteria()) == len(criteria)
 
@@ -748,7 +765,7 @@ def test_delete_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict]
 
 
 def test_get_all_watched_car_criteria(dao_with_watched_car_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, city_list, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria = dao_with_watched_car_criteria
+    dao, zips, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria = dao_with_watched_car_criteria
 
     db_data = dao.get_all_watched_car_criteria()
     assert len(db_data) == len(watched_car_criteria)
@@ -757,7 +774,7 @@ def test_get_all_watched_car_criteria(dao_with_watched_car_criteria: list[DBInte
 
 
 def test_get_watched_car_criteria_by_info(dao_with_watched_car_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, city_list, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria = dao_with_watched_car_criteria
+    dao, zips, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria = dao_with_watched_car_criteria
 
     for crit in watched_car_criteria:
         assert compare_data(
@@ -765,7 +782,7 @@ def test_get_watched_car_criteria_by_info(dao_with_watched_car_criteria: list[DB
 
 
 def test_delete_watched_car_criteria_by_info(dao_with_watched_car_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, city_list, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria = dao_with_watched_car_criteria
+    dao, zips, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria = dao_with_watched_car_criteria
 
     assert len(dao.get_all_watched_car_criteria()) == len(watched_car_criteria)
 
