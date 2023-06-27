@@ -21,7 +21,6 @@ data_collected = {}
 for year in range(1992, 2025):
     with open(f"car-data/{year}.csv", "r") as file:
         reader = DictReader(file)
-        next(reader)
 
         for row in reader:
             if row["make"] not in data_collected:
@@ -31,7 +30,6 @@ for year in range(1992, 2025):
                 data_collected[row["make"]][row["model"]
                                             ] = get_first_model(row["body_styles"])
 
-# print(data_collected)
 
 with open(f"car-data/all-models.csv", "w", newline="") as file:
     writer = DictWriter(

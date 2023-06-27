@@ -75,9 +75,8 @@ class DBInterface:
     @check_connection
     def add_user(self, user_info: dict = {}) -> int:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-            res = queries.add_user(
+            queries.add_user(
                 conn, username=user_info["username"], email=user_info["email"], password_hash=user_info["password_hash"], notification_frequency=user_info["notification_frequency"])
-            return res
 
 
 # ----------------------- UPDATE USERS ---------------------------------------
@@ -146,7 +145,7 @@ class DBInterface:
 # ------------------------ ADD CITIES -----------------------------------
 
     @check_connection
-    def add_city(self, city_name: str, state_id: int) -> None:
+    def add_city(self, city_name: str, state_id: int) -> None:  # pragma: no cover
         with psycopg.connect(self._connection_url) as conn:
             queries.add_city(conn, city_name=city_name, state_id=state_id)
 
@@ -155,7 +154,7 @@ class DBInterface:
 
 
     @check_connection
-    def delete_all_cities(self) -> None:
+    def delete_all_cities(self) -> None:  # pragma: no cover
         with psycopg.connect(self._connection_url) as conn:
             queries.delete_all_cities(conn)
 
@@ -173,22 +172,27 @@ class DBInterface:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             return [zip_code for zip_code in queries.get_all_zip_codes(conn)]
 
+    # @check_connection
+    # def get_city_id_by_zip_code(self, zip_code: int) -> int:
+    #     with psycopg.connect(self._connection_url) as conn:
+    #         return queries.get_city_id_by_zip_code(conn, zip_code=zip_code)
+
     @check_connection
-    def get_city_id_by_zip_code(self, zip_code: int) -> int:
-        with psycopg.connect(self._connection_url) as conn:
-            return queries.get_city_id_by_zip_code(conn, zip_code=zip_code)
+    def get_zip_code_info(self, zip_code: int) -> dict:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return queries.get_zip_code_info(conn, zip_code=zip_code)
 
 # ---------------------- ADD ZIP CODES ----------------------------------
 
     @check_connection
-    def add_zip_code(self, zip_code: int, city_id: int) -> None:
+    def add_zip_code(self, zip_code: int, city_id: int) -> None:  # pragma: no cover
         with psycopg.connect(self._connection_url) as conn:
             queries.add_zip_code(conn, zip_code=zip_code, city_id=city_id)
 
 # --------------------- DELETE ZIP CODES ---------------------------------
 
     @check_connection
-    def delete_all_zip_codes(self) -> None:
+    def delete_all_zip_codes(self) -> None:  # pragma: no cover
         with psycopg.connect(self._connection_url) as conn:
             queries.delete_all_zip_codes(conn)
 
@@ -566,12 +570,12 @@ class DBInterface:
             return queries.get_state_by_name(conn, state_name=state_name)
 
     @check_connection
-    def add_state(self, state_name: str) -> None:
+    def add_state(self, state_name: str) -> None:  # pragma: no cover
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.add_state(conn, state_name=state_name)
 
     @check_connection
-    def delete_all_states(self) -> None:
+    def delete_all_states(self) -> None:  # pragma: no cover
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.delete_all_states(conn)
 

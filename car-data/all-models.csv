@@ -1,16 +1,18 @@
 make,model,body_style
+Acura,Integra,Sedan
 Acura,Legend,Sedan
 Acura,NSX,Coupe
 Acura,Vigor,Sedan
 Acura,TL,Sedan
 Acura,RL,Sedan
 Acura,SLX,SUV
-Acura,Integra,Coupe
+Acura,CL,Coupe
 Acura,MDX,SUV
 Acura,RSX,Coupe
 Acura,TSX,Sedan
 Acura,RDX,SUV
 Acura,ZDX,SUV
+Acura,ILX,Sedan
 Acura,RLX,Sedan
 Acura,RLX Sport Hybrid,Sedan
 Acura,TLX,Sedan
@@ -281,6 +283,7 @@ Chevrolet,Bolt EUV,Hatchback
 Chevrolet,Silverado 1500 Limited Crew Cab,Pickup
 Chevrolet,Silverado 1500 Limited Double Cab,Pickup
 Chevrolet,Silverado 1500 Limited Regular Cab,Pickup
+Chevrolet,Blazer EV,SUV
 Chevrolet,Equinox EV,SUV
 Chevrolet,Silverado EV,Pickup
 Chrysler,Fifth Ave,Sedan

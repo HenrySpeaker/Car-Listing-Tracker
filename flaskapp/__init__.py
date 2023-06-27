@@ -33,7 +33,7 @@ def create_app(test_config=None):
         poss_user = dbi.get_user_by_id(user_id)
 
         if poss_user:
-            return User(user_id)
+            return User(user_id=user_id, username=poss_user["username"])
 
         return None
 
