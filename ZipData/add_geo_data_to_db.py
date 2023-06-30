@@ -1,6 +1,7 @@
 from db.dbi.db_interface import DBInterface
 from config import ProdConfig
 from csv import DictReader
+from config import ZIP_ROW_COUNT
 
 dbi = DBInterface(ProdConfig.POSTGRES_DATABASE_URI)
 file_location = "ZipData/zips.csv"
@@ -16,7 +17,9 @@ def get_geo_data():  # pragma: no cover
 def add_data():  # pragma: no cover
     states = {}
     cities = {}
-    zips = {}
+
+    if dbi.get_zip_code_count() == ZIP_ROW_COUNT:
+        return
 
     rows = get_geo_data()
     for row in rows:

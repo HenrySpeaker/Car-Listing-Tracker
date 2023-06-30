@@ -1,7 +1,7 @@
 import pytest
 from db.dbi.db_interface import DBInterface
 from db.body_styles import body_styles
-from config import DevConfig
+from config import DevConfig, ZIP_ROW_COUNT, MODEL_ROW_COUNT
 from datetime import datetime
 import string
 import random
@@ -13,6 +13,7 @@ DB_URI = DevConfig.POSTGRES_DATABASE_URI
 WEBSITE_NAMES = ["autotrader", "cargurus", "usnews", "driveway", "capitolone"]
 LISTING_CHANGES = ["price_drop", "new_listing"]
 NUM_ZIPS = 33788
+TEST_MODELS = ["Corvette", "Caliber", "Elantra", "Galant"]
 
 
 def get_random_string(min_len: int, max_len: int) -> str:
@@ -486,6 +487,10 @@ def test_get_zip_code_info(new_dao: DBInterface):
     assert data["zip_code"] == test_zip
 
 
+def test_get_zip_count(new_dao: DBInterface):
+    assert new_dao.get_zip_code_count() == ZIP_ROW_COUNT
+
+
 def test_delete_specific_zip(new_dao: DBInterface):
     dao = new_dao
 
@@ -523,6 +528,15 @@ def test_get_specific_makes(dao_with_makes: list[DBInterface, list]):
             make_info) == 2 and make_info["make_name"] == make["make_name"]
 
 
+def test_get_make_by_id(dao_with_makes: list[DBInterface, list]):
+    dao, makes_list = dao_with_makes
+
+    all_makes = dao.get_all_makes()
+
+    for make in all_makes:
+        assert dao.get_make_by_id(make["id"])["make_name"] == make["make_name"]
+
+
 def test_delete_make_by_name(dao_with_makes: list[DBInterface, list]):
     dao, makes_list = dao_with_makes
 
@@ -543,6 +557,14 @@ def test_get_specific_body_style(dao_with_body_styles: DBInterface):
     for style in body_styles:
         assert dao_with_body_styles.get_body_style_info(
             style)["body_style_name"] == style
+
+
+def test_get_body_style_by_id(dao_with_body_styles: DBInterface):
+    res = dao_with_body_styles.get_all_body_styles()
+
+    for body_style in res:
+        assert dao_with_body_styles.get_body_style_by_id(
+            body_style["id"])["body_style_name"] == body_style["body_style_name"]
 
 
 def test_add_invalid_body_style(new_dao: DBInterface):
@@ -657,6 +679,30 @@ def test_get_model_by_body_style_name(dao_with_models: list[DBInterface, list[di
     for body_style in body_style_info:
         assert len(models_by_body_style[body_style["id"]]) == len(
             dao.get_model_by_body_style_name(body_style["body_style_name"]))
+
+
+def test_get_model_count(dao_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dao_with_models
+
+    assert dao.get_model_count() == len(models_list)
+
+
+def test_get_model_by_name(dao_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dao_with_models
+    models_list = choices([model["model_name"]
+                          for model in dao.get_all_models()], k=5)
+    for model_name in models_list:
+        assert dao.get_model_by_name(model_name) != None
+
+
+def test_get_model_by_id(dao_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dao_with_models
+
+    models_list = choices([model for model in dao.get_all_models()], k=5)
+
+    for model in models_list:
+        assert dao.get_model_by_id(model["id"])[
+            "model_name"] == model["model_name"]
 
 
 def test_delete_model_by_model_name(dao_with_models: list[DBInterface, list[dict], list[dict]]):

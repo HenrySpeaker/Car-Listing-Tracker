@@ -12,8 +12,8 @@ class RegisterForm(FlaskForm):
                            InputRequired(), Length(min=1, max=50)])
     email = EmailField("Email", validators=[
                        InputRequired(), Length(min=1, max=100)])
-    password = StringField("Password", validators=[
-                           InputRequired(), Length(min=8, max=200)])
+    password = PasswordField("Password", validators=[
+        InputRequired(), Length(min=8, max=200)])
     notification_frequency = IntegerField(
         "Notification frequency", validators=[InputRequired(), NumberRange(min=1, max=30)])
 
@@ -38,11 +38,11 @@ class LoginForm(FlaskForm):
         return check
 
 
-class CriteriaForm(FlaskForm):
+class BaseCriteriaForm(FlaskForm):
     min_year = IntegerField("Minimum car year", validators=[
-                            NumberRange(min=1992, max=2023)])
+                            InputRequired(), NumberRange(min=1992, max=2023)])
     max_year = IntegerField("Maximum car year", validators=[
-                            NumberRange(min=1992, max=2023)])
+                            InputRequired(), NumberRange(min=1992, max=2023)])
 
     min_price = IntegerField("Minimum car price", validators=[
                              InputRequired(), NumberRange(min=1, max=10000000)])
@@ -58,9 +58,6 @@ class CriteriaForm(FlaskForm):
     no_accidents = BooleanField("No accidents")
 
     single_owner = BooleanField("Single owner")
-
-    body_style = SelectField(
-        "Body style", choices=body_style_list, validators=[InputRequired()])
 
     zip_code = IntegerField("Search area zip code", validators=[
                             InputRequired(), NumberRange(min=1, max=99999)])
@@ -79,3 +76,14 @@ class CriteriaForm(FlaskForm):
                 "Minimum car price must be less than maximum car price")
 
         return True
+
+
+class BodyStyleCriteriaForm(BaseCriteriaForm):
+
+    body_style = SelectField(
+        "Body style", choices=body_style_list, validators=[InputRequired()])
+
+
+class MakeModelCriteriaForm(BaseCriteriaForm):
+
+    model_name = SelectField("Model", validators=[InputRequired()])

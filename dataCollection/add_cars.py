@@ -1,7 +1,7 @@
 from db.dbi.db_interface import DBInterface
 from db.body_styles import body_styles
 from csv import DictReader
-from config import DevConfig
+from config import DevConfig, MODEL_ROW_COUNT
 
 db_uri = DevConfig.POSTGRES_DATABASE_URI
 
@@ -10,6 +10,10 @@ dbi = DBInterface(db_uri)
 
 def add_models_to_db():
     """Clears DB body style, make, and model contents and adds all contents from the raw car model data"""
+
+    if dbi.get_model_count() == MODEL_ROW_COUNT:
+        return
+
     dbi.delete_all_body_styles()
     dbi.delete_all_makes()
     dbi.delete_all_models()
@@ -24,7 +28,6 @@ def add_models_to_db():
 
     with open("car-data/all-models.csv", "r") as file:
         reader = DictReader(file)
-        makes_seen = set()
 
         for row in reader:
             if row["make"] not in make_ids:

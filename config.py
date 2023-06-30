@@ -4,6 +4,9 @@ from dotenv import load_dotenv
 basedir = path.abspath(path.dirname(__file__))
 load_dotenv(path.join(basedir, ".env"))
 
+ZIP_ROW_COUNT = 33788
+MODEL_ROW_COUNT = 1415
+
 
 class Config:
     """Set Flask config variables."""

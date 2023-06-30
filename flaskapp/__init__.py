@@ -5,6 +5,7 @@ import secrets
 from flask_login import LoginManager
 from config import ProdConfig
 from .user import User
+from prepare_db import prepare_db
 
 
 def create_app(test_config=None):
@@ -18,6 +19,7 @@ def create_app(test_config=None):
         app.config.from_object(test_config)
         db_uri = test_config.POSTGRES_DATABASE_URL
 
+    prepare_db()
     dbi = DBInterface(db_uri)
 
     try:

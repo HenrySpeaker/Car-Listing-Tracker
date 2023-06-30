@@ -182,6 +182,11 @@ class DBInterface:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             return queries.get_zip_code_info(conn, zip_code=zip_code)
 
+    @check_connection
+    def get_zip_code_count(self) -> int:
+        with psycopg.connect(self._connection_url) as conn:
+            return queries.get_zip_code_count(conn)
+
 # ---------------------- ADD ZIP CODES ----------------------------------
 
     @check_connection
@@ -217,6 +222,11 @@ class DBInterface:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             return queries.get_make_info(conn, make_name=make_name)
 
+    @check_connection
+    def get_make_by_id(self, make_id: int) -> dict:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return queries.get_make_by_id(conn, id=make_id)
+
 # --------------------- ADD MAKES ---------------------------------
 
     @check_connection
@@ -250,6 +260,11 @@ class DBInterface:
     def get_body_style_info(self, body_style_name: str) -> dict:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             return queries.get_body_style_info(conn, body_style_name=body_style_name)
+
+    @check_connection
+    def get_body_style_by_id(self, body_style_id: int) -> dict:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return queries.get_body_style_by_id(conn, id=body_style_id)
 
 # ------------------- ADD BODY STYLES ----------------------------
 
@@ -330,6 +345,21 @@ class DBInterface:
     def get_model_by_body_style_name(self, body_style_name: str) -> list[dict]:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             return [model for model in queries.get_model_by_body_style_name(conn, body_style_name=body_style_name)]
+
+    @check_connection
+    def get_model_count(self) -> int:
+        with psycopg.connect(self._connection_url) as conn:
+            return queries.get_model_count(conn)
+
+    @check_connection
+    def get_model_by_name(self, model_name: str) -> dict:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return queries.get_model_by_name(conn, model_name=model_name)
+
+    @check_connection
+    def get_model_by_id(self, model_id: int) -> dict:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return queries.get_model_by_id(conn, id=model_id)
 
 # ---------------------------- ADD MODEL -------------------------------------
 

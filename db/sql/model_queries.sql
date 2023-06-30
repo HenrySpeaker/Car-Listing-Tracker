@@ -13,6 +13,15 @@ SELECT * FROM model WHERE body_style_id = :body_style_id;
 -- name: get_model_by_body_style_name
 SELECT * FROM model WHERE body_style_id = (SELECT id FROM body_style WHERE body_style_name = :body_style_name);
 
+-- name: get_model_count$
+SELECT COUNT(*) FROM model;
+
+-- name: get_model_by_name^
+SELECT * FROM model WHERE model_name = :model_name;
+
+-- name: get_model_by_id^
+SELECT * FROM model WHERE id = :id LIMIT 1;
+
 -- name: add_model!
 INSERT INTO model(model_name, make_id, body_style_id) VALUES (:model_name, :make_id, :body_style_id);
 
