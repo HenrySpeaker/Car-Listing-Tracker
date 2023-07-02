@@ -11,7 +11,7 @@ dbi = DBInterface(db_uri)
 def add_models_to_db():
     """Clears DB body style, make, and model contents and adds all contents from the raw car model data"""
 
-    if dbi.get_model_count() == MODEL_ROW_COUNT:
+    if dbi.get_model_count() == MODEL_ROW_COUNT:  # pragma: no cover
         return
 
     dbi.delete_all_body_styles()
@@ -39,5 +39,5 @@ def add_models_to_db():
                           make_id=make_ids[row["make"]], body_style_id=body_style_ids[row["body_style"]])
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     add_models_to_db()

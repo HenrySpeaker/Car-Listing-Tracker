@@ -1,11 +1,10 @@
-from flask import Blueprint, render_template, request, current_app, redirect
+from flask import Blueprint, render_template, current_app, redirect
 from .forms import RegisterForm, LoginForm, MakeModelCriteriaForm, BodyStyleCriteriaForm
 import logging
 from werkzeug.security import generate_password_hash, check_password_hash
 from db.dbi.db_interface import DBInterface
 from flask_login import login_required, login_user, current_user
 from .user import User
-from wtforms import SelectField
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("routes_logger")
@@ -85,6 +84,7 @@ def register():
 @bp.route("/account")
 @login_required
 def account():
+    logger.info(f"User account accessed. User id: {current_user.user_id}")
     return render_template("account.html")
 
 
@@ -111,6 +111,9 @@ def criteria():
     } for row in user_criteria]
 
     key_list = criteria[0].keys() if criteria else []
+
+    logger.info(f"Criteria for user id: {current_user.user_id} accessed")
+
     return render_template("criteria.html", criteria=criteria, key_list=key_list)
 
 
@@ -121,6 +124,10 @@ def add_criteria():
     db_uri = current_app.config["POSTGRES_DATABASE_URI"]
     db_interface = DBInterface(db_uri)
     makes = db_interface.get_all_makes()
+
+    logger.info(
+        f"Add criteria page accessed by user id {current_user.user_id}")
+
     return render_template("add_criteria.html", makes=makes)
 
 

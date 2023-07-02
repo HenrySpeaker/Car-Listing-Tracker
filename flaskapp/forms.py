@@ -10,17 +10,22 @@ body_style_list = [body for body in body_styles.keys()]
 class RegisterForm(FlaskForm):
     username = StringField("Username", validators=[
                            InputRequired(), Length(min=1, max=50)])
+
     email = EmailField("Email", validators=[
                        InputRequired(), Length(min=1, max=100)])
+
     password = PasswordField("Password", validators=[
         InputRequired(), Length(min=8, max=200)])
+
     notification_frequency = IntegerField(
         "Notification frequency", validators=[InputRequired(), NumberRange(min=1, max=30)])
 
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[Length(max=50)])
+
     email = EmailField("Email", validators=[Length(max=100)])
+
     password = PasswordField("Password", validators=[
         InputRequired(), Length(min=8, max=200)])
 
@@ -41,11 +46,13 @@ class LoginForm(FlaskForm):
 class BaseCriteriaForm(FlaskForm):
     min_year = IntegerField("Minimum car year", validators=[
                             InputRequired(), NumberRange(min=1992, max=2023)])
+
     max_year = IntegerField("Maximum car year", validators=[
                             InputRequired(), NumberRange(min=1992, max=2023)])
 
     min_price = IntegerField("Minimum car price", validators=[
                              InputRequired(), NumberRange(min=1, max=10000000)])
+
     max_price = IntegerField("Max car price", validators=[
                              InputRequired(), NumberRange(min=1, max=10000000)])
 
@@ -79,11 +86,9 @@ class BaseCriteriaForm(FlaskForm):
 
 
 class BodyStyleCriteriaForm(BaseCriteriaForm):
-
     body_style = SelectField(
         "Body style", choices=body_style_list, validators=[InputRequired()])
 
 
 class MakeModelCriteriaForm(BaseCriteriaForm):
-
     model_name = SelectField("Model", validators=[InputRequired()])

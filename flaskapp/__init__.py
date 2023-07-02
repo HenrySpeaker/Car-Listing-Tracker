@@ -12,12 +12,12 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.secret_key = secrets.token_hex()
 
-    if test_config is None:
+    if test_config is None:  # pragma: no cover
         app.config.from_object("config.ProdConfig")
         db_uri = ProdConfig.POSTGRES_DATABASE_URI
     else:
         app.config.from_object(test_config)
-        db_uri = test_config.POSTGRES_DATABASE_URL
+        db_uri = test_config.POSTGRES_DATABASE_URI
 
     prepare_db()
     dbi = DBInterface(db_uri)
@@ -31,7 +31,7 @@ def create_app(test_config=None):
     login_manager.init_app(app)
 
     @login_manager.user_loader
-    def load_user(user_id):
+    def load_user(user_id):  # pragma: no cover
         poss_user = dbi.get_user_by_id(user_id)
 
         if poss_user:
