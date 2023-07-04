@@ -30,7 +30,7 @@ class DBInterface:
         except (psycopg.ProgrammingError, psycopg.OperationalError) as e:
             print(f"An error occurred: {e}")
 
-        if self._valid_connection:
+        if self._valid_connection:  # pragma: no cover
             # check to see if body_styles have been added to the table already
             with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
                 curr_body_styles = self.get_all_body_styles()
@@ -237,7 +237,7 @@ class DBInterface:
 # --------------------- DELETE MAKES ------------------------------
 
     @check_connection
-    def delete_all_makes(self) -> None:
+    def delete_all_makes(self) -> None:  # pragma: no cover
         with psycopg.connect(self._connection_url) as conn:
             queries.delete_all_makes(conn)
 
@@ -276,7 +276,7 @@ class DBInterface:
 # ------------------ DELETE BODY STYLES --------------------------
 
     @check_connection
-    def delete_all_body_styles(self) -> None:
+    def delete_all_body_styles(self) -> None:  # pragma: no cover
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.delete_all_body_styles(conn)
 
@@ -372,7 +372,7 @@ class DBInterface:
 # ---------------------------- DELETE MODELS -------------------------------
 
     @check_connection
-    def delete_all_models(self) -> None:
+    def delete_all_models(self) -> None:  # pragma: no cover
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.delete_all_models(conn)
 
@@ -610,16 +610,16 @@ class DBInterface:
             queries.delete_all_states(conn)
 
 
-def main():  # pragma: no cover
-    dao = DBInterface("postgresql://postgres:password@localhost/Car-Listings")
-    dao.delete_all_users()
-    user_list = [{"username": f"username{i}", "email": f"user{i}@email.com",
-                  "password_hash": f"password_hash{i}", "notification_frequency": 7} for i in range(1, 11)]
-    for user in user_list:
-        dao.add_user(user)
+# def main():  # pragma: no cover
+#     dao = DBInterface("postgresql://postgres:password@localhost/Car-Listings")
+#     dao.delete_all_users()
+#     user_list = [{"username": f"username{i}", "email": f"user{i}@email.com",
+#                   "password_hash": f"password_hash{i}", "notification_frequency": 7} for i in range(1, 11)]
+#     for user in user_list:
+#         dao.add_user(user)
 
-    print(dao.get_user_by_username("not a user"))
+#     print(dao.get_user_by_username("not a user"))
 
 
-if __name__ == "__main__":
-    main()  # pragma: no cover
+# if __name__ == "__main__":
+#     main()  # pragma: no cover

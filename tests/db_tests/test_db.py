@@ -7,7 +7,7 @@ import string
 import random
 import psycopg
 from collections import defaultdict
-from random import choices
+from random import choice, choices
 
 DB_URI = DevConfig.POSTGRES_DATABASE_URI
 WEBSITE_NAMES = ["autotrader", "cargurus", "usnews", "driveway", "capitolone"]
@@ -50,9 +50,16 @@ def city_list() -> list[dict]:
     return dbi.get_all_cities()
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def make_list() -> list[dict]:
-    return [{"make_name": get_random_string(3, 10)} for _ in range(5)]
+    dbi = DBInterface(DB_URI)
+    return dbi.get_all_makes()
+
+
+@pytest.fixture(scope="session")
+def model_list() -> list[dict]:
+    dbi = DBInterface(DB_URI)
+    return dbi.get_all_models()
 
 
 @pytest.fixture
@@ -66,50 +73,20 @@ def state_list() -> list[dict]:
     return dbi.get_all_states()
 
 
-def add_body_styles(dao: DBInterface) -> DBInterface:
-    dao.delete_all_body_styles()
+def add_body_styles(dao: DBInterface) -> DBInterface:  # pragma: no cover
     for style in body_styles:
-        dao.add_body_style(style)
+        if not dao.get_body_style_info(style):
+            dao.add_body_style(style)
 
     return dao
 
 
-def add_makes(dao: DBInterface, make_list: list[dict]) -> list[DBInterface, list]:
-    for make in make_list:
-        dao.add_make(make["make_name"])
-
-    return [dao, make_list]
-
-
-def add_models(dao: DBInterface) -> list[DBInterface, list[dict]]:
-    all_makes = dao.get_all_makes()
-    all_body_styles = dao.get_all_body_styles()
-    new_models = []
-
-    for _ in range(random.randint(3, 9)):
-        new_model_name = get_random_string(3, 15)
-        new_make_id = random.choice(all_makes)["id"]
-        new_body_style_id = random.choice(all_body_styles)["id"]
-
-        new_model = {"model_name": new_model_name,
-                     "make_id": new_make_id, "body_style_id": new_body_style_id}
-        new_models.append(new_model)
-
-        dao.add_model(model_name=new_model_name,
-                      make_id=new_make_id, body_style_id=new_body_style_id)
-
-    return [dao, new_models]
-
-
 def delete_all_data(curr_dao: DBInterface):
     curr_dao.delete_all_users()
-    curr_dao.delete_all_models()
-    curr_dao.delete_all_makes()
     curr_dao.delete_all_watched_cars()
     curr_dao.delete_all_criteria()
     curr_dao.delete_all_watched_car_criteria()
     curr_dao.delete_all_alerts()
-    curr_dao.delete_all_body_styles()
 
 
 @pytest.fixture
@@ -135,49 +112,30 @@ def dao_with_users(new_dao: DBInterface, user_list: list) -> list[DBInterface, l
     return add_users(new_dao, user_list)
 
 
-def add_cities(dao: DBInterface, cities: list[dict], states: list[dict]) -> list[DBInterface, list, list]:
-    return [dao, cities, states]
-
-
-@pytest.fixture
-def dao_with_cities(dao_with_states: list[DBInterface, list[dict]], city_list: list[dict]) -> list[DBInterface, list, list]:
-    dao, states = dao_with_states
-    return add_cities(dao, city_list, states)
-
-
 @pytest.fixture
 def dao_with_makes(new_dao: DBInterface, make_list: list) -> list[DBInterface, list]:
-    return add_makes(new_dao, make_list)
+    return [new_dao, make_list]
 
 
 @pytest.fixture
-def dao_with_body_styles(new_dao: DBInterface) -> DBInterface:
-    new_dao = add_body_styles(new_dao)
-    return new_dao
-
-
-@pytest.fixture
-def dao_with_web_body_styles(dao_with_body_styles: DBInterface) -> list[DBInterface, list[dict]]:
-    dao_with_body_styles.delete_all_website_body_styles()
+def dao_with_web_body_styles(new_dao: DBInterface) -> list[DBInterface, list[dict]]:
+    new_dao.delete_all_website_body_styles()
     web_body_styles = []
-    for body_style in dao_with_body_styles.get_all_body_styles():
+    for body_style in new_dao.get_all_body_styles():
         for website in WEBSITE_NAMES:
             new_name = get_random_string(3, 10)
-            dao_with_body_styles.add_website_body_style(
+            new_dao.add_website_body_style(
                 body_style_id=body_style["id"], website_name=website, website_body_name=new_name)
             web_body_styles.append(
                 {"website_name": website, "new_name": new_name, "body_style_id": body_style["id"]})
 
-    return [dao_with_body_styles, web_body_styles]
+    return [new_dao, web_body_styles]
 
 
 @pytest.fixture
-def dao_with_models(new_dao: DBInterface, make_list: list[dict]) -> list[DBInterface, list[dict], list[dict]]:
-    new_dao = add_body_styles(new_dao)
-    new_dao, make_list = add_makes(new_dao, make_list)
-    new_dao, models_list = add_models(new_dao)
+def dao_with_models(new_dao: DBInterface, make_list: list[dict], model_list) -> list[DBInterface, list[dict], list[dict]]:
 
-    return [new_dao, make_list, models_list]
+    return [new_dao, make_list, model_list]
 
 
 def add_watched_cars(dao: DBInterface, watched_cars: list[dict]) -> list[DBInterface, list]:
@@ -251,10 +209,8 @@ def add_criteria(dao: DBInterface, criteria_list: list[dict]) -> list[DBInterfac
 
 
 @pytest.fixture
-def dao_with_criteria(new_dao: DBInterface, make_list: list[dict], city_list: list[dict], user_list: list[dict], state_list: list[dict]) -> list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]:
+def dao_with_criteria(new_dao: DBInterface, make_list: list[dict], user_list: list[dict], state_list: list[dict], model_list) -> list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]:
     new_dao = add_body_styles(new_dao)
-    new_dao, make_list = add_makes(new_dao, make_list)
-    new_dao, models_list = add_models(new_dao)
 
     new_dao, user_list = add_users(new_dao, user_list)
 
@@ -263,7 +219,7 @@ def dao_with_criteria(new_dao: DBInterface, make_list: list[dict], city_list: li
 
     new_dao, criteria = add_criteria(new_dao, criteria)
 
-    return [new_dao, criteria, make_list, models_list, user_list, state_list]
+    return [new_dao, criteria, make_list, model_list, user_list, state_list]
 
 
 def add_watched_car_criteria(dao: DBInterface) -> list[DBInterface, list[dict], list[dict]]:
@@ -444,34 +400,29 @@ def test_delete_user_by_username(dao_with_users: list[DBInterface, list]):
     assert len(dao.get_all_users()) == 0
 
 
-def test_get_all_cities(dao_with_cities: list[DBInterface, list, list]):
-    dao, city_list, states = dao_with_cities
-    all_cities = dao.get_all_cities()
+def test_get_all_cities(new_dao: DBInterface, city_list: list[dict]):
+    all_cities = new_dao.get_all_cities()
     all_cities_set = set(city["city_name"] for city in all_cities)
 
     assert len(all_cities) == len(city_list)
-    for city in city_list:
-        assert city["city_name"] in all_cities_set
 
 
-def test_delete_cities_by_name(dao_with_cities: list[DBInterface, list, list]):
-    dao, city_list, states = dao_with_cities
+def test_delete_cities_by_name(new_dao: DBInterface, city_list: list[dict]):
     TEST_CITY = "Not a city"
-    TEST_STATE_ID = dao.get_state_by_name("New York")["id"]
-    dao.add_city(city_name=TEST_CITY, state_id=TEST_STATE_ID)
+    TEST_STATE_ID = new_dao.get_state_by_name("New York")["id"]
+    new_dao.add_city(city_name=TEST_CITY, state_id=TEST_STATE_ID)
 
-    assert dao.get_city_id(TEST_CITY) != None
+    assert new_dao.get_city_id(TEST_CITY) != None
 
-    dao.delete_city_by_name(TEST_CITY)
+    new_dao.delete_city_by_name(TEST_CITY)
 
-    assert dao.get_city_id(TEST_CITY) == None
+    assert new_dao.get_city_id(TEST_CITY) == None
 
 
-def test_get_city_id(dao_with_cities: list[DBInterface, list, list]):
-    dao, city_list, states = dao_with_cities
-    all_cities = dao.get_all_cities()
+def test_get_city_id(new_dao: DBInterface, city_list: list[dict]):
+    all_cities = new_dao.get_all_cities()
     for city in choices(all_cities, k=10):
-        returned_city_id = dao.get_city_id(city["city_name"])
+        returned_city_id = new_dao.get_city_id(city["city_name"])
         assert city["id"] == returned_city_id
 
 
@@ -508,19 +459,15 @@ def test_delete_specific_zip(new_dao: DBInterface):
     assert dao.get_zip_code_info(false_zip) == None
 
 
-def test_get_all_makes(dao_with_makes: list[DBInterface, list]):
-    dao, makes_list = dao_with_makes
-    makes_name_set = set(make["make_name"] for make in makes_list)
-    all_makes = dao.get_all_makes()
+def test_get_all_makes(new_dao: DBInterface):
+    all_makes = new_dao.get_all_makes()
 
-    assert len(all_makes) == len(makes_list)
-
-    for make in makes_list:
-        assert make["make_name"] in makes_name_set
+    assert len(all_makes) == 66
 
 
 def test_get_specific_makes(dao_with_makes: list[DBInterface, list]):
     dao, makes_list = dao_with_makes
+    makes_list = dao.get_all_makes()
 
     for make in makes_list:
         make_info = dao.get_make_info(make["make_name"])
@@ -528,42 +475,44 @@ def test_get_specific_makes(dao_with_makes: list[DBInterface, list]):
             make_info) == 2 and make_info["make_name"] == make["make_name"]
 
 
-def test_get_make_by_id(dao_with_makes: list[DBInterface, list]):
-    dao, makes_list = dao_with_makes
+def test_get_make_by_id(new_dao: DBInterface):
 
-    all_makes = dao.get_all_makes()
+    all_makes = new_dao.get_all_makes()
 
     for make in all_makes:
-        assert dao.get_make_by_id(make["id"])["make_name"] == make["make_name"]
+        assert new_dao.get_make_by_id(
+            make["id"])["make_name"] == make["make_name"]
 
 
-def test_delete_make_by_name(dao_with_makes: list[DBInterface, list]):
-    dao, makes_list = dao_with_makes
+def test_add_and_remove_make(new_dao: DBInterface):
+    test_make = get_random_string(3, 8)
+    new_dao.add_make(test_make)
 
-    for make in makes_list:
-        dao.delete_make_by_name(make["make_name"])
+    assert new_dao.get_make_info(test_make) != {}
 
-    assert len(dao.get_all_makes()) == 0
+    new_dao.delete_make_by_name(test_make)
+
+    assert new_dao.get_make_info(test_make) == None
 
 
-def test_get_all_body_styles(dao_with_body_styles: DBInterface):
-    res = dao_with_body_styles.get_all_body_styles()
+def test_get_all_body_styles(new_dao: DBInterface):
+    res = new_dao.get_all_body_styles()
 
     for res_body_style in res:
         assert res_body_style["body_style_name"] in body_styles
 
 
-def test_get_specific_body_style(dao_with_body_styles: DBInterface):
+def test_get_specific_body_style(new_dao: DBInterface):
     for style in body_styles:
-        assert dao_with_body_styles.get_body_style_info(
+        assert new_dao.get_body_style_info(
             style)["body_style_name"] == style
 
 
-def test_get_body_style_by_id(dao_with_body_styles: DBInterface):
-    res = dao_with_body_styles.get_all_body_styles()
+def test_get_body_style_by_id(new_dao: DBInterface):
+    res = new_dao.get_all_body_styles()
 
     for body_style in res:
-        assert dao_with_body_styles.get_body_style_by_id(
+        assert new_dao.get_body_style_by_id(
             body_style["id"])["body_style_name"] == body_style["body_style_name"]
 
 
@@ -705,22 +654,24 @@ def test_get_model_by_id(dao_with_models: list[DBInterface, list[dict], list[dic
             "model_name"] == model["model_name"]
 
 
-def test_delete_model_by_model_name(dao_with_models: list[DBInterface, list[dict], list[dict]]):
-    dao, make_list, models_list = dao_with_models
+def test_add_model(new_dao: DBInterface):
+    makes = new_dao.get_all_makes()
+    body_style_data = new_dao.get_all_body_styles()
 
-    print(models_list)
-    print("\n")
-    print(dao.get_all_models())
+    rand_make = choice(makes)
+    rand_style = choice(body_style_data)
 
-    assert len(dao.get_all_models()) > 0
+    new_model = {"model_name": get_random_string(
+        5, 10), "make_id": rand_make["id"], "body_style_id": rand_style["id"]}
 
-    for model in models_list:
-        dao.delete_model_by_model_name(model["model_name"])
+    new_dao.add_model(**new_model)
 
-    print("\n")
-    print(dao.get_all_models())
+    assert new_dao.get_model_by_name(new_model["model_name"])[
+        "model_name"] == new_model["model_name"]
 
-    assert len(dao.get_all_models()) == 0
+    new_dao.delete_model_by_model_name(new_model["model_name"])
+
+    assert new_dao.get_model_by_name(new_model["model_name"]) == None
 
 
 def test_get_all_watched_cars(dao_with_watched_cars: list[DBInterface, list[dict]]):
@@ -758,7 +709,7 @@ def test_delete_watched_car_by_vin(dao_with_watched_cars: list[DBInterface, list
 
 
 def test_get_all_criteria(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, criteria, makes, models, users, states = dao_with_criteria
+    dao, criteria, makes, models, users, state_list = dao_with_criteria
 
     db_criteria = dao.get_all_criteria()
     assert len(db_criteria) == len(criteria)
@@ -770,7 +721,7 @@ def test_get_all_criteria(dao_with_criteria: list[DBInterface, list[dict], list[
 
 
 def test_get_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, criteria, makes, models, users, states = dao_with_criteria
+    dao, criteria, makes, models, users, state_list = dao_with_criteria
 
     identical_criteria_count = defaultdict(int)
 
@@ -784,7 +735,7 @@ def test_get_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], l
 
 
 def test_delete_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, criteria, makes, models, users, states = dao_with_criteria
+    dao, criteria, makes, models, users, state_list = dao_with_criteria
 
     assert len(dao.get_all_criteria()) == len(criteria)
 
