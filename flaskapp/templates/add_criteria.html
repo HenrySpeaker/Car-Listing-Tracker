@@ -28,10 +28,11 @@
 
 
 
-    <a href="/add-criteria/body-style">Add a body style search</a>
+    <a href="/add-criteria/body-style" id="add-body-style">Add a body style search</a>
     <br>
     {% for make in makes %}
-    <a href="/add-criteria/{{ make['make_name'] }}">Add a {{ make['make_name'] }} search</a><br>
+    <a href="/add-criteria/{{ make['make_name'] }}" class="add-make" id="{{ make['make_name'] }}">Add a {{
+        make['make_name'] }} search</a><br>
     {% endfor %}
 
 

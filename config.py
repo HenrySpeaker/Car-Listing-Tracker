@@ -10,6 +10,7 @@ MODEL_ROW_COUNT = 1415
 
 class Config:
     """Set Flask config variables."""
+    FLASK_APP = environ.get("FLASK_APP")
 
 
 class ProdConfig(Config):
@@ -17,6 +18,8 @@ class ProdConfig(Config):
     DEBUG = False
     TESTING = False
     POSTGRES_DATABASE_URI = environ.get("PROD_DATABASE_URI")
+    LIVESERVER_PORT = 8943
+    SECRET_KEY = environ.get("PROD_SECRET_KEY")
 
 
 class DevConfig(Config):
@@ -24,3 +27,4 @@ class DevConfig(Config):
     DEBUG = True
     TESTING = True
     POSTGRES_DATABASE_URI = environ.get("DEV_DATABASE_URI")
+    SECRET_KEY = environ.get("DEV_SECRET_KEY")

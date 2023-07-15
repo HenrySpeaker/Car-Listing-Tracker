@@ -3,6 +3,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, SelectField, IntegerField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Length, NumberRange
 from db.body_styles import body_styles
+from db.dbi.db_interface import DBInterface
+from flask import current_app
 
 body_style_list = [body for body in body_styles.keys()]
 
@@ -31,7 +33,7 @@ class LoginForm(FlaskForm):
 
     def validate(self, extra_validators=None):
 
-        if not super().validate(extra_validators):
+        if not super().validate(extra_validators):  # pragma: no cover
             return False
 
         check = (len(self.username.data) > 0) ^ (len(self.email.data) > 0)
@@ -70,7 +72,7 @@ class BaseCriteriaForm(FlaskForm):
                             InputRequired(), NumberRange(min=1, max=99999)])
 
     def validate(self, extra_validators=None):
-        if not super().validate(extra_validators):
+        if not super().validate(extra_validators):  # pragma: no cover
             return False
 
         if self.min_year.data > self.max_year.data:
@@ -81,6 +83,13 @@ class BaseCriteriaForm(FlaskForm):
         if self.min_price.data > self.max_price.data:
             self.min_price.errors.append(
                 "Minimum car price must be less than maximum car price")
+            return False
+
+        dbi = DBInterface(current_app.config["POSTGRES_DATABASE_URI"])
+
+        if dbi.get_zip_code_info(self.zip_code.data) == None:
+            self.zip_code.errors.append("Must enter a valid zip code.")
+            return False
 
         return True
 

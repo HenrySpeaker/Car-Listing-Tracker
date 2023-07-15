@@ -12,8 +12,10 @@ def check_connection(fn):
     @wraps(fn)
     def inner(*args, **kwargs):
         """Checks if a valid connection has been supplied when initiating the DAO and runs the supplied function if it is valid."""
-        if getattr(args[0], "_valid_connection", None):
+        if getattr(args[0], "_valid_connection", None) and args[0]._valid_connection:
             return fn(*args, **kwargs)
+        else:
+            raise RuntimeError("The database connection is not valid.")
 
     return inner
 
@@ -500,18 +502,18 @@ class DBInterface:
 
     @check_connection
     def delete_criteria_by_info(self,
-                                min_year: int,
-                                max_year: int,
-                                min_price: int,
-                                max_price: int,
-                                max_mileage: int,
-                                search_distance: int,
-                                no_accidents: bool,
-                                single_owner: bool,
-                                user_id: int,
-                                zip_code_id: int,
-                                model_id: int,
-                                body_style_id: int
+                                min_year=None,
+                                max_year: int | None = None,
+                                min_price: int | None = None,
+                                max_price: int | None = None,
+                                max_mileage: int | None = None,
+                                search_distance: int | None = None,
+                                no_accidents: bool | None = True,
+                                single_owner: bool | None = False,
+                                user_id: int | None = None,
+                                zip_code_id: int | None = None,
+                                model_id: int | None = None,
+                                body_style_id: int | None = None
                                 ) -> None:
 
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:

@@ -10,7 +10,6 @@ from prepare_db import prepare_db
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
-    app.secret_key = secrets.token_hex()
 
     if test_config is None:  # pragma: no cover
         app.config.from_object("config.ProdConfig")

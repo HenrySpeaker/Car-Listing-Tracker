@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, current_app, redirect
+from flask import Blueprint, render_template, current_app, redirect, url_for
 from .forms import RegisterForm, LoginForm, MakeModelCriteriaForm, BodyStyleCriteriaForm
 import logging
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -44,9 +44,9 @@ def login():
                 logger.info(poss_user)
                 return redirect("account")
             else:
-                return render_template("login.html", form=form)
+                return redirect("login")
 
-        if user_info["email"]:
+        elif user_info["email"]:
             poss_user = db_interface.get_user_by_email(
                 user_info["email"])
             if poss_user and check_password_hash(poss_user["password_hash"], user_info["password"]):
@@ -57,7 +57,10 @@ def login():
                 logger.info(poss_user)
                 return redirect("account")
             else:
-                return render_template("login.html", form=form)
+                return redirect("login")
+
+        else:  # pragma: no cover
+            return render_template("login.html", form=form)
 
     return render_template("login.html", form=form)
 
@@ -88,6 +91,39 @@ def account():
     return render_template("account.html")
 
 
+criteria_map = {'min_year': 'Minimum year', 'max_year': 'Maximum year', 'min_price': 'Minimum price', 'max_price': 'Maximum price', 'max_mileage': 'Maximum mileage',
+                'search_distance': 'Search radius', 'no_accidents': 'No accidents', 'single_owner': 'Single owner', 'make_name': 'Make', 'model_name': 'Model', 'body_style_name': 'Body style'}
+
+
+# @bp.route("/criteria")
+# @login_required
+# def criteria():
+#     db_uri = current_app.config["POSTGRES_DATABASE_URI"]
+#     db_interface = DBInterface(db_uri)
+#     user_criteria = db_interface.get_all_criteria()
+
+#     criteria = [{
+#         "Minimum year": row["min_year"],
+#         "Maximum year": row["max_year"],
+#         "Minimum price": row["min_price"] if row["min_price"] else 0,
+#         "Maximum price": row["max_price"],
+#         "Maximum mileage": row["max_mileage"],
+#         "Search radius": row["search_distance"],
+#         "No accidents": row["no_accidents"],
+#         "Single owner": row["single_owner"],
+#         "Make": db_interface.get_make_by_id(db_interface.get_model_by_id(row["model_id"])["make_id"])["make_name"] if row["model_id"] else "No make",
+#         "Model": model_info["model_name"] if row["model_id"] and (model_info := db_interface.get_model_by_id(row["model_id"])) else "No model",
+#         "Body style": body_style if row["body_style_id"] and (body_style := db_interface.get_body_style_by_id(row["body_style_id"])["body_style_name"]) else db_interface.get_body_style_by_id(db_interface.get_model_by_id(row["model_id"])["body_style_id"])["body_style_name"]
+
+#     } for row in user_criteria]
+
+#     key_list = criteria[0].keys() if criteria else []
+
+#     logger.info(f"Criteria for user id: {current_user.user_id} accessed")
+
+#     return render_template("criteria.html", criteria=criteria, key_list=key_list)
+
+
 @bp.route("/criteria")
 @login_required
 def criteria():
@@ -96,17 +132,17 @@ def criteria():
     user_criteria = db_interface.get_all_criteria()
 
     criteria = [{
-        "Minimum year": row["min_year"],
-        "Maximum year": row["max_year"],
-        "Minimum price": row["min_price"] if row["min_price"] else 0,
-        "Maximum price": row["max_price"],
-        "Maximum mileage": row["max_mileage"],
-        "Search radius": row["search_distance"],
-        "No accidents": row["no_accidents"],
-        "Single owner": row["single_owner"],
-        "Make": db_interface.get_make_by_id(db_interface.get_model_by_id(row["model_id"])["make_id"])["make_name"] if row["model_id"] else "No make",
-        "Model": model_info["model_name"] if row["model_id"] and (model_info := db_interface.get_model_by_id(row["model_id"])) else "No model",
-        "Body style": body_style if row["body_style_id"] and (body_style := db_interface.get_body_style_by_id(row["body_style_id"])["body_style_name"]) else db_interface.get_body_style_by_id(db_interface.get_model_by_id(row["model_id"])["body_style_id"])["body_style_name"]
+        "min_year": row["min_year"],
+        "max_year": row["max_year"],
+        "min_price": row["min_price"] if row["min_price"] else 0,
+        "max_price": row["max_price"],
+        "max_mileage": row["max_mileage"],
+        "search_distance": row["search_distance"],
+        "no_accidents": row["no_accidents"],
+        "single_owner": row["single_owner"],
+        "make_name": db_interface.get_make_by_id(db_interface.get_model_by_id(row["model_id"])["make_id"])["make_name"] if row["model_id"] else "No make",
+        "model_name": model_info["model_name"] if row["model_id"] and (model_info := db_interface.get_model_by_id(row["model_id"])) else "No model",
+        "body_style_name": body_style if row["body_style_id"] and (body_style := db_interface.get_body_style_by_id(row["body_style_id"])["body_style_name"]) else db_interface.get_body_style_by_id(db_interface.get_model_by_id(row["model_id"])["body_style_id"])["body_style_name"]
 
     } for row in user_criteria]
 
@@ -114,7 +150,7 @@ def criteria():
 
     logger.info(f"Criteria for user id: {current_user.user_id} accessed")
 
-    return render_template("criteria.html", criteria=criteria, key_list=key_list)
+    return render_template("criteria.html", criteria=criteria, key_map=criteria_map, key_list=key_list)
 
 
 @bp.route("/add-criteria", methods=["GET", "POST"])
@@ -133,7 +169,7 @@ def add_criteria():
 
 @bp.route("/add-criteria/body-style", methods=["GET", "POST"])
 @login_required
-def add_criteria_body_type():
+def add_criteria_body_style():
     form = BodyStyleCriteriaForm()
     if form.validate_on_submit():
         db_uri = current_app.config["POSTGRES_DATABASE_URI"]
@@ -155,7 +191,7 @@ def add_criteria_body_type():
         logger.info("new body style criteria submitted")
         logger.info(criteria)
         db_interface.add_criteria(**criteria)
-        return redirect("criteria")
+        return redirect("/criteria")
     return render_template("add_body_style_criteria.html", form=form)
 
 
@@ -191,6 +227,6 @@ def add_criteria_make_model(make):
         logger.info("new make/model criteria submitted")
         logger.info(criteria)
         db_interface.add_criteria(**criteria)
-        return redirect("criteria")
+        return redirect("/criteria")
 
     return render_template("add_make_model_criteria.html", form=form, make=make)

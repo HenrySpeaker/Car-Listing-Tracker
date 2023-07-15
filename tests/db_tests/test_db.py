@@ -284,6 +284,16 @@ def dao_with_states(new_dao: DBInterface, state_list: list[dict]) -> list[DBInte
     return add_states(new_dao, state_list)
 
 
+def test_false_valid_connection_attribute(new_dao: DBInterface):
+    with pytest.raises(RuntimeError) as excinfo:
+        new_dao._valid_connection = False
+        res = new_dao.get_all_users()
+
+    assert "The database connection is not valid." in str(excinfo.value)
+
+    new_dao._valid_connection = True
+
+
 def test_bad_db_url(capsys):
     curr_dao = DBInterface("Not a valid db url")
     assert capsys.readouterr(
