@@ -4,9 +4,8 @@ import os
 from prepare_db import prepare_db
 import pytest
 from flaskapp import create_app
-import coverage
 import signal
-import multiprocessing
+from db.dbi.db_interface import DBInterface
 from config import DevConfig
 
 
@@ -15,13 +14,18 @@ def pytest_sessionstart(session):
     Called after the Session object has been created and
     before performing collection and entering the run test loop.
     """
+    db_uri = DevConfig.POSTGRES_DATABASE_URI
+    dbi = DBInterface(db_uri)
+
+    dbi.delete_all_models()
+    dbi.delete_all_makes()
+    dbi.delete_all_body_styles()
     prepare_db()
 
 
 @pytest.fixture(scope="session")
 def app():
     app = create_app()
-    # multiprocessing.set_start_method("spawn")
     return app
 
 
@@ -38,32 +42,10 @@ def flask_port():
 @pytest.fixture(scope="session", autouse=True)
 def live_server(flask_port):
     env = os.environ.copy()
-    # coverage.process_startup()
     server = subprocess.Popen(
         ['flask', 'run', '--port', str(flask_port)], env=env)
-    # server = subprocess.Popen(
-    #     ['python', '-m', 'flask', 'run', '--port', str(flask_port)], env=env)
+
     try:
         yield server
     finally:
-        # server.terminate()
         server.send_signal(signal.SIGTERM)
-
-# @pytest.fixture(scope="session", autouse=True)
-# def live_server(flask_port):
-#     env = os.environ.copy()
-#     # coverage.process_startup()
-#     server = multiprocessing.Process(target=create_app, args=(DevConfig,))
-#     server.start()
-#     # server = subprocess.Popen(
-#     #     ['python', '-m', 'flask', 'run', '--port', str(flask_port)], env=env)
-#     try:
-#         yield server
-#     finally:
-#         # server.terminate()
-#         server.join()
-
-
-# @pytest.fixture
-# def client(app):
-#     return app.test_client()
