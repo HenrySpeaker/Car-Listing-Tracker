@@ -718,6 +718,22 @@ def test_delete_watched_car_by_vin(dao_with_watched_cars: list[DBInterface, list
     assert len(dao.get_all_watched_cars()) == 0
 
 
+def test_update_watched_car(dao_with_watched_cars: list[DBInterface, list[dict]]):
+    dao, watched_cars = dao_with_watched_cars
+    curr_time = datetime.now()
+    new_price = random.randint(100, 500000)
+
+    for car in watched_cars:
+        dao.update_watched_car(
+            vin=car["vin"], last_price=new_price, last_update=curr_time)
+
+    for car in watched_cars:
+        car_data = dao.get_watched_car_by_vin(car["vin"])
+        last_update_tz = car_data["last_update"].tzinfo
+        assert car_data["last_update"] == curr_time.astimezone(last_update_tz)
+        assert car_data["last_price"] == new_price
+
+
 def test_get_all_criteria(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
     dao, criteria, makes, models, users, state_list = dao_with_criteria
 
