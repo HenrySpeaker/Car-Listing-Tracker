@@ -24,15 +24,15 @@ def get_iseecars_listings(criteria: dict) -> list[dict]:
 
         for info_div in additional_info_divs:
             if "Price:" in info_div.find("b"):
-                listing_info["price"] = "".join(
-                    info_div.find("span").string[1:].split(","))
+                listing_info["price"] = int("".join(
+                    info_div.find("span").string[1:].split(",")))
 
             if "VIN:" in info_div.find("b"):
                 listing_info["vin"] = info_div.find("span").string
 
-        listing_info["zip_code"] = listing.find(
-            "div", attrs={"class": "storage"})["data-zip"]
+        listing_info["zip_code"] = int(listing.find(
+            "div", attrs={"class": "storage"})["data-zip"])
 
-        print(listing_info)
+        cars_found.append(listing_info)
 
     return cars_found
