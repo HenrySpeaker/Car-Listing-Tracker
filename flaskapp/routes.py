@@ -160,6 +160,7 @@ def add_criteria():
     db_uri = current_app.config["POSTGRES_DATABASE_URI"]
     db_interface = DBInterface(db_uri)
     makes = db_interface.get_all_makes()
+    makes.sort(key=lambda make: make["make_name"])
 
     logger.info(
         f"Add criteria page accessed by user id {current_user.user_id}")
@@ -204,6 +205,7 @@ def add_criteria_make_model(make):
     db_interface = DBInterface(db_uri)
 
     models_list = db_interface.get_model_by_make_name(make)
+    models_list.sort(key=lambda model: model["model_name"])
 
     form.model_name.choices = [model["model_name"] for model in models_list]
 
