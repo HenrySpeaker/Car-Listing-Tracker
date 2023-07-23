@@ -104,3 +104,4 @@ ENV/
 car-data/
 scrapers/
 uszips.csv
+dataCollection/*.html
