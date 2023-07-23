@@ -190,6 +190,11 @@ class DBInterface:
         with psycopg.connect(self._connection_url) as conn:
             return queries.get_zip_code_count(conn)
 
+    @check_connection
+    def get_zip_code_by_id(self, zip_code_id: int) -> dict:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return queries.get_zip_code_by_id(conn, zip_code_id=zip_code_id)
+
 # ---------------------- ADD ZIP CODES ----------------------------------
 
     @check_connection

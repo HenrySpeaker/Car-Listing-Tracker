@@ -452,6 +452,14 @@ def test_get_zip_count(new_dao: DBInterface):
     assert new_dao.get_zip_code_count() == ZIP_ROW_COUNT
 
 
+def test_get_zip_code_by_id(new_dao: DBInterface):
+    test_zips = choices(new_dao.get_all_zip_codes(), k=5)
+
+    for zip in test_zips:
+        assert zip["zip_code"] == new_dao.get_zip_code_by_id(zip["id"])[
+            "zip_code"]
+
+
 def test_delete_specific_zip(new_dao: DBInterface):
     dao = new_dao
 
