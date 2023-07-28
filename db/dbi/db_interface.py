@@ -415,10 +415,10 @@ class DBInterface:
 # ----------------------- UPDATE WATCHED CAR --------------------------------
 
     @check_connection
-    def update_watched_car(self, vin: str, last_price: int, last_update: datetime) -> None:
+    def update_watched_car(self, vin: str, last_price: int, last_update: datetime, prev_price: int) -> None:
         with psycopg.connect(self._connection_url) as conn:
             queries.update_watched_car(
-                conn, vin=vin, last_price=last_price, last_update=last_update)
+                conn, vin=vin, last_price=last_price, last_update=last_update, prev_price=prev_price)
 
 # ---------------------- DELETE WATCHED CARS -------------------------------
 
@@ -594,6 +594,11 @@ class DBInterface:
             return [row for row in queries.get_all_alerts(conn)]
 
     @check_connection
+    def get_alert_by_info(self, user_id: int | None, car_id: int | None):
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return [row for row in queries.get_alerts_by_info(conn, user_id=user_id, car_id=car_id)]
+
+    @check_connection
     def add_alert(self, car_id: int, user_id: int, change: str) -> None:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.add_alert(conn, car_id=car_id,
@@ -603,6 +608,11 @@ class DBInterface:
     def delete_all_alerts(self) -> None:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.delete_all_alerts(conn)
+
+    @check_connection
+    def delete_alerts_by_info(self, car_id: int | None, user_id: int | None) -> None:
+        with psycopg.connect(self._connection_url) as conn:
+            queries.delete_alerts_by_info(conn, car_id=car_id, user_id=user_id)
 
 
 # ----------------------- States -------------------------------------------------

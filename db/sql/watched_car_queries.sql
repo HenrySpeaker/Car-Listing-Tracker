@@ -8,7 +8,7 @@ SELECT * FROM watched_car WHERE vin = :vin LIMIT 1;
 INSERT INTO watched_car (vin, listing_url, last_price) VALUES (:vin, :listing_url, :last_price);
 
 -- name: update_watched_car!
-UPDATE watched_car SET last_price=:last_price, last_update=:last_update WHERE vin=:vin; 
+UPDATE watched_car SET last_price=:last_price, last_update=:last_update, prev_price=:prev_price WHERE vin=:vin; 
 
 -- name: delete_all_watched_cars!
 DELETE FROM watched_car;

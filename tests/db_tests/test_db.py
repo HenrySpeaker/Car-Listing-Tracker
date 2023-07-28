@@ -1,13 +1,14 @@
 import pytest
 from db.dbi.db_interface import DBInterface
 from db.body_styles import body_styles
-from config import DevConfig, ZIP_ROW_COUNT, MODEL_ROW_COUNT
+from config import DevConfig, ZIP_ROW_COUNT
 from datetime import datetime
 import string
 import random
 import psycopg
 from collections import defaultdict
 from random import choice, choices
+from time import sleep
 
 DB_URI = DevConfig.POSTGRES_DATABASE_URI
 WEBSITE_NAMES = ["autotrader", "cargurus", "usnews", "driveway", "capitolone"]
@@ -250,7 +251,7 @@ def dao_with_watched_car_criteria(dao_with_criteria: list[DBInterface, list[dict
 
 
 def add_listing_alerts(dao: DBInterface) -> list[DBInterface, list[dict]]:
-
+    dao.delete_all_alerts()
     new_alerts = []
     user_list = dao.get_all_users()
     watched_car_list = dao.get_all_watched_cars()
@@ -733,13 +734,14 @@ def test_update_watched_car(dao_with_watched_cars: list[DBInterface, list[dict]]
 
     for car in watched_cars:
         dao.update_watched_car(
-            vin=car["vin"], last_price=new_price, last_update=curr_time)
+            vin=car["vin"], last_price=new_price, last_update=curr_time, prev_price=car["last_price"])
 
     for car in watched_cars:
         car_data = dao.get_watched_car_by_vin(car["vin"])
         last_update_tz = car_data["last_update"].tzinfo
         assert car_data["last_update"] == curr_time.astimezone(last_update_tz)
         assert car_data["last_price"] == new_price
+        assert car_data["prev_price"] == car["last_price"]
 
 
 def test_get_all_criteria(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
@@ -815,6 +817,34 @@ def test_get_all_listing_alerts(dao_with_listing_alerts: list[DBInterface, list[
     assert len(alerts_data) == len(alerts)
 
     assert compare_data(alerts, alerts_data)
+
+
+def test_get_listing_alerts_by_info(dao_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]]):
+    dao, users, watched_cars, alerts = dao_with_listing_alerts
+
+    for alert in alerts:
+        get_res = dao.get_alert_by_info(
+            user_id=alert["user_id"], car_id=alert["car_id"])
+        assert len(get_res) >= 1
+        res = get_res[0]
+        assert res["user_id"] == alert["user_id"]
+        assert res["car_id"] == alert["car_id"]
+
+
+def test_delete_listing_alerts_by_info(dao_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]]):
+    dao, users, watched_cars, alerts = dao_with_listing_alerts
+
+    all_alerts = dao.get_all_alerts()
+
+    assert len(all_alerts) == len(alerts)
+
+    for alert in alerts:
+        dao.delete_alerts_by_info(
+            car_id=alert["car_id"], user_id=alert["user_id"])
+
+    all_alerts = dao.get_all_alerts()
+
+    assert len(all_alerts) == 0
 
 
 def test_get_all_states(dao_with_states: list[DBInterface, list[dict]]):
