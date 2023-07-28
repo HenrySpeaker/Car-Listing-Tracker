@@ -10,7 +10,6 @@ dbi = DBInterface(dbi_url)
 
 
 def find_cars():
-    # iterate over criteria
 
     for crit in dbi.get_all_criteria():
 
@@ -42,7 +41,15 @@ def find_cars():
 
             # if car in db then update the listing if necessary and add listing to alerts table if necessary
             if res and res["last_price"] > car["price"]:
-                print("listing already found")
+
+                # first check and see if any previous price drops are in the alerts table and clear them
+                possible_prev_alerts = dbi.get_alert_by_info(
+                    user_id=crit["user_id"], car_id=res["id"])
+
+                if possible_prev_alerts:
+                    dbi.delete_alerts_by_info(
+                        user_id=crit["user_id"], car_id=res["id"], change="price_drop")
+
                 dbi.add_alert(car_id=res["id"],
                               user_id=crit["user_id"], change="price_drop")
 
@@ -51,7 +58,6 @@ def find_cars():
 
             # if car not in db then add it and update alerts table
             elif not res:
-                print("no listing found")
                 dbi.add_watched_car(
                     vin=car["vin"], listing_url=car["url"], last_price=car["price"])
                 res = dbi.get_watched_car_by_vin(vin=car["vin"])
