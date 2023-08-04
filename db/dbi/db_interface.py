@@ -404,13 +404,18 @@ class DBInterface:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             return queries.get_watched_car_by_vin(conn, vin=vin)
 
+    @check_connection
+    def get_watched_car_by_id(self, id: int) -> dict:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return queries.get_watched_car_by_id(conn, id=id)
+
 # ----------------------- ADD WATCHED CAR ----------------------------------
 
     @check_connection
-    def add_watched_car(self, vin: str, listing_url: str, last_price: int) -> None:
+    def add_watched_car(self, vin: str, listing_url: str, last_price: int, criteria_id: int) -> None:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.add_watched_car(
-                conn, vin=vin, listing_url=listing_url, last_price=last_price)
+                conn, vin=vin, listing_url=listing_url, last_price=last_price, criteria_id=criteria_id)
 
 # ----------------------- UPDATE WATCHED CAR --------------------------------
 
@@ -443,7 +448,8 @@ class DBInterface:
 
     @check_connection
     def get_criteria_by_info(self,
-                             min_year=None,
+                             id: int | None = None,
+                             min_year: int | None = None,
                              max_year: int | None = None,
                              min_price: int | None = None,
                              max_price: int | None = None,
@@ -458,6 +464,7 @@ class DBInterface:
                              ) -> list[dict]:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             res = queries.get_criteria_by_info(conn,
+                                               id=id,
                                                min_year=min_year,
                                                max_year=max_year,
                                                min_price=min_price,
@@ -472,6 +479,12 @@ class DBInterface:
                                                body_style_id=body_style_id)
 
             return [criteria for criteria in res]
+
+    @check_connection
+    def get_criteria_by_id(self, id: int):
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return queries.get_criteria_by_id(conn, id=id)
+
 
 # ------------------------------- ADD CRITERIA ----------------------------------
 
@@ -516,7 +529,8 @@ class DBInterface:
 
     @check_connection
     def delete_criteria_by_info(self,
-                                min_year=None,
+                                id: int | None = None,
+                                min_year: int | None = None,
                                 max_year: int | None = None,
                                 min_price: int | None = None,
                                 max_price: int | None = None,
@@ -532,6 +546,7 @@ class DBInterface:
 
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.delete_criteria_by_info(conn,
+                                            id=id,
                                             min_year=min_year,
                                             max_year=max_year,
                                             min_price=min_price,
@@ -546,43 +561,41 @@ class DBInterface:
                                             body_style_id=body_style_id)
 
 
-# ------------------------------ Watched Car Criteria --------------------------------
+# # ------------------------------ Watched Car Criteria --------------------------------
 
-# ------------------------------ Add Watched Car Criteria ----------------------------
+# # ------------------------------ Add Watched Car Criteria ----------------------------
 
+#     @check_connection
+#     def get_all_watched_car_criteria(self) -> list[dict]:
+#         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+#             return [row for row in queries.get_all_watched_car_criteria(conn)]
 
-    @check_connection
-    def get_all_watched_car_criteria(self) -> list[dict]:
-        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-            return [row for row in queries.get_all_watched_car_criteria(conn)]
-
-    @check_connection
-    def get_watched_car_criteria_by_info(self, criteria_id: int | None = None, watched_car_id: int | None = None) -> list[dict]:
-        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-            return [row for row in queries.get_watched_car_criteria_by_info(conn, criteria_id=criteria_id, watched_car_id=watched_car_id)]
-
-
-# ---------------------------- Add Watched Car Criteria ------------------------------
+#     @check_connection
+#     def get_watched_car_criteria_by_info(self, criteria_id: int | None = None, watched_car_id: int | None = None) -> list[dict]:
+#         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+#             return [row for row in queries.get_watched_car_criteria_by_info(conn, criteria_id=criteria_id, watched_car_id=watched_car_id)]
 
 
-    @check_connection
-    def add_watched_car_criteria(self, criteria_id: int, watched_car_id: int) -> None:
-        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-            queries.add_watched_car_criteria(
-                conn, criteria_id=criteria_id, watched_car_id=watched_car_id)
+# # ---------------------------- Add Watched Car Criteria ------------------------------
 
-# --------------------------- Delete Watched Car Criteria ----------------------------
+#     @check_connection
+#     def add_watched_car_criteria(self, criteria_id: int, watched_car_id: int) -> None:
+#         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+#             queries.add_watched_car_criteria(
+#                 conn, criteria_id=criteria_id, watched_car_id=watched_car_id)
 
-    @check_connection
-    def delete_all_watched_car_criteria(self) -> None:
-        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-            queries.delete_all_watched_car_criteria(conn)
+# # --------------------------- Delete Watched Car Criteria ----------------------------
 
-    @check_connection
-    def delete_watched_car_criteria_by_info(self, criteria_id: int | None = None, watched_car_id: int | None = None) -> None:
-        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-            queries.delete_watched_car_criteria_by_info(
-                conn, criteria_id=criteria_id, watched_car_id=watched_car_id)
+#     @check_connection
+#     def delete_all_watched_car_criteria(self) -> None:
+#         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+#             queries.delete_all_watched_car_criteria(conn)
+
+#     @check_connection
+#     def delete_watched_car_criteria_by_info(self, criteria_id: int | None = None, watched_car_id: int | None = None) -> None:
+#         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+#             queries.delete_watched_car_criteria_by_info(
+#                 conn, criteria_id=criteria_id, watched_car_id=watched_car_id)
 
 
 # ----------------------------- Listing Alerts --------------------------------------
@@ -594,15 +607,14 @@ class DBInterface:
             return [row for row in queries.get_all_alerts(conn)]
 
     @check_connection
-    def get_alert_by_info(self, user_id: int | None, car_id: int | None):
+    def get_alert_by_info(self, car_id: int | None):
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-            return [row for row in queries.get_alerts_by_info(conn, user_id=user_id, car_id=car_id)]
+            return [row for row in queries.get_alerts_by_info(conn, car_id=car_id)]
 
     @check_connection
-    def add_alert(self, car_id: int, user_id: int, change: str) -> None:
+    def add_alert(self, car_id: int, change: str) -> None:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-            queries.add_alert(conn, car_id=car_id,
-                              user_id=user_id, change=change)
+            queries.add_alert(conn, car_id=car_id, change=change)
 
     @check_connection
     def delete_all_alerts(self) -> None:
@@ -610,9 +622,9 @@ class DBInterface:
             queries.delete_all_alerts(conn)
 
     @check_connection
-    def delete_alerts_by_info(self, car_id: int | None, user_id: int | None) -> None:
+    def delete_alerts_by_info(self, car_id: int | None) -> None:
         with psycopg.connect(self._connection_url) as conn:
-            queries.delete_alerts_by_info(conn, car_id=car_id, user_id=user_id)
+            queries.delete_alerts_by_info(conn, car_id=car_id)
 
 
 # ----------------------- States -------------------------------------------------

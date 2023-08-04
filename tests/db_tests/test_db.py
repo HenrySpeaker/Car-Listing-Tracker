@@ -86,7 +86,7 @@ def delete_all_data(curr_dao: DBInterface):
     curr_dao.delete_all_users()
     curr_dao.delete_all_watched_cars()
     curr_dao.delete_all_criteria()
-    curr_dao.delete_all_watched_car_criteria()
+    # curr_dao.delete_all_watched_car_criteria()
     curr_dao.delete_all_alerts()
 
 
@@ -140,16 +140,18 @@ def dao_with_models(new_dao: DBInterface, make_list: list[dict], model_list) -> 
 
 
 def add_watched_cars(dao: DBInterface, watched_cars: list[dict]) -> list[DBInterface, list]:
+    all_criteria = dao.get_all_criteria()
     for car in watched_cars:
         dao.add_watched_car(
-            vin=car["vin"], listing_url=car["listing_url"], last_price=car["last_price"])
+            vin=car["vin"], listing_url=car["listing_url"], last_price=car["last_price"], criteria_id=choice(all_criteria)["id"])
 
     return [dao, watched_cars]
 
 
 @pytest.fixture
-def dao_with_watched_cars(new_dao: DBInterface, watched_car_list: list[dict]) -> list[DBInterface, list[dict]]:
-    return add_watched_cars(new_dao, watched_car_list)
+def dao_with_watched_cars(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]], watched_car_list: list[dict]):
+    dao, criteria, makes, models, users, state_list = dao_with_criteria
+    return add_watched_cars(dao, watched_car_list)
 
 
 def criteria_list(body_styles: list[dict], zips: list[dict], models: list[dict], users: list[dict]) -> list[dict]:
@@ -259,7 +261,6 @@ def add_listing_alerts(dao: DBInterface) -> list[DBInterface, list[dict]]:
     for _ in range(random.randint(5, 10)):
         new_alert = {}
         new_alert["car_id"] = random.choice(watched_car_list)["id"]
-        new_alert["user_id"] = random.choice(user_list)["id"]
         new_alert["change"] = random.choice(LISTING_CHANGES)
         new_alerts.append(new_alert)
 
@@ -269,8 +270,8 @@ def add_listing_alerts(dao: DBInterface) -> list[DBInterface, list[dict]]:
 
 
 @pytest.fixture
-def dao_with_listing_alerts(dao_with_users: list[DBInterface, list], watched_car_list: list[dict]) -> list[DBInterface, list[dict], list[dict], list[dict]]:
-    dao, users = dao_with_users
+def dao_with_listing_alerts(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]], watched_car_list: list[dict]):
+    dao, criteria, makes, models, users, state_list = dao_with_criteria
     dao, watched_car_list = add_watched_cars(dao, watched_car_list)
     dao, listing_alerts = add_listing_alerts(dao)
     return [dao, users, watched_car_list, listing_alerts]
@@ -716,6 +717,16 @@ def test_get_watched_car_by_vin(dao_with_watched_cars: list[DBInterface, list[di
         assert dao_car["last_price"] == car["last_price"]
 
 
+def test_get_watched_car_by_id(dao_with_watched_cars: list[DBInterface, list[dict]]):
+    dao, watched_cars = dao_with_watched_cars
+
+    db_watched_cars = dao.get_all_watched_cars()
+
+    for car in db_watched_cars:
+        res = dao.get_watched_car_by_id(id=car["id"])
+        assert compare_data([car], [res])
+
+
 def test_delete_watched_car_by_vin(dao_with_watched_cars: list[DBInterface, list[dict]]):
     dao, watched_cars = dao_with_watched_cars
 
@@ -781,32 +792,32 @@ def test_delete_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict]
     assert len(dao.get_all_criteria()) == 0
 
 
-def test_get_all_watched_car_criteria(dao_with_watched_car_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria = dao_with_watched_car_criteria
+# def test_get_all_watched_car_criteria(dao_with_watched_car_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]):
+#     dao, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria = dao_with_watched_car_criteria
 
-    db_data = dao.get_all_watched_car_criteria()
-    assert len(db_data) == len(watched_car_criteria)
+#     db_data = dao.get_all_watched_car_criteria()
+#     assert len(db_data) == len(watched_car_criteria)
 
-    assert compare_data(watched_car_criteria, db_data)
-
-
-def test_get_watched_car_criteria_by_info(dao_with_watched_car_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria = dao_with_watched_car_criteria
-
-    for crit in watched_car_criteria:
-        assert compare_data(
-            [crit], dao.get_watched_car_criteria_by_info(**crit))
+#     assert compare_data(watched_car_criteria, db_data)
 
 
-def test_delete_watched_car_criteria_by_info(dao_with_watched_car_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria = dao_with_watched_car_criteria
+# def test_get_watched_car_criteria_by_info(dao_with_watched_car_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]):
+#     dao, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria = dao_with_watched_car_criteria
 
-    assert len(dao.get_all_watched_car_criteria()) == len(watched_car_criteria)
+#     for crit in watched_car_criteria:
+#         assert compare_data(
+#             [crit], dao.get_watched_car_criteria_by_info(**crit))
 
-    for crit in watched_car_criteria:
-        dao.delete_watched_car_criteria_by_info(**crit)
 
-    assert len(dao.get_all_watched_car_criteria()) == 0
+# def test_delete_watched_car_criteria_by_info(dao_with_watched_car_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]):
+#     dao, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria = dao_with_watched_car_criteria
+
+#     assert len(dao.get_all_watched_car_criteria()) == len(watched_car_criteria)
+
+#     for crit in watched_car_criteria:
+#         dao.delete_watched_car_criteria_by_info(**crit)
+
+#     assert len(dao.get_all_watched_car_criteria()) == 0
 
 
 def test_get_all_listing_alerts(dao_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]]):
@@ -823,11 +834,9 @@ def test_get_listing_alerts_by_info(dao_with_listing_alerts: list[DBInterface, l
     dao, users, watched_cars, alerts = dao_with_listing_alerts
 
     for alert in alerts:
-        get_res = dao.get_alert_by_info(
-            user_id=alert["user_id"], car_id=alert["car_id"])
+        get_res = dao.get_alert_by_info(car_id=alert["car_id"])
         assert len(get_res) >= 1
         res = get_res[0]
-        assert res["user_id"] == alert["user_id"]
         assert res["car_id"] == alert["car_id"]
 
 
@@ -839,8 +848,7 @@ def test_delete_listing_alerts_by_info(dao_with_listing_alerts: list[DBInterface
     assert len(all_alerts) == len(alerts)
 
     for alert in alerts:
-        dao.delete_alerts_by_info(
-            car_id=alert["car_id"], user_id=alert["user_id"])
+        dao.delete_alerts_by_info(car_id=alert["car_id"])
 
     all_alerts = dao.get_all_alerts()
 
