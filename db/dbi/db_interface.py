@@ -412,10 +412,10 @@ class DBInterface:
 # ----------------------- ADD WATCHED CAR ----------------------------------
 
     @check_connection
-    def add_watched_car(self, vin: str, listing_url: str, last_price: int, criteria_id: int) -> None:
+    def add_watched_car(self, vin: str, listing_url: str, last_price: int, criteria_id: int, model_year: int) -> None:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.add_watched_car(
-                conn, vin=vin, listing_url=listing_url, last_price=last_price, criteria_id=criteria_id)
+                conn, vin=vin, listing_url=listing_url, last_price=last_price, criteria_id=criteria_id, model_year=model_year)
 
 # ----------------------- UPDATE WATCHED CAR --------------------------------
 

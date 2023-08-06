@@ -65,7 +65,7 @@ def model_list() -> list[dict]:
 
 @pytest.fixture
 def watched_car_list() -> list[dict]:
-    return [{"vin": get_random_string(10, 25), "listing_url": get_random_string(30, 100), "last_price": random.randint(100, 100000)} for _ in range(random.randint(5, 10))]
+    return [{"vin": get_random_string(10, 25), "listing_url": get_random_string(30, 100), "last_price": random.randint(100, 100000), "model_year": random.randint(1992, 2023)} for _ in range(random.randint(5, 10))]
 
 
 @pytest.fixture(scope="session")
@@ -143,7 +143,7 @@ def add_watched_cars(dao: DBInterface, watched_cars: list[dict]) -> list[DBInter
     all_criteria = dao.get_all_criteria()
     for car in watched_cars:
         dao.add_watched_car(
-            vin=car["vin"], listing_url=car["listing_url"], last_price=car["last_price"], criteria_id=choice(all_criteria)["id"])
+            vin=car["vin"], listing_url=car["listing_url"], last_price=car["last_price"], criteria_id=choice(all_criteria)["id"], model_year=car["model_year"])
 
     return [dao, watched_cars]
 
