@@ -15,8 +15,10 @@ WHERE
     (:user_id::integer IS NULL OR user_id=:user_id) AND    
     (:zip_code_id::integer IS NULL OR zip_code_id=:zip_code_id) AND
     (:model_id::integer IS NULL OR model_id=:model_id) AND
-    (:body_style_id::integer IS NULL OR body_style_id=:body_style_id) AND
-    (:id::integer IS NULL OR id=:id);
+    (:body_style_id::integer IS NULL OR body_style_id=:body_style_id);
+
+--name: get_criteria_by_user_id
+SELECt * FROM criteria WHERE user_id = :user_id;
 
 --name: get_criteria_by_id^
 SELECT * FROM criteria WHERE id = :id LIMIT 1;

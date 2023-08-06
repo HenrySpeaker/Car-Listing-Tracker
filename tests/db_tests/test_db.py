@@ -781,6 +781,31 @@ def test_get_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], l
             db_criteria)] == identical_criteria_count[get_tuple_from_dict(crit)]
 
 
+def test_get_criteria_by_id(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
+    dao, criteria, makes, models, users, state_list = dao_with_criteria
+
+    all_criteria = dao.get_all_criteria()
+
+    for crit in all_criteria:
+        assert get_tuple_from_dict(crit) == get_tuple_from_dict(
+            dao.get_criteria_by_id(crit["id"]))
+
+
+def test_get_criteria_by_user_id(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
+    dao, criteria, makes, models, users, state_list = dao_with_criteria
+
+    user_crit_count = defaultdict(int)
+
+    for crit in dao.get_all_criteria():
+        user_crit_count[crit["user_id"]] += 1
+
+    users_info = dao.get_all_users()
+
+    for user in users_info:
+        assert len(dao.get_criteria_by_user_id(
+            user["id"])) == user_crit_count[user["id"]]
+
+
 def test_delete_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
     dao, criteria, makes, models, users, state_list = dao_with_criteria
 

@@ -448,7 +448,6 @@ class DBInterface:
 
     @check_connection
     def get_criteria_by_info(self,
-                             id: int | None = None,
                              min_year: int | None = None,
                              max_year: int | None = None,
                              min_price: int | None = None,
@@ -464,7 +463,6 @@ class DBInterface:
                              ) -> list[dict]:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             res = queries.get_criteria_by_info(conn,
-                                               id=id,
                                                min_year=min_year,
                                                max_year=max_year,
                                                min_price=min_price,
@@ -481,10 +479,15 @@ class DBInterface:
             return [criteria for criteria in res]
 
     @check_connection
-    def get_criteria_by_id(self, id: int):
+    def get_criteria_by_id(self, id: int) -> dict:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             return queries.get_criteria_by_id(conn, id=id)
 
+    @check_connection
+    def get_criteria_by_user_id(self, user_id: int) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            res = queries.get_criteria_by_user_id(conn, user_id=user_id)
+            return [criteria for criteria in res]
 
 # ------------------------------- ADD CRITERIA ----------------------------------
 

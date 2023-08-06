@@ -129,7 +129,8 @@ criteria_map = {'min_year': 'Minimum year', 'max_year': 'Maximum year', 'min_pri
 def criteria():
     db_uri = current_app.config["POSTGRES_DATABASE_URI"]
     db_interface = DBInterface(db_uri)
-    user_criteria = db_interface.get_all_criteria()
+    user_criteria = db_interface.get_criteria_by_user_id(
+        user_id=current_user.user_id)
 
     criteria = [{
         "min_year": row["min_year"],

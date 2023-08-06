@@ -4,7 +4,7 @@ from dataCollection.iseecars import get_iseecars_listings
 from db.body_styles import body_styles
 from datetime import datetime
 
-dbi_url = ProdConfig.POSTGRES_DATABASE_URI\
+dbi_url = ProdConfig.POSTGRES_DATABASE_URI
 
 dbi = DBInterface(dbi_url)
 
@@ -24,7 +24,7 @@ def find_cars():
 
         if crit["body_style_id"]:
             crit["body_style"] = dbi.get_body_style_by_id(
-                crit["body_style_id"])
+                crit["body_style_id"])["body_style_name"]
 
             crit["isc_body_style"] = body_styles[crit["body_style"]]["iseecars"]
         else:
@@ -50,19 +50,17 @@ def find_cars():
                     dbi.delete_alerts_by_info(
                         user_id=crit["user_id"], car_id=res["id"], change="price_drop")
 
-                dbi.add_alert(car_id=res["id"],
-                              user_id=crit["user_id"], change="price_drop")
+                dbi.add_alert(car_id=res["id"], change="price_drop")
 
                 dbi.update_watched_car(
                     vin=car["vin"], last_price=car["price"], last_update=datetime.now())
 
             # if car not in db then add it and update alerts table
-            elif not res:
+            elif not res and len(car["url"]) <= 500:
                 dbi.add_watched_car(
-                    vin=car["vin"], listing_url=car["url"], last_price=car["price"])
+                    vin=car["vin"], listing_url=car["url"], last_price=car["price"], criteria_id=crit["id"])
                 res = dbi.get_watched_car_by_vin(vin=car["vin"])
-                dbi.add_alert(car_id=res["id"],
-                              user_id=crit["user_id"], change="new_listing")
+                dbi.add_alert(car_id=res["id"], change="new_listing")
 
 
 if __name__ == "__main__":
