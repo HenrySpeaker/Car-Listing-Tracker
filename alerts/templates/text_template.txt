@@ -1,0 +1,12 @@
+{% if new_listings|length > 0 %}
+{% for key in columns %}{{ columns[key] }} {% endfor %}
+{% for alert in new_listings %}
+{% for key in columns -%}{% if key != "prev_price" %}{{ alert[key] }} {% endif %}{% endfor %}
+{% endfor %}
+{% endif %}
+
+{% if price_drops|length > 0 %}
+{% for alert in price_drops %}
+{% for key in columns %}{{ alert[key] }} {% endfor %}
+{% endfor %}
+{% endif %}

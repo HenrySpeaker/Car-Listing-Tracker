@@ -1,0 +1,37 @@
+
+{% if new_listings|length > 0 %}
+<table>
+<tr>
+{% for key in columns %}
+    <th>{{ columns[key] }}</th>
+{% endfor %}
+</tr>
+{% for alert in new_listings %}
+    <tr>
+        {% for key in columns %}
+            {% if key != "prev_price" %}
+                {% if key == "url" %}
+                    <td><a href={{ alert[key] }}>Link</a></td>
+                {% else %}
+                    <td>{{ alert[key] }}</td>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </tr>
+{% endfor %}
+</table>
+{% endif %}
+
+{% if price_drops|length > 0 %}
+{% for alert in price_drops %}
+    <tr>
+        {% for key in columns %}
+            {% if key == "url" %}
+                <td><a href={{ alert[key] }}>Link</a></td>
+            {% else %}
+                <td>{{ alert[key] }}</td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+{% endfor %}
+{% endif %}
