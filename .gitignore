@@ -107,4 +107,4 @@ uszips.csv
 dataCollection/*.html
 
 # Do not ignore these files
-!*/email_template.txt
+!alerts/templates/*.txt

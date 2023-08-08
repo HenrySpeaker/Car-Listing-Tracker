@@ -57,8 +57,12 @@ def find_cars():
 
             # if car not in db then add it and update alerts table
             elif not res and len(car["url"]) <= 500:
+                max_mileage = crit["max_mileage"]
+                if car["mileage"] > max_mileage:
+                    continue
+
                 dbi.add_watched_car(
-                    vin=car["vin"], listing_url=car["url"], last_price=car["price"], criteria_id=crit["id"])
+                    vin=car["vin"], listing_url=car["url"], last_price=car["price"], criteria_id=crit["id"], model_year=car["model_year"])
                 res = dbi.get_watched_car_by_vin(vin=car["vin"])
                 dbi.add_alert(car_id=res["id"], change="new_listing")
 

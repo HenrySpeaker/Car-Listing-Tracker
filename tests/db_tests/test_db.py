@@ -776,9 +776,9 @@ def test_get_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], l
         identical_criteria_count[get_tuple_from_dict(crit)] += 1
 
     for crit in criteria:
-        db_criteria = dao.get_criteria_by_info(**crit)[0]
-        assert identical_criteria_count[get_tuple_from_dict(
-            db_criteria)] == identical_criteria_count[get_tuple_from_dict(crit)]
+        db_criteria = dao.get_criteria_by_info(**crit)
+        assert len(
+            db_criteria) == identical_criteria_count[get_tuple_from_dict(crit)]
 
 
 def test_get_criteria_by_id(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):

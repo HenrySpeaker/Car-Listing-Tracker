@@ -9,6 +9,7 @@ from config import DevConfig
 from werkzeug.security import generate_password_hash, check_password_hash
 from random import choice
 from bs4 import BeautifulSoup
+from time import sleep
 
 DB_URI = DevConfig.POSTGRES_DATABASE_URI
 
@@ -18,8 +19,8 @@ FAKE_EMAIL = "FAKE@EMAIL.com"
 FAKE_PASSWORD = "FAKEPASSWORD"
 FAKE_FREQ = 5
 
-TEST_CRITERIA = {"min_year": 2000, "max_year": 2010, "min_price": 5000, "max_price": 50000, "max_mileage": 40000,
-                 "search_distance": 15, "no_accidents": True, "single_owner": True}
+TEST_CRITERIA = {"min_year": 1992, "max_year": 2023, "min_price": 100, "max_price": 1000000, "max_mileage": 150000,
+                 "search_distance": 35, "no_accidents": True, "single_owner": False}
 
 
 def add_fake_user_to_db():
@@ -797,7 +798,7 @@ def check_criteria_page_for_db_match(html):
 
     for criteria in data:
         assert dbi.get_criteria_by_info(
-            **{key: criteria[key] for key in criteria if key not in ("make_name", "model_name", "body_style_name")}) != None
+            **{key: criteria[key] for key in criteria if key not in ("make_name", "model_name", "body_style_name")}) != []
 
 
 def test_add_criteria_page():
@@ -861,9 +862,13 @@ def test_add_criteria_body_style():
     }
 
     add_fake_user_to_db()
+    user_id = dbi.get_user_by_username(username=data["username"])["id"]
 
-    if dbi.get_criteria_by_info(**TEST_CRITERIA):
-        dbi.delete_criteria_by_info(**TEST_CRITERIA)
+    # if dbi.get_criteria_by_info(**TEST_CRITERIA):
+    #     dbi.delete_criteria_by_info(**TEST_CRITERIA)
+
+    if dbi.get_all_criteria():
+        dbi.delete_all_criteria()
 
     assert dbi.get_criteria_by_info(**TEST_CRITERIA) == []
 
@@ -889,7 +894,7 @@ def test_add_criteria_body_style():
 
             assert add_response.status_code == 200
 
-            db_response = dbi.get_criteria_by_info(**TEST_CRITERIA)
+            db_response = dbi.get_criteria_by_user_id(user_id=user_id)
             assert len(db_response) == 1
 
             assert db_response[0]["body_style_id"] == dbi.get_body_style_info(body_style)[
@@ -913,9 +918,13 @@ def test_add_criteria_make_model():
     }
 
     add_fake_user_to_db()
+    user_id = dbi.get_user_by_username(username=data["username"])["id"]
 
-    if dbi.get_criteria_by_info(**TEST_CRITERIA):
-        dbi.delete_criteria_by_info(**TEST_CRITERIA)
+    # if dbi.get_criteria_by_info(**TEST_CRITERIA):
+    #     dbi.delete_criteria_by_info(**TEST_CRITERIA)
+
+    if dbi.get_all_criteria():
+        dbi.delete_all_criteria()
 
     assert dbi.get_criteria_by_info(**TEST_CRITERIA) == []
 
@@ -941,7 +950,7 @@ def test_add_criteria_make_model():
 
             assert add_response.status_code == 200
 
-            db_response = dbi.get_criteria_by_info(**TEST_CRITERIA)
+            db_response = dbi.get_criteria_by_user_id(user_id=user_id)
             assert len(db_response) == 1
 
             assert db_response[0]["model_id"] == dbi.get_model_by_name(model_name)[
@@ -976,6 +985,7 @@ def test_add_criteria_invalid_years():
     form_data["body_style"] = body_style
     form_data["zip_code"] = 90210
     form_data["min_year"] = 2020
+    form_data["max_year"] = 2019
 
     with app.test_client() as test_client:
         with app.app_context():

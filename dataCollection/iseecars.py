@@ -30,8 +30,26 @@ def get_iseecars_listings(criteria: dict) -> list[dict]:
             if "VIN:" in info_div.find("b"):
                 listing_info["vin"] = info_div.find("span").string
 
-        listing_info["zip_code"] = int(listing.find(
-            "div", attrs={"class": "storage"})["data-zip"])
+            if "Mileage:" in info_div.find("b"):
+                mileage_text = info_div.find("span").string
+                mileage_text = mileage_text.split(" ")[0]
+                mileage_list = mileage_text.split(",")
+                mileage = 0
+                for term in mileage_list:
+                    mileage = mileage * 1000 + int(term)
+
+                listing_info["mileage"] = mileage
+
+        additional_data = listing.find(
+            "div", attrs={"class": "storage"})
+
+        listing_info["zip_code"] = int(additional_data["data-zip"])
+
+        try:
+            listing_info["model_year"] = int(
+                additional_data["data-label"].split()[0])
+        except ValueError:
+            listing_info["model_year"] = None
 
         cars_found.append(listing_info)
 
