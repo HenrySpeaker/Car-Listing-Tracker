@@ -1,11 +1,13 @@
 
-{% if new_listings|length > 0 %}
+{% if new_listings|length > 0 or price_drops|length > 0 %}
 <table>
 <tr>
 {% for key in columns %}
     <th>{{ columns[key] }}</th>
 {% endfor %}
 </tr>
+
+{% if new_listings|length > 0 %}
 {% for alert in new_listings %}
     <tr>
         {% for key in columns %}
@@ -19,7 +21,6 @@
         {% endfor %}
     </tr>
 {% endfor %}
-</table>
 {% endif %}
 
 {% if price_drops|length > 0 %}
@@ -34,4 +35,6 @@
         {% endfor %}
     </tr>
 {% endfor %}
+{% endif %}
+</table>
 {% endif %}

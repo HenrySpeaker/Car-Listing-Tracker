@@ -101,9 +101,6 @@ def send_alerts():
             text_body = text_template.render(
                 new_listings=new_listings, price_drops=price_drops, columns=column_order)
 
-            with open(f"alerts/test_emails/{user_id}.txt", "w") as f:
-                f.write(text_body)
-
             user_email = dbi.get_user_by_id(id=user_id)["email"]
             email = MIMEMultipart("alternative")
             email["Subject"] = "Car Listing Alerts"
@@ -115,16 +112,17 @@ def send_alerts():
 
             logger.info(
                 f"Alerting user {user_id} of new listings and price drops")
-            # connection.starttls()
-            # connection.login(user=EMAIL, password=PASSWORD)
-            # connection.sendmail(
-            #     from_addr=EMAIL,
-            #     to_addrs=user_email,
-            #     msg=f"Subject:Alert!\n\n{new_listings}\n{price_drops}",
-            # )
 
-            # for car in new_listings:
-            #     dbi.delete_alerts_by_info(car_id=car["car_id"])
+            connection.starttls()
+            connection.login(user=EMAIL, password=PASSWORD)
+            connection.sendmail(
+                from_addr=EMAIL,
+                to_addrs=user_email,
+                msg=email.as_string(),
+            )
 
-            # for car in price_drops:
-            #     dbi.delete_alerts_by_info(car_id=car["car_id"])
+            for car in new_listings:
+                dbi.delete_alerts_by_info(car_id=car["car_id"])
+
+            for car in price_drops:
+                dbi.delete_alerts_by_info(car_id=car["car_id"])
