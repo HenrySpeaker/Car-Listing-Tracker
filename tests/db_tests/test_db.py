@@ -403,6 +403,18 @@ def test_update_last_login_by_username(dao_with_users: list[DBInterface, list]):
     assert new_last_login == new_login_dt.astimezone(last_login_tz)
 
 
+def test_update_last_alerted_by_id(dao_with_users: list[DBInterface, list]):
+    dao, user_list = dao_with_users
+    new_alert_dt = datetime.now()
+    user_id = dao.get_all_users()[0]["id"]
+    dao.update_last_alerted_by_id(id=user_id, last_alerted=new_alert_dt)
+
+    alert_time = dao.get_user_by_id(id=user_id)["last_alerted"]
+
+    last_alert_tz = alert_time.tzinfo
+    assert alert_time == new_alert_dt.astimezone(last_alert_tz)
+
+
 def test_delete_user_by_username(dao_with_users: list[DBInterface, list]):
     dao, user_list = dao_with_users
 
