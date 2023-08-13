@@ -29,6 +29,7 @@ def add_models_to_db():
 
     with open("car-data/all-models.csv", "r") as file:
         reader = DictReader(file)
+        models_list = []
 
         for row in reader:
             if row["make"] not in make_ids:
@@ -36,8 +37,21 @@ def add_models_to_db():
                 make_ids[row["make"]] = dbi.get_make_info(
                     make_name=row["make"])["id"]
 
-            dbi.add_model(model_name=row["model"], make_id=make_ids[row["make"]],
-                          body_style_id=body_style_ids[row["body_style"]])
+            db_row = {}
+            db_row["model_name"] = row["model"]
+            db_row["make_id"] = make_ids[row["make"]]
+            db_row["body_style_id"] = body_style_ids[row["body_style"]]
+
+            models_list.append(db_row)
+
+            # 100 chosen as the interval based on local testing but a different interval may be more appropriate on other machines
+            if len(models_list) == 100:
+                dbi.add_models(models_list)
+                models_list = []
+
+        # add any remaining models
+        if models_list:  # pragma: no cover
+            dbi.add_models(models_list)
 
 
 if __name__ == "__main__":  # pragma: no cover

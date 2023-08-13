@@ -1,5 +1,6 @@
 import psycopg
 from psycopg.rows import dict_row
+from psycopg import sql
 import aiosql
 from functools import wraps
 from datetime import datetime
@@ -382,6 +383,14 @@ class DBInterface:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.add_model(conn, model_name=model_name,
                               make_id=make_id, body_style_id=body_style_id)
+
+    @check_connection
+    def add_models(self, models_list: list[dict]) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            with conn.cursor() as cur:
+                query = sql.SQL(
+                    "INSERT INTO model(model_name, make_id, body_style_id) VALUES (%(model_name)s, %(make_id)s, %(body_style_id)s);")
+                cur.executemany(query, models_list)
 
 # ---------------------------- DELETE MODELS -------------------------------
 
