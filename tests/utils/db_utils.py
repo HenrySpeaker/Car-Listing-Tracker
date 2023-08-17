@@ -1,14 +1,10 @@
 import pytest
 from db.dbi.db_interface import DBInterface
 from db.body_styles import body_styles
-from config import DevConfig, ZIP_ROW_COUNT
-from datetime import datetime
+from config import DevConfig
 import string
 import random
-import psycopg
-from collections import defaultdict
-from random import choice, choices
-from time import sleep
+from random import choice
 
 DB_URI = DevConfig.POSTGRES_DATABASE_URI
 WEBSITE_NAMES = ["autotrader", "cargurus", "usnews", "driveway", "capitolone"]
