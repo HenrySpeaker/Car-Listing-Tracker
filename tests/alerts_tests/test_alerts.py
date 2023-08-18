@@ -13,8 +13,8 @@ def mocked_smtp(mocker):
 
 
 @pytest.fixture
-def dao_with_adjusted_last_alerted(dao_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]]):
-    dao, users, watched_cars, alerts_list = dao_with_listing_alerts
+def dao_with_adjusted_last_alerted(dbi_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]]):
+    dao, users, watched_cars, alerts_list = dbi_with_listing_alerts
 
     # ensure that all users will get alerted by moving the last_alerted time earlier
     user_list = dao.get_all_users()
@@ -35,7 +35,7 @@ def test_alerts(mocked_smtp, dao_with_adjusted_last_alerted):
     mocked_smtp.return_value.__enter__.return_value.sendmail.assert_called()
 
 
-def test_alerts_not_sent_early(mocked_smtp, dao_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]]):
+def test_alerts_not_sent_early(mocked_smtp, dbi_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]]):
 
     alerts.send_alerts()
     assert mocked_smtp.return_value.__enter__.return_value.starttls.call_count == 0

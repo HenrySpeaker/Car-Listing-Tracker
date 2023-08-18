@@ -182,11 +182,6 @@ class DBInterface:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             return [zip_code for zip_code in queries.get_all_zip_codes(conn)]
 
-    # @check_connection
-    # def get_city_id_by_zip_code(self, zip_code: int) -> int:
-    #     with psycopg.connect(self._connection_url) as conn:
-    #         return queries.get_city_id_by_zip_code(conn, zip_code=zip_code)
-
     @check_connection
     def get_zip_code_info(self, zip_code: int) -> dict:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
@@ -579,43 +574,6 @@ class DBInterface:
                                             body_style_id=body_style_id)
 
 
-# # ------------------------------ Watched Car Criteria --------------------------------
-
-# # ------------------------------ Add Watched Car Criteria ----------------------------
-
-#     @check_connection
-#     def get_all_watched_car_criteria(self) -> list[dict]:
-#         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-#             return [row for row in queries.get_all_watched_car_criteria(conn)]
-
-#     @check_connection
-#     def get_watched_car_criteria_by_info(self, criteria_id: int | None = None, watched_car_id: int | None = None) -> list[dict]:
-#         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-#             return [row for row in queries.get_watched_car_criteria_by_info(conn, criteria_id=criteria_id, watched_car_id=watched_car_id)]
-
-
-# # ---------------------------- Add Watched Car Criteria ------------------------------
-
-#     @check_connection
-#     def add_watched_car_criteria(self, criteria_id: int, watched_car_id: int) -> None:
-#         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-#             queries.add_watched_car_criteria(
-#                 conn, criteria_id=criteria_id, watched_car_id=watched_car_id)
-
-# # --------------------------- Delete Watched Car Criteria ----------------------------
-
-#     @check_connection
-#     def delete_all_watched_car_criteria(self) -> None:
-#         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-#             queries.delete_all_watched_car_criteria(conn)
-
-#     @check_connection
-#     def delete_watched_car_criteria_by_info(self, criteria_id: int | None = None, watched_car_id: int | None = None) -> None:
-#         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-#             queries.delete_watched_car_criteria_by_info(
-#                 conn, criteria_id=criteria_id, watched_car_id=watched_car_id)
-
-
 # ----------------------------- Listing Alerts --------------------------------------
 
     @check_connection
@@ -666,18 +624,3 @@ class DBInterface:
     def delete_all_states(self) -> None:  # pragma: no cover
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.delete_all_states(conn)
-
-
-# def main():  # pragma: no cover
-#     dao = DBInterface("postgresql://postgres:password@localhost/Car-Listings")
-#     dao.delete_all_users()
-#     user_list = [{"username": f"username{i}", "email": f"user{i}@email.com",
-#                   "password_hash": f"password_hash{i}", "notification_frequency": 7} for i in range(1, 11)]
-#     for user in user_list:
-#         dao.add_user(user)
-
-#     print(dao.get_user_by_username("not a user"))
-
-
-# if __name__ == "__main__":
-#     main()  # pragma: no cover

@@ -82,71 +82,70 @@ def delete_all_data(curr_dao: DBInterface):
     curr_dao.delete_all_users()
     curr_dao.delete_all_watched_cars()
     curr_dao.delete_all_criteria()
-    # curr_dao.delete_all_watched_car_criteria()
     curr_dao.delete_all_alerts()
 
 
 @pytest.fixture
-def new_dao() -> DBInterface:
-    curr_dao = DBInterface(DB_URI)
-    delete_all_data(curr_dao)
+def new_dbi() -> DBInterface:
+    curr_dbi = DBInterface(DB_URI)
+    delete_all_data(curr_dbi)
 
-    yield curr_dao
+    yield curr_dbi
 
-    delete_all_data(curr_dao)
+    delete_all_data(curr_dbi)
 
 
-def add_users(dao: DBInterface, users: list[dict]) -> list[DBInterface, list[dict]]:
+def add_users(dbi: DBInterface, users: list[dict]) -> list[DBInterface, list[dict]]:
     for user in users:
-        dao.add_user(user)
+        dbi.add_user(user)
 
-    return [dao, users]
-
-
-@pytest.fixture
-def dao_with_users(new_dao: DBInterface, user_list: list) -> list[DBInterface, list]:
-
-    return add_users(new_dao, user_list)
+    return [dbi, users]
 
 
 @pytest.fixture
-def dao_with_makes(new_dao: DBInterface, make_list: list) -> list[DBInterface, list]:
-    return [new_dao, make_list]
+def dbi_with_users(new_dbi: DBInterface, user_list: list) -> list[DBInterface, list]:
+
+    return add_users(new_dbi, user_list)
 
 
 @pytest.fixture
-def dao_with_web_body_styles(new_dao: DBInterface) -> list[DBInterface, list[dict]]:
-    new_dao.delete_all_website_body_styles()
+def dbi_with_makes(new_dbi: DBInterface, make_list: list) -> list[DBInterface, list]:
+    return [new_dbi, make_list]
+
+
+@pytest.fixture
+def dbi_with_web_body_styles(new_dbi: DBInterface) -> list[DBInterface, list[dict]]:
+    new_dbi.delete_all_website_body_styles()
     web_body_styles = []
-    for body_style in new_dao.get_all_body_styles():
+    for body_style in new_dbi.get_all_body_styles():
         for website in WEBSITE_NAMES:
             new_name = get_random_string(3, 10)
-            new_dao.add_website_body_style(
+            new_dbi.add_website_body_style(
                 body_style_id=body_style["id"], website_name=website, website_body_name=new_name)
             web_body_styles.append(
                 {"website_name": website, "new_name": new_name, "body_style_id": body_style["id"]})
 
-    return [new_dao, web_body_styles]
+    return [new_dbi, web_body_styles]
 
 
 @pytest.fixture
-def dao_with_models(new_dao: DBInterface, make_list: list[dict], model_list) -> list[DBInterface, list[dict], list[dict]]:
+def dbi_with_models(new_dbi: DBInterface, make_list: list[dict], model_list) -> list[DBInterface, list[dict], list[dict]]:
 
-    return [new_dao, make_list, model_list]
+    return [new_dbi, make_list, model_list]
 
 
-def add_watched_cars(dao: DBInterface, watched_cars: list[dict]) -> list[DBInterface, list]:
-    all_criteria = dao.get_all_criteria()
+def add_watched_cars(dbi: DBInterface, watched_cars: list[dict]) -> list[DBInterface, list]:
+    all_criteria = dbi.get_all_criteria()
     for car in watched_cars:
-        dao.add_watched_car(
+        dbi.add_watched_car(
             vin=car["vin"], listing_url=car["listing_url"], last_price=car["last_price"], criteria_id=choice(all_criteria)["id"], model_year=car["model_year"])
 
-    return [dao, watched_cars]
+    return [dbi, watched_cars]
 
 
 @pytest.fixture
-def dao_with_watched_cars(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]], watched_car_list: list[dict]):
-    dao, criteria, makes, models, users, state_list = dao_with_criteria
+def dbi_with_watched_cars(dbi_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]], watched_car_list: list[dict]):
+    dao, criteria, makes, models, users, state_list = dbi_with_criteria
     return add_watched_cars(dao, watched_car_list)
 
 
@@ -187,9 +186,9 @@ def criteria_list(body_styles: list[dict], zips: list[dict], models: list[dict],
     return criteria
 
 
-def add_criteria(dao: DBInterface, criteria_list: list[dict]) -> list[DBInterface, list[dict]]:
+def add_criteria(dbi: DBInterface, criteria_list: list[dict]) -> list[DBInterface, list[dict]]:
     for criteria in criteria_list:
-        dao.add_criteria(
+        dbi.add_criteria(
             min_year=criteria["min_year"],
             max_year=criteria["max_year"],
             min_price=criteria["min_price"],
@@ -204,79 +203,84 @@ def add_criteria(dao: DBInterface, criteria_list: list[dict]) -> list[DBInterfac
             body_style_id=criteria["body_style_id"]
         )
 
-    return [dao, criteria_list]
+    return [dbi, criteria_list]
 
 
 @pytest.fixture
-def dao_with_criteria(new_dao: DBInterface, make_list: list[dict], user_list: list[dict], state_list: list[dict], model_list) -> list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]:
-    new_dao = add_body_styles(new_dao)
+def dbi_with_criteria(new_dbi: DBInterface, make_list: list[dict], user_list: list[dict], state_list: list[dict], model_list) -> list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]:
+    new_dbi = add_body_styles(new_dbi)
 
-    new_dao, user_list = add_users(new_dao, user_list)
+    new_dbi, user_list = add_users(new_dbi, user_list)
 
-    criteria = criteria_list(new_dao.get_all_body_styles(
-    ), new_dao.get_all_zip_codes(), new_dao.get_all_models(), new_dao.get_all_users())
+    criteria = criteria_list(new_dbi.get_all_body_styles(
+    ), new_dbi.get_all_zip_codes(), new_dbi.get_all_models(), new_dbi.get_all_users())
 
-    new_dao, criteria = add_criteria(new_dao, criteria)
+    new_dbi, criteria = add_criteria(new_dbi, criteria)
 
-    return [new_dao, criteria, make_list, model_list, user_list, state_list]
+    return [new_dbi, criteria, make_list, model_list, user_list, state_list]
 
 
-def add_watched_car_criteria(dao: DBInterface) -> list[DBInterface, list[dict], list[dict]]:
+def add_watched_car_criteria(dbi: DBInterface) -> list[DBInterface, list[dict], list[dict]]:
     watched_car_criteria = []
-    criteria = dao.get_all_criteria()
-    watched_cars = dao.get_all_watched_cars()
+    criteria = dbi.get_all_criteria()
+    watched_cars = dbi.get_all_watched_cars()
     pairs_seen = set()
     for _ in range(random.randint(5, 15)):
         new_row = {"criteria_id": random.choice(
             criteria)["id"], "watched_car_id": random.choice(watched_cars)["id"]}
         if (new_row["criteria_id"], new_row["watched_car_id"]) not in pairs_seen:
-            dao.add_watched_car_criteria(**new_row)
+            dbi.add_watched_car_criteria(**new_row)
             watched_car_criteria.append(new_row)
             pairs_seen.add((new_row["criteria_id"], new_row["watched_car_id"]))
 
-    return [dao, watched_car_criteria]
+    return [dbi, watched_car_criteria]
 
 
 @pytest.fixture
-def dao_with_watched_car_criteria(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]], watched_car_list: list[dict]) -> list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]:
-    new_dao, criteria, make_list, models_list, user_list, states = dao_with_criteria
+def dbi_with_watched_car_criteria(dbi_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]], watched_car_list: list[dict]) -> list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]:
+    new_dbi, criteria, make_list, models_list, user_list, states = dbi_with_criteria
 
-    new_dao, watched_cars = add_watched_cars(new_dao, watched_car_list)
+    new_dbi, watched_cars = add_watched_cars(new_dbi, watched_car_list)
 
-    new_dao, watched_car_criteria = add_watched_car_criteria(new_dao)
+    new_dbi, watched_car_criteria = add_watched_car_criteria(new_dbi)
 
-    return [new_dao, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria]
+    return [new_dbi, criteria, make_list, models_list, user_list, watched_cars, watched_car_criteria]
 
 
-def add_listing_alerts(dao: DBInterface) -> list[DBInterface, list[dict]]:
-    dao.delete_all_alerts()
+def add_listing_alerts(dbi: DBInterface) -> list[DBInterface, list[dict]]:
+    dbi.delete_all_alerts()
     new_alerts = []
-    user_list = dao.get_all_users()
-    watched_car_list = dao.get_all_watched_cars()
+    user_list = dbi.get_all_users()
+    watched_car_list = dbi.get_all_watched_cars()
 
-    for _ in range(random.randint(5, 10)):
-        new_alert = {}
-        new_alert["car_id"] = random.choice(watched_car_list)["id"]
-        new_alert["change"] = random.choice(LISTING_CHANGES)
-        new_alerts.append(new_alert)
+    def add_type_alerts(type):
 
-        dao.add_alert(**new_alert)
+        for _ in range(random.randint(5, 10)):
+            new_alert = {}
+            new_alert["car_id"] = random.choice(watched_car_list)["id"]
+            new_alert["change"] = random.choice(LISTING_CHANGES)
+            new_alerts.append(new_alert)
 
-    return [dao, new_alerts]
+            dbi.add_alert(**new_alert)
 
+    for type in LISTING_CHANGES:
+        add_type_alerts(type)
 
-@pytest.fixture
-def dao_with_listing_alerts(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]], watched_car_list: list[dict]):
-    dao, criteria, makes, models, users, state_list = dao_with_criteria
-    dao, watched_car_list = add_watched_cars(dao, watched_car_list)
-    dao, listing_alerts = add_listing_alerts(dao)
-    return [dao, users, watched_car_list, listing_alerts]
-
-
-def add_states(dao: DBInterface, states: list[dict]) -> list[DBInterface, list[dict]]:
-    return [dao, states]
+    return [dbi, new_alerts]
 
 
 @pytest.fixture
-def dao_with_states(new_dao: DBInterface, state_list: list[dict]) -> list[DBInterface, list[dict]]:
-    return add_states(new_dao, state_list)
+def dbi_with_listing_alerts(dbi_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]], watched_car_list: list[dict]):
+    dbi, criteria, makes, models, users, state_list = dbi_with_criteria
+    dbi, watched_car_list = add_watched_cars(dbi, watched_car_list)
+    dbi, listing_alerts = add_listing_alerts(dbi)
+    return [dbi, users, watched_car_list, listing_alerts]
+
+
+def add_states(dbi: DBInterface, states: list[dict]) -> list[DBInterface, list[dict]]:
+    return [dbi, states]
+
+
+@pytest.fixture
+def dbi_with_states(new_dbi: DBInterface, state_list: list[dict]) -> list[DBInterface, list[dict]]:
+    return add_states(new_dbi, state_list)

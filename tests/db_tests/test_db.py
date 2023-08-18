@@ -10,14 +10,14 @@ from random import choice, choices
 from tests.utils.db_utils import *
 
 
-def test_false_valid_connection_attribute(new_dao: DBInterface):
+def test_false_valid_connection_attribute(new_dbi: DBInterface):
     with pytest.raises(RuntimeError) as excinfo:
-        new_dao._valid_connection = False
-        res = new_dao.get_all_users()
+        new_dbi._valid_connection = False
+        res = new_dbi.get_all_users()
 
     assert "The database connection is not valid." in str(excinfo.value)
 
-    new_dao._valid_connection = True
+    new_dbi._valid_connection = True
 
 
 def test_bad_db_url(capsys):
@@ -26,8 +26,8 @@ def test_bad_db_url(capsys):
     ).out == 'An error occurred: missing "=" after "Not" in connection info string\n\n'
 
 
-def test_get_user_by_id(dao_with_users: list[DBInterface, list]):
-    dao, users = dao_with_users
+def test_get_user_by_id(dbi_with_users: list[DBInterface, list]):
+    dao, users = dbi_with_users
     users_list = dao.get_all_users()
 
     for user in users_list:
@@ -36,43 +36,43 @@ def test_get_user_by_id(dao_with_users: list[DBInterface, list]):
             assert user[key] == poss_match[key]
 
 
-def test_add_user(new_dao, user_list):
+def test_add_user(new_dbi, user_list):
     for user in user_list:
-        new_dao.add_user(user)
+        new_dbi.add_user(user)
 
-    all_users = new_dao.get_all_users()
+    all_users = new_dbi.get_all_users()
 
     assert len(all_users) == len(user_list)
 
 
-def test_get_user_by_username(dao_with_users: list[DBInterface, list]):
-    dao, user_list = dao_with_users
+def test_get_user_by_username(dbi_with_users: list[DBInterface, list]):
+    dao, user_list = dbi_with_users
 
     assert dao.get_user_by_username(user_list[0]["username"])[
         "username"] == user_list[0]["username"]
 
 
-def test_get_user_by_invalid_username(dao_with_users: list[DBInterface, list]):
-    dao, user_list = dao_with_users
+def test_get_user_by_invalid_username(dbi_with_users: list[DBInterface, list]):
+    dao, user_list = dbi_with_users
 
     assert dao.get_user_by_username("Not a username") == None
 
 
-def test_get_user_by_email(dao_with_users: list[DBInterface, list]):
-    dao, user_list = dao_with_users
+def test_get_user_by_email(dbi_with_users: list[DBInterface, list]):
+    dao, user_list = dbi_with_users
 
     assert dao.get_user_by_email(user_list[0]["email"])[
         "email"] == user_list[0]["email"]
 
 
-def test_get_user_by_invalid_email(dao_with_users: list[DBInterface, list]):
-    dao, user_list = dao_with_users
+def test_get_user_by_invalid_email(dbi_with_users: list[DBInterface, list]):
+    dao, user_list = dbi_with_users
 
     assert dao.get_user_by_email("Not an email") == None
 
 
-def test_update_user_by_email(dao_with_users: list[DBInterface, list]):
-    dao, user_list = dao_with_users
+def test_update_user_by_email(dbi_with_users: list[DBInterface, list]):
+    dao, user_list = dbi_with_users
     NEW_USERNAME = "new username"
     user_email = user_list[0]["email"]
     dao.update_username_by_email(
@@ -81,8 +81,8 @@ def test_update_user_by_email(dao_with_users: list[DBInterface, list]):
     assert dao.get_user_by_email(user_email)["username"] == NEW_USERNAME
 
 
-def test_update_email_by_username(dao_with_users: list[DBInterface, list]):
-    dao, user_list = dao_with_users
+def test_update_email_by_username(dbi_with_users: list[DBInterface, list]):
+    dao, user_list = dbi_with_users
     NEW_EMAIL = "new@email.com"
     username = user_list[0]["username"]
     dao.update_email_by_username(
@@ -91,8 +91,8 @@ def test_update_email_by_username(dao_with_users: list[DBInterface, list]):
     assert dao.get_user_by_username(username)["email"] == NEW_EMAIL
 
 
-def test_update_password_hash_by_username(dao_with_users: list[DBInterface, list]):
-    dao, user_list = dao_with_users
+def test_update_password_hash_by_username(dbi_with_users: list[DBInterface, list]):
+    dao, user_list = dbi_with_users
     NEW_PASSWORD_HASH = "new password hash"
     username = user_list[0]["username"]
     dao.update_password_hash_by_username(
@@ -102,8 +102,8 @@ def test_update_password_hash_by_username(dao_with_users: list[DBInterface, list
         username)["password_hash"] == NEW_PASSWORD_HASH
 
 
-def test_update_notification_frequency_by_username(dao_with_users: list[DBInterface, list]):
-    dao, user_list = dao_with_users
+def test_update_notification_frequency_by_username(dbi_with_users: list[DBInterface, list]):
+    dao, user_list = dbi_with_users
     NEW_NOTIFICATION_FREQUENCY = 20
     username = user_list[0]["username"]
     dao.update_notification_frequency_by_username(
@@ -113,8 +113,8 @@ def test_update_notification_frequency_by_username(dao_with_users: list[DBInterf
         username)["notification_frequency"] == NEW_NOTIFICATION_FREQUENCY
 
 
-def test_update_last_login_by_username(dao_with_users: list[DBInterface, list]):
-    dao, user_list = dao_with_users
+def test_update_last_login_by_username(dbi_with_users: list[DBInterface, list]):
+    dao, user_list = dbi_with_users
     new_login_dt = datetime.now()
     username = user_list[0]["username"]
     dao.update_last_login_by_username(
@@ -127,8 +127,8 @@ def test_update_last_login_by_username(dao_with_users: list[DBInterface, list]):
     assert new_last_login == new_login_dt.astimezone(last_login_tz)
 
 
-def test_update_last_alerted_by_id(dao_with_users: list[DBInterface, list]):
-    dao, user_list = dao_with_users
+def test_update_last_alerted_by_id(dbi_with_users: list[DBInterface, list]):
+    dao, user_list = dbi_with_users
     new_alert_dt = datetime.now()
     user_id = dao.get_all_users()[0]["id"]
     dao.update_last_alerted_by_id(id=user_id, last_alerted=new_alert_dt)
@@ -140,8 +140,8 @@ def test_update_last_alerted_by_id(dao_with_users: list[DBInterface, list]):
     assert alert_time == new_alert_dt.astimezone(last_alert_tz)
 
 
-def test_delete_user_by_username(dao_with_users: list[DBInterface, list]):
-    dao, user_list = dao_with_users
+def test_delete_user_by_username(dbi_with_users: list[DBInterface, list]):
+    dao, user_list = dbi_with_users
 
     for user in user_list:
         dao.delete_user_by_username(user["username"])
@@ -149,58 +149,58 @@ def test_delete_user_by_username(dao_with_users: list[DBInterface, list]):
     assert len(dao.get_all_users()) == 0
 
 
-def test_get_all_cities(new_dao: DBInterface, city_list: list[dict]):
-    all_cities = new_dao.get_all_cities()
+def test_get_all_cities(new_dbi: DBInterface, city_list: list[dict]):
+    all_cities = new_dbi.get_all_cities()
     all_cities_set = set(city["city_name"] for city in all_cities)
 
     assert len(all_cities) == len(city_list)
 
 
-def test_delete_cities_by_name(new_dao: DBInterface, city_list: list[dict]):
+def test_delete_cities_by_name(new_dbi: DBInterface, city_list: list[dict]):
     TEST_CITY = "Not a city"
-    TEST_STATE_ID = new_dao.get_state_by_name("New York")["id"]
-    new_dao.add_city(city_name=TEST_CITY, state_id=TEST_STATE_ID)
+    TEST_STATE_ID = new_dbi.get_state_by_name("New York")["id"]
+    new_dbi.add_city(city_name=TEST_CITY, state_id=TEST_STATE_ID)
 
-    assert new_dao.get_city_id(TEST_CITY) != None
+    assert new_dbi.get_city_id(TEST_CITY) != None
 
-    new_dao.delete_city_by_name(TEST_CITY)
+    new_dbi.delete_city_by_name(TEST_CITY)
 
-    assert new_dao.get_city_id(TEST_CITY) == None
+    assert new_dbi.get_city_id(TEST_CITY) == None
 
 
-def test_get_city_id(new_dao: DBInterface, city_list: list[dict]):
-    all_cities = new_dao.get_all_cities()
+def test_get_city_id(new_dbi: DBInterface, city_list: list[dict]):
+    all_cities = new_dbi.get_all_cities()
     for city in choices(all_cities, k=10):
-        returned_city_id = new_dao.get_city_id(city["city_name"])
+        returned_city_id = new_dbi.get_city_id(city["city_name"])
         assert city["id"] == returned_city_id
 
 
-def test_get_all_zip_codes(new_dao: DBInterface):
-    dao = new_dao
+def test_get_all_zip_codes(new_dbi: DBInterface):
+    dao = new_dbi
     all_zips = dao.get_all_zip_codes()
     assert len(all_zips) == NUM_ZIPS
 
 
-def test_get_zip_code_info(new_dao: DBInterface):
+def test_get_zip_code_info(new_dbi: DBInterface):
     test_zip = 90210
-    data = new_dao.get_zip_code_info(zip_code=test_zip)
+    data = new_dbi.get_zip_code_info(zip_code=test_zip)
     assert data["zip_code"] == test_zip
 
 
-def test_get_zip_count(new_dao: DBInterface):
-    assert new_dao.get_zip_code_count() == ZIP_ROW_COUNT
+def test_get_zip_count(new_dbi: DBInterface):
+    assert new_dbi.get_zip_code_count() == ZIP_ROW_COUNT
 
 
-def test_get_zip_code_by_id(new_dao: DBInterface):
-    test_zips = choices(new_dao.get_all_zip_codes(), k=5)
+def test_get_zip_code_by_id(new_dbi: DBInterface):
+    test_zips = choices(new_dbi.get_all_zip_codes(), k=5)
 
     for zip in test_zips:
-        assert zip["zip_code"] == new_dao.get_zip_code_by_id(zip["id"])[
+        assert zip["zip_code"] == new_dbi.get_zip_code_by_id(zip["id"])[
             "zip_code"]
 
 
-def test_delete_specific_zip(new_dao: DBInterface):
-    dao = new_dao
+def test_delete_specific_zip(new_dbi: DBInterface):
+    dao = new_dbi
 
     false_zip = 1
     test_city = "Not a city"
@@ -216,14 +216,14 @@ def test_delete_specific_zip(new_dao: DBInterface):
     assert dao.get_zip_code_info(false_zip) == None
 
 
-def test_get_all_makes(new_dao: DBInterface):
-    all_makes = new_dao.get_all_makes()
+def test_get_all_makes(new_dbi: DBInterface):
+    all_makes = new_dbi.get_all_makes()
 
     assert len(all_makes) == 66
 
 
-def test_get_specific_makes(dao_with_makes: list[DBInterface, list]):
-    dao, makes_list = dao_with_makes
+def test_get_specific_makes(dbi_with_makes: list[DBInterface, list]):
+    dao, makes_list = dbi_with_makes
     makes_list = dao.get_all_makes()
 
     for make in makes_list:
@@ -232,54 +232,54 @@ def test_get_specific_makes(dao_with_makes: list[DBInterface, list]):
             make_info) == 2 and make_info["make_name"] == make["make_name"]
 
 
-def test_get_make_by_id(new_dao: DBInterface):
+def test_get_make_by_id(new_dbi: DBInterface):
 
-    all_makes = new_dao.get_all_makes()
+    all_makes = new_dbi.get_all_makes()
 
     for make in all_makes:
-        assert new_dao.get_make_by_id(
+        assert new_dbi.get_make_by_id(
             make["id"])["make_name"] == make["make_name"]
 
 
-def test_add_and_remove_make(new_dao: DBInterface):
+def test_add_and_remove_make(new_dbi: DBInterface):
     test_make = get_random_string(3, 8)
-    new_dao.add_make(test_make)
+    new_dbi.add_make(test_make)
 
-    assert new_dao.get_make_info(test_make) != {}
+    assert new_dbi.get_make_info(test_make) != {}
 
-    new_dao.delete_make_by_name(test_make)
+    new_dbi.delete_make_by_name(test_make)
 
-    assert new_dao.get_make_info(test_make) == None
+    assert new_dbi.get_make_info(test_make) == None
 
 
-def test_get_all_body_styles(new_dao: DBInterface):
-    res = new_dao.get_all_body_styles()
+def test_get_all_body_styles(new_dbi: DBInterface):
+    res = new_dbi.get_all_body_styles()
 
     for res_body_style in res:
         assert res_body_style["body_style_name"] in body_styles
 
 
-def test_get_specific_body_style(new_dao: DBInterface):
+def test_get_specific_body_style(new_dbi: DBInterface):
     for style in body_styles:
-        assert new_dao.get_body_style_info(
+        assert new_dbi.get_body_style_info(
             style)["body_style_name"] == style
 
 
-def test_get_body_style_by_id(new_dao: DBInterface):
-    res = new_dao.get_all_body_styles()
+def test_get_body_style_by_id(new_dbi: DBInterface):
+    res = new_dbi.get_all_body_styles()
 
     for body_style in res:
-        assert new_dao.get_body_style_by_id(
+        assert new_dbi.get_body_style_by_id(
             body_style["id"])["body_style_name"] == body_style["body_style_name"]
 
 
-def test_add_invalid_body_style(new_dao: DBInterface):
+def test_add_invalid_body_style(new_dbi: DBInterface):
     with pytest.raises(psycopg.errors.InvalidTextRepresentation):
-        new_dao.add_body_style("not a valid body style")
+        new_dbi.add_body_style("not a valid body style")
 
 
-def test_get_all_web_body_styles(dao_with_web_body_styles: list[DBInterface, list[dict]]):
-    dao, web_body_styles = dao_with_web_body_styles
+def test_get_all_web_body_styles(dbi_with_web_body_styles: list[DBInterface, list[dict]]):
+    dao, web_body_styles = dbi_with_web_body_styles
     all_web_body_styles = dao.get_all_website_body_styles()
 
     assert len(all_web_body_styles) == len(body_styles) * len(WEBSITE_NAMES)
@@ -291,8 +291,8 @@ def test_get_all_web_body_styles(dao_with_web_body_styles: list[DBInterface, lis
         assert style["website_body_name"] in web_body_style_names
 
 
-def test_get_specific_web_body_style(dao_with_web_body_styles: list[DBInterface, list[dict]]):
-    dao, web_body_styles = dao_with_web_body_styles
+def test_get_specific_web_body_style(dbi_with_web_body_styles: list[DBInterface, list[dict]]):
+    dao, web_body_styles = dbi_with_web_body_styles
     print(web_body_styles)
 
     for web_body_style in web_body_styles:
@@ -302,8 +302,8 @@ def test_get_specific_web_body_style(dao_with_web_body_styles: list[DBInterface,
         assert len(retrieved_web_body_styles) == len(WEBSITE_NAMES)
 
 
-def test_delete_specific_web_body_style(dao_with_web_body_styles: list[DBInterface, list[dict]]):
-    dao, web_body_styles = dao_with_web_body_styles
+def test_delete_specific_web_body_style(dbi_with_web_body_styles: list[DBInterface, list[dict]]):
+    dao, web_body_styles = dbi_with_web_body_styles
 
     assert len(dao.get_all_website_body_styles()) == len(
         body_styles) * len(WEBSITE_NAMES)
@@ -314,8 +314,8 @@ def test_delete_specific_web_body_style(dao_with_web_body_styles: list[DBInterfa
     assert len(dao.get_all_website_body_styles()) == 0
 
 
-def test_get_all_models(dao_with_models: list[DBInterface, list[dict], list[dict]]):
-    dao, make_list, models_list = dao_with_models
+def test_get_all_models(dbi_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dbi_with_models
 
     all_models_from_dao = dao.get_all_models()
     model_names_from_dao = {model["model_name"]
@@ -327,8 +327,8 @@ def test_get_all_models(dao_with_models: list[DBInterface, list[dict], list[dict
         assert model["model_name"] in model_names_from_dao
 
 
-def test_get_model_by_make_id(dao_with_models: list[DBInterface, list[dict], list[dict]]):
-    dao, make_list, models_list = dao_with_models
+def test_get_model_by_make_id(dbi_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dbi_with_models
 
     models_by_make_id = defaultdict(list)
 
@@ -343,8 +343,8 @@ def test_get_model_by_make_id(dao_with_models: list[DBInterface, list[dict], lis
             assert dao_model["make_id"] == make_id
 
 
-def test_get_model_by_make_name(dao_with_models: list[DBInterface, list[dict], list[dict]]):
-    dao, make_list, models_list = dao_with_models
+def test_get_model_by_make_name(dbi_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dbi_with_models
 
     dao_make_info = dao.get_all_makes()
 
@@ -358,8 +358,8 @@ def test_get_model_by_make_name(dao_with_models: list[DBInterface, list[dict], l
             models_by_make_id[make["id"]])
 
 
-def test_get_model_by_body_style_id(dao_with_models: list[DBInterface, list[dict], list[dict]]):
-    dao, make_list, models_list = dao_with_models
+def test_get_model_by_body_style_id(dbi_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dbi_with_models
 
     body_style_info = dao.get_all_body_styles()
 
@@ -373,8 +373,8 @@ def test_get_model_by_body_style_id(dao_with_models: list[DBInterface, list[dict
             dao.get_model_by_body_style_id(body_style["id"]))
 
 
-def test_get_model_by_body_style_name(dao_with_models: list[DBInterface, list[dict], list[dict]]):
-    dao, make_list, models_list = dao_with_models
+def test_get_model_by_body_style_name(dbi_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dbi_with_models
 
     body_style_info = dao.get_all_body_styles()
     models_by_body_style = defaultdict(list)
@@ -387,22 +387,22 @@ def test_get_model_by_body_style_name(dao_with_models: list[DBInterface, list[di
             dao.get_model_by_body_style_name(body_style["body_style_name"]))
 
 
-def test_get_model_count(dao_with_models: list[DBInterface, list[dict], list[dict]]):
-    dao, make_list, models_list = dao_with_models
+def test_get_model_count(dbi_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dbi_with_models
 
     assert dao.get_model_count() == len(models_list)
 
 
-def test_get_model_by_name(dao_with_models: list[DBInterface, list[dict], list[dict]]):
-    dao, make_list, models_list = dao_with_models
+def test_get_model_by_name(dbi_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dbi_with_models
     models_list = choices([model["model_name"]
                           for model in dao.get_all_models()], k=5)
     for model_name in models_list:
         assert dao.get_model_by_name(model_name) != None
 
 
-def test_get_model_by_id(dao_with_models: list[DBInterface, list[dict], list[dict]]):
-    dao, make_list, models_list = dao_with_models
+def test_get_model_by_id(dbi_with_models: list[DBInterface, list[dict], list[dict]]):
+    dao, make_list, models_list = dbi_with_models
 
     models_list = choices([model for model in dao.get_all_models()], k=5)
 
@@ -411,9 +411,9 @@ def test_get_model_by_id(dao_with_models: list[DBInterface, list[dict], list[dic
             "model_name"] == model["model_name"]
 
 
-def test_add_model(new_dao: DBInterface):
-    makes = new_dao.get_all_makes()
-    body_style_data = new_dao.get_all_body_styles()
+def test_add_model(new_dbi: DBInterface):
+    makes = new_dbi.get_all_makes()
+    body_style_data = new_dbi.get_all_body_styles()
 
     rand_make = choice(makes)
     rand_style = choice(body_style_data)
@@ -421,18 +421,18 @@ def test_add_model(new_dao: DBInterface):
     new_model = {"model_name": get_random_string(
         5, 10), "make_id": rand_make["id"], "body_style_id": rand_style["id"]}
 
-    new_dao.add_model(**new_model)
+    new_dbi.add_model(**new_model)
 
-    assert new_dao.get_model_by_name(new_model["model_name"])[
+    assert new_dbi.get_model_by_name(new_model["model_name"])[
         "model_name"] == new_model["model_name"]
 
-    new_dao.delete_model_by_model_name(new_model["model_name"])
+    new_dbi.delete_model_by_model_name(new_model["model_name"])
 
-    assert new_dao.get_model_by_name(new_model["model_name"]) == None
+    assert new_dbi.get_model_by_name(new_model["model_name"]) == None
 
 
-def test_get_all_watched_cars(dao_with_watched_cars: list[DBInterface, list[dict]]):
-    dao, watched_cars = dao_with_watched_cars
+def test_get_all_watched_cars(dbi_with_watched_cars: list[DBInterface, list[dict]]):
+    dao, watched_cars = dbi_with_watched_cars
 
     dao_watched_cars = dao.get_all_watched_cars()
 
@@ -444,8 +444,8 @@ def test_get_all_watched_cars(dao_with_watched_cars: list[DBInterface, list[dict
         assert car["vin"] in dao_watched_car_vins
 
 
-def test_get_watched_car_by_vin(dao_with_watched_cars: list[DBInterface, list[dict]]):
-    dao, watched_cars = dao_with_watched_cars
+def test_get_watched_car_by_vin(dbi_with_watched_cars: list[DBInterface, list[dict]]):
+    dao, watched_cars = dbi_with_watched_cars
 
     for car in watched_cars:
         dao_car = dao.get_watched_car_by_vin(car["vin"])
@@ -454,8 +454,8 @@ def test_get_watched_car_by_vin(dao_with_watched_cars: list[DBInterface, list[di
         assert dao_car["last_price"] == car["last_price"]
 
 
-def test_get_watched_car_by_id(dao_with_watched_cars: list[DBInterface, list[dict]]):
-    dao, watched_cars = dao_with_watched_cars
+def test_get_watched_car_by_id(dbi_with_watched_cars: list[DBInterface, list[dict]]):
+    dao, watched_cars = dbi_with_watched_cars
 
     db_watched_cars = dao.get_all_watched_cars()
 
@@ -464,8 +464,8 @@ def test_get_watched_car_by_id(dao_with_watched_cars: list[DBInterface, list[dic
         assert compare_data([car], [res])
 
 
-def test_delete_watched_car_by_vin(dao_with_watched_cars: list[DBInterface, list[dict]]):
-    dao, watched_cars = dao_with_watched_cars
+def test_delete_watched_car_by_vin(dbi_with_watched_cars: list[DBInterface, list[dict]]):
+    dao, watched_cars = dbi_with_watched_cars
 
     assert len(dao.get_all_watched_cars()) == len(watched_cars)
 
@@ -475,8 +475,8 @@ def test_delete_watched_car_by_vin(dao_with_watched_cars: list[DBInterface, list
     assert len(dao.get_all_watched_cars()) == 0
 
 
-def test_update_watched_car(dao_with_watched_cars: list[DBInterface, list[dict]]):
-    dao, watched_cars = dao_with_watched_cars
+def test_update_watched_car(dbi_with_watched_cars: list[DBInterface, list[dict]]):
+    dao, watched_cars = dbi_with_watched_cars
     curr_time = datetime.now()
     new_price = random.randint(100, 500000)
 
@@ -492,8 +492,8 @@ def test_update_watched_car(dao_with_watched_cars: list[DBInterface, list[dict]]
         assert car_data["prev_price"] == car["last_price"]
 
 
-def test_get_all_criteria(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, criteria, makes, models, users, state_list = dao_with_criteria
+def test_get_all_criteria(dbi_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
+    dao, criteria, makes, models, users, state_list = dbi_with_criteria
 
     db_criteria = dao.get_all_criteria()
     assert len(db_criteria) == len(criteria)
@@ -504,8 +504,8 @@ def test_get_all_criteria(dao_with_criteria: list[DBInterface, list[dict], list[
     assert compare_data(criteria, db_criteria)
 
 
-def test_get_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, criteria, makes, models, users, state_list = dao_with_criteria
+def test_get_criteria_by_info(dbi_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
+    dao, criteria, makes, models, users, state_list = dbi_with_criteria
 
     identical_criteria_count = defaultdict(int)
 
@@ -518,8 +518,8 @@ def test_get_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], l
             db_criteria) == identical_criteria_count[get_tuple_from_dict(crit)]
 
 
-def test_get_criteria_by_id(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, criteria, makes, models, users, state_list = dao_with_criteria
+def test_get_criteria_by_id(dbi_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
+    dao, criteria, makes, models, users, state_list = dbi_with_criteria
 
     all_criteria = dao.get_all_criteria()
 
@@ -528,8 +528,8 @@ def test_get_criteria_by_id(dao_with_criteria: list[DBInterface, list[dict], lis
             dao.get_criteria_by_id(crit["id"]))
 
 
-def test_get_criteria_by_user_id(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, criteria, makes, models, users, state_list = dao_with_criteria
+def test_get_criteria_by_user_id(dbi_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
+    dao, criteria, makes, models, users, state_list = dbi_with_criteria
 
     user_crit_count = defaultdict(int)
 
@@ -543,8 +543,8 @@ def test_get_criteria_by_user_id(dao_with_criteria: list[DBInterface, list[dict]
             user["id"])) == user_crit_count[user["id"]]
 
 
-def test_delete_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
-    dao, criteria, makes, models, users, state_list = dao_with_criteria
+def test_delete_criteria_by_info(dbi_with_criteria: list[DBInterface, list[dict], list[dict], list[dict], list[dict], list[dict]]):
+    dao, criteria, makes, models, users, state_list = dbi_with_criteria
 
     assert len(dao.get_all_criteria()) == len(criteria)
 
@@ -554,8 +554,8 @@ def test_delete_criteria_by_info(dao_with_criteria: list[DBInterface, list[dict]
     assert len(dao.get_all_criteria()) == 0
 
 
-def test_get_all_listing_alerts(dao_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]]):
-    dao, users, watched_cars, alerts = dao_with_listing_alerts
+def test_get_all_listing_alerts(dbi_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]]):
+    dao, users, watched_cars, alerts = dbi_with_listing_alerts
 
     alerts_data = dao.get_all_alerts()
 
@@ -564,8 +564,8 @@ def test_get_all_listing_alerts(dao_with_listing_alerts: list[DBInterface, list[
     assert compare_data(alerts, alerts_data)
 
 
-def test_get_listing_alerts_by_info(dao_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]]):
-    dao, users, watched_cars, alerts = dao_with_listing_alerts
+def test_get_listing_alerts_by_info(dbi_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]]):
+    dao, users, watched_cars, alerts = dbi_with_listing_alerts
 
     for alert in alerts:
         get_res = dao.get_alert_by_info(car_id=alert["car_id"])
@@ -574,8 +574,8 @@ def test_get_listing_alerts_by_info(dao_with_listing_alerts: list[DBInterface, l
         assert res["car_id"] == alert["car_id"]
 
 
-def test_delete_listing_alerts_by_info(dao_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]]):
-    dao, users, watched_cars, alerts = dao_with_listing_alerts
+def test_delete_listing_alerts_by_info(dbi_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]]):
+    dao, users, watched_cars, alerts = dbi_with_listing_alerts
 
     all_alerts = dao.get_all_alerts()
 
@@ -589,8 +589,8 @@ def test_delete_listing_alerts_by_info(dao_with_listing_alerts: list[DBInterface
     assert len(all_alerts) == 0
 
 
-def test_get_all_states(dao_with_states: list[DBInterface, list[dict]]):
-    dao, states = dao_with_states
+def test_get_all_states(dbi_with_states: list[DBInterface, list[dict]]):
+    dao, states = dbi_with_states
 
     states_data = dao.get_all_states()
 
@@ -599,8 +599,8 @@ def test_get_all_states(dao_with_states: list[DBInterface, list[dict]]):
     assert compare_data(states, states_data)
 
 
-def test_get_state_by_name(dao_with_states: list[DBInterface, list[dict]]):
-    dao, states = dao_with_states
+def test_get_state_by_name(dbi_with_states: list[DBInterface, list[dict]]):
+    dao, states = dbi_with_states
 
     for state in states:
         returned_data = dao.get_state_by_name(state["state_name"])
