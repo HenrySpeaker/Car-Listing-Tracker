@@ -1,5 +1,5 @@
-from ZipData.add_geo_data_to_db import add_data
-from dataCollection.add_cars_to_db import add_models_to_db
+from zipdata.add_geo_data_to_db import add_data
+from datacollection.add_cars_to_db import add_models_to_db
 
 
 def prepare_db():  # pragma: no cover
