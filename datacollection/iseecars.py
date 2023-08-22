@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from dataCollection.headers import headers
+from datacollection.headers import headers
 
 
 def get_iseecars_listings(criteria: dict) -> list[dict]:

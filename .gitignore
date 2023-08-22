@@ -104,7 +104,6 @@ ENV/
 car-data/
 scrapers/
 uszips.csv
-dataCollection/*.html
 
 # Do not ignore these files
 !useralerts/templates/*.txt

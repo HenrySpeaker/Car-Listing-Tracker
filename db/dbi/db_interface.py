@@ -503,7 +503,6 @@ class DBInterface:
 
     @check_connection
     def add_criteria(self,
-
                      min_year: int,
                      max_year: int,
                      min_price: int,

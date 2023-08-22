@@ -43,21 +43,20 @@ def find_cars():
             if res and res["last_price"] > car["price"]:
 
                 # first check and see if any previous price drops are in the alerts table and clear them
-                possible_prev_alerts = dbi.get_alert_by_info(
-                    user_id=crit["user_id"], car_id=res["id"])
+                possible_prev_alerts = dbi.get_alert_by_info(car_id=res["id"])
 
                 if possible_prev_alerts:
-                    dbi.delete_alerts_by_info(
-                        user_id=crit["user_id"], car_id=res["id"], change="price_drop")
+                    dbi.delete_alerts_by_info(car_id=res["id"])
 
                 dbi.add_alert(car_id=res["id"], change="price_drop")
 
                 dbi.update_watched_car(
-                    vin=car["vin"], last_price=car["price"], last_update=datetime.now())
+                    vin=car["vin"], last_price=car["price"], last_update=datetime.now(), prev_price=res["last_price"])
 
             # if car not in db then add it and update alerts table
             elif not res and len(car["url"]) <= 500:
                 max_mileage = crit["max_mileage"]
+
                 if car["mileage"] > max_mileage:
                     continue
 
@@ -67,5 +66,5 @@ def find_cars():
                 dbi.add_alert(car_id=res["id"], change="new_listing")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     find_cars()
