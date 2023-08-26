@@ -4,6 +4,9 @@ from datacollection.headers import headers
 
 
 def get_iseecars_listings(criteria: dict) -> list[dict]:
+    """
+    Accepts a dictionary representing a specific search, scrapes the iseecars.com website, and returns a list of all cars matching the search criteria.
+    """
     cars_found = []
 
     iseecars_url = f"https://www.iseecars.com/cars-for-sale?Location={criteria.get('zip_code', '')}&Radius={criteria.get('search_distance', '')}&Make={criteria.get('make', '')}&Model={criteria.get('model', '')}&Year_min={criteria.get('min_year', '')}&Year_max={criteria.get('max_year')}&Trim=&Price_min={criteria.get('min_price', '')}&Price_max={criteria.get('max_price', '')}&DealerRating=0&Mileage_min=&Mileage_max={criteria.get('max_mileage')}&range_pricebelowmarket_min=&PriceBelowMarket_min=&PriceBelowMarket_max=&range_pricedrop_min=&PriceDrop_min=&PriceDrop_max=&range_daysonmarket_min=0&range_daysonmarket_max=0&DaysOnMarket_min=&DaysOnMarket_max=&range_mpg_min=0&range_mpg_max=0&MPG_min=&MPG_max=&range_legroom_min=&range_headroom_min=&range_height_min=&range_torsoleglength_min=2&LegRoom_min=&HeadRoom_min=&LegRoom_max=&HeadRoom_max=&range_cargovolume_min=0&range_cargovolume_max=0&CargoRoom_min=&CargoRoom_max=&Engine=&range_horsepower_min=0&range_horsepower_max=0&Horsepower_min=&Horsepower_max=&DriveType=&Color=&InteriorColor=&range_bedlength_min=1.5&range_bedlength_max=1.5&Bed+Length_min=&Bed+Length_max=&range_towingcapacity_min=0&range_towingcapacity_max=0&TowingCapacity_min=&TowingCapacity_max=&Keywords=&visibleKeywords=&Features=&Key+Features=&Key+Features=&Key+Features=&Key+Features=&Key+Features=&Key+Features=&Key+Features=&Key+Features=&Key+Features=&DealerId=&_t=a&_c=&offset=0&maxResults=100&sort=BestDeal&sortOrder=desc&Bodystyle={criteria.get('isc_body_style', '')}"

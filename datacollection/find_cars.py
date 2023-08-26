@@ -10,6 +10,9 @@ dbi = DBInterface(dbi_url)
 
 
 def find_cars():
+    """
+    Finds cars that match current criteria, adds them to the watched car table if necessary, and creates any necessary alerts.
+    """
 
     for crit in dbi.get_all_criteria():
 

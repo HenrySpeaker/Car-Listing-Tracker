@@ -9,7 +9,10 @@ MODEL_ROW_COUNT = 1415
 
 
 class Config:
-    """Set Flask config variables."""
+    """
+    Set project config variables.
+    """
+
     FLASK_APP = environ.get("FLASK_APP")
     ALERTS_EMAIL = environ.get("ALERTS_EMAIL")
     ALERTS_EMAIL_PASSWORD = environ.get("ALERTS_EMAIL_PASSWORD")

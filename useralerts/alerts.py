@@ -46,7 +46,11 @@ class UserAlerts:
         self.price_drops.append(listing)
 
 
-def get_listing_details(listings):
+def get_listing_details(listings: list[dict]):
+    """
+    Accepts a list of dictionaries representing alerts of a particular user. 
+    The dictionaries are modified to hold additional key-value pairs of pertinent information for the alerts that wasn't stored in the same table.
+    """
 
     for listing in listings:
         car_id = listing["car_id"]
@@ -65,6 +69,9 @@ def get_listing_details(listings):
 
 
 def send_alerts():
+    """
+    Fetches all current alerts, attempts to send them to their respective users, and clears any alerts that were successfully sent.
+    """
     alerts = dbi.get_all_alerts()
 
     user_alerts = defaultdict(UserAlerts)
@@ -153,6 +160,7 @@ def send_alerts():
 
                 for car in price_drops:
                     dbi.delete_alerts_by_info(car_id=car["car_id"])
+
             except (SMTPRecipientsRefused, SMTPNotSupportedError, SMTPHeloError, SMTPDataError) as error:
                 logger.error(
                     f"email alerts to user {user_id} failed with error {error}")
