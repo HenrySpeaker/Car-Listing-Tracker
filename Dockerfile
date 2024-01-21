@@ -12,7 +12,5 @@ RUN ["/bin/bash", "-c", "source venv/bin/activate && pip3 install -r requirement
 
 COPY . .
 
-# CMD ["/bin/bash", "-c", "source venv/bin/activate && python3 -m server.py"]
-
-# CMD ["python3", "-m", "server.py"]
+CMD ["/bin/bash", "-c", "source venv/bin/activate && python3 -m server.py"]
 
