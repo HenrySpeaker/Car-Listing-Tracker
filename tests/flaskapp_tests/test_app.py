@@ -1,15 +1,14 @@
+from random import choice
+from bs4 import BeautifulSoup
+import pytest
+from werkzeug.security import generate_password_hash, check_password_hash
 from flaskapp import create_app
-from config import DevConfig
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
-import pytest
-from db.dbi.db_interface import DBInterface
 from config import DevConfig
-from werkzeug.security import generate_password_hash, check_password_hash
-from random import choice
-from bs4 import BeautifulSoup
-from time import sleep
+from db.dbi.db_interface import DBInterface
+
 
 DB_URI = DevConfig.POSTGRES_DATABASE_URI
 

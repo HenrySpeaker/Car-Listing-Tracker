@@ -8,7 +8,7 @@ import psycopg
 from db.dbi.db_interface import DBInterface
 from db.body_styles import body_styles
 from config import ZIP_ROW_COUNT
-from tests.utils.db_utils import *
+from tests.utils.db_utils import *  # noqa: F403
 
 
 def test_false_valid_connection_attribute(new_dbi: DBInterface):

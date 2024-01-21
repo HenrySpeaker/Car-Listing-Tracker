@@ -1,8 +1,8 @@
+from datetime import datetime, timedelta
 import pytest
+import smtplib
 import useralerts.alerts as alerts
 from tests.utils.db_utils import *
-import smtplib
-from datetime import datetime, timedelta
 
 
 @pytest.fixture
