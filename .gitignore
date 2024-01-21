@@ -109,4 +109,5 @@ dataCollection/*.html
 # Do not ignore these files
 !useralerts/templates/*.txt
 !requirements.txt
+!requirements-all.txt
 !DB-XML-schema.txt
