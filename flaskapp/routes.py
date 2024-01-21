@@ -1,10 +1,10 @@
-from flask import Blueprint, render_template, current_app, redirect, url_for
-from .forms import RegisterForm, LoginForm, MakeModelCriteriaForm, BodyStyleCriteriaForm
 import logging
+from flask import Blueprint, render_template, current_app, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
-from db.dbi.db_interface import DBInterface
 from flask_login import login_required, login_user, current_user
-from .user import User
+from flaskapp.forms import RegisterForm, LoginForm, MakeModelCriteriaForm, BodyStyleCriteriaForm
+from db.dbi.db_interface import DBInterface
+from flaskapp.user import User
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("routes_logger")

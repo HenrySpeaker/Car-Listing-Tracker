@@ -1,10 +1,9 @@
-from flask import Flask
 import os
-from db.dbi.db_interface import DBInterface
-import secrets
+from flask import Flask
 from flask_login import LoginManager
+from db.dbi.db_interface import DBInterface
 from config import ProdConfig
-from .user import User
+from flaskapp.user import User
 from prepare_db import prepare_db
 
 

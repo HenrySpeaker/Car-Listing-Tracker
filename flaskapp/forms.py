@@ -1,10 +1,9 @@
-from typing import Any
+from flask import current_app
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, SelectField, IntegerField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Length, NumberRange
 from db.body_styles import body_styles
 from db.dbi.db_interface import DBInterface
-from flask import current_app
 
 body_style_list = [body for body in body_styles.keys()]
 
@@ -87,7 +86,7 @@ class BaseCriteriaForm(FlaskForm):
 
         dbi = DBInterface(current_app.config["POSTGRES_DATABASE_URI"])
 
-        if dbi.get_zip_code_info(self.zip_code.data) == None:
+        if dbi.get_zip_code_info(self.zip_code.data) is None:
             self.zip_code.errors.append("Must enter a valid zip code.")
             return False
 
