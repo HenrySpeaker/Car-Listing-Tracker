@@ -1,14 +1,14 @@
+import random
+from random import choice, choices
+from datetime import datetime
+from collections import defaultdict
 import pytest
+from pytz import timezone
+import psycopg
 from db.dbi.db_interface import DBInterface
 from db.body_styles import body_styles
 from config import ZIP_ROW_COUNT
-from datetime import datetime
-import random
-import psycopg
-from collections import defaultdict
-from random import choice, choices
 from tests.utils.db_utils import *
-from pytz import timezone
 
 
 def test_false_valid_connection_attribute(new_dbi: DBInterface):
