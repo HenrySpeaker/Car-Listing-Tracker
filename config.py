@@ -2,7 +2,7 @@ from os import environ, path
 from dotenv import load_dotenv
 
 basedir = path.abspath(path.dirname(__file__))
-load_dotenv(path.join(basedir, ".env"))
+load_dotenv(path.join(basedir, ".env"), override=True)
 
 ZIP_ROW_COUNT = 33788
 MODEL_ROW_COUNT = 1415
@@ -13,13 +13,14 @@ class Config:
     FLASK_APP = environ.get("FLASK_APP")
     ALERTS_EMAIL = environ.get("ALERTS_EMAIL")
     ALERTS_EMAIL_PASSWORD = environ.get("ALERTS_EMAIL_PASSWORD")
+    CURRENT_DB = environ.get("CURRENT_DB")
+    POSTGRES_DATABASE_URI = environ.get(environ.get("CURRENT_DB") + "_URI")
 
 
 class ProdConfig(Config):
     FLASK_ENV = "production"
     DEBUG = False
     TESTING = False
-    POSTGRES_DATABASE_URI = environ.get("PROD_DATABASE_URI")
     LIVESERVER_PORT = 8943
     SECRET_KEY = environ.get("PROD_SECRET_KEY")
 
@@ -28,5 +29,4 @@ class DevConfig(Config):
     FLASK_ENV = "development"
     DEBUG = True
     TESTING = True
-    POSTGRES_DATABASE_URI = environ.get("DEV_DATABASE_URI")
     SECRET_KEY = environ.get("DEV_SECRET_KEY")
