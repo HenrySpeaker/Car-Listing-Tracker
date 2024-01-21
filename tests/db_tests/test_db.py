@@ -8,6 +8,7 @@ import psycopg
 from collections import defaultdict
 from random import choice, choices
 from tests.utils.db_utils import *
+from pytz import timezone
 
 
 def test_false_valid_connection_attribute(new_dbi: DBInterface):
@@ -22,8 +23,7 @@ def test_false_valid_connection_attribute(new_dbi: DBInterface):
 
 def test_bad_db_url(capsys):
     curr_dao = DBInterface("Not a valid db url")
-    assert capsys.readouterr(
-    ).out == 'An error occurred: missing "=" after "Not" in connection info string\n\n'
+    assert capsys.readouterr().out == 'An error occurred: missing "=" after "Not" in connection info string\n\n'
 
 
 def test_get_user_by_id(dbi_with_users: list[DBInterface, list]):
@@ -115,7 +115,7 @@ def test_update_notification_frequency_by_username(dbi_with_users: list[DBInterf
 
 def test_update_last_login_by_username(dbi_with_users: list[DBInterface, list]):
     dao, user_list = dbi_with_users
-    new_login_dt = datetime.now()
+    new_login_dt = datetime.now(timezone("UTC"))
     username = user_list[0]["username"]
     dao.update_last_login_by_username(
         username=username, login_datetime=new_login_dt)
@@ -129,7 +129,7 @@ def test_update_last_login_by_username(dbi_with_users: list[DBInterface, list]):
 
 def test_update_last_alerted_by_id(dbi_with_users: list[DBInterface, list]):
     dao, user_list = dbi_with_users
-    new_alert_dt = datetime.now()
+    new_alert_dt = datetime.now(timezone("UTC"))
     user_id = dao.get_all_users()[0]["id"]
     dao.update_last_alerted_by_id(id=user_id, last_alerted=new_alert_dt)
 
@@ -477,7 +477,7 @@ def test_delete_watched_car_by_vin(dbi_with_watched_cars: list[DBInterface, list
 
 def test_update_watched_car(dbi_with_watched_cars: list[DBInterface, list[dict]]):
     dao, watched_cars = dbi_with_watched_cars
-    curr_time = datetime.now()
+    curr_time = datetime.now(timezone("UTC"))
     new_price = random.randint(100, 500000)
 
     for car in watched_cars:
