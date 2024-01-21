@@ -102,6 +102,8 @@ def send_alerts():
         if not user_alerts_due[car_id_to_user_id[alert["car_id"]]]:
             continue
 
+        user_alerts[car_id_to_user_id[alert["car_id"]]] = UserAlerts()
+
         if alert["change"] == "price_drop":
             user_alerts[car_id_to_user_id[alert["car_id"]]
                         ].add_price_drop(alert)
