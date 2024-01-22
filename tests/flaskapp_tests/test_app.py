@@ -1,4 +1,5 @@
 from random import choice
+from time import sleep
 from bs4 import BeautifulSoup
 import pytest
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -6,8 +7,14 @@ from flaskapp import create_app
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.action_chains import ActionChains
 from config import DevConfig
 from db.dbi.db_interface import DBInterface
+
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 DB_URI = DevConfig.POSTGRES_DATABASE_URI
@@ -204,6 +211,31 @@ def test_login_page_with_invalid_credentials_with_selenium(flask_port, selenium_
     selenium_driver.find_element(By.ID, "submit").click()
 
     assert selenium_driver.current_url == f"http://localhost:{flask_port}/login"
+
+
+def test_logout_with_selenium(flask_port, selenium_driver):
+    """
+    GIVEN a flask app configured for testing
+    WHEN the logout link is clicked
+    THEN check that the user is logged out and redirected to the home page
+    """
+
+    dbi = DBInterface(DB_URI)
+
+    url = f"http://localhost:{flask_port}/login"
+    selenium_driver.get(url)
+
+    add_fake_user_to_db()
+
+    selenium_driver = login_user(flask_port, selenium_driver)
+
+    assert selenium_driver.current_url == f"http://localhost:{flask_port}/account"
+
+    # WebDriverWait(selenium_driver, 20).until(EC.element_to_be_clickable((By.ID, "logout"))).click()
+
+    selenium_driver.find_element(By.ID, "logout").find_element(By.XPATH, "*").click()
+
+    assert selenium_driver.current_url == f"http://localhost:{flask_port}/"
 
 
 def go_to_add_criteria(selenium_driver, flask_port):

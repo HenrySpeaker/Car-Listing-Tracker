@@ -1,7 +1,7 @@
 import logging
 from flask import Blueprint, render_template, current_app, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_required, login_user, current_user
+from flask_login import login_required, login_user, current_user, logout_user
 from flaskapp.forms import RegisterForm, LoginForm, MakeModelCriteriaForm, BodyStyleCriteriaForm
 from db.dbi.db_interface import DBInterface
 from flaskapp.user import User
@@ -93,35 +93,6 @@ def account():
 
 criteria_map = {'min_year': 'Minimum year', 'max_year': 'Maximum year', 'min_price': 'Minimum price', 'max_price': 'Maximum price', 'max_mileage': 'Maximum mileage',
                 'search_distance': 'Search radius', 'no_accidents': 'No accidents', 'single_owner': 'Single owner', 'make_name': 'Make', 'model_name': 'Model', 'body_style_name': 'Body style'}
-
-
-# @bp.route("/criteria")
-# @login_required
-# def criteria():
-#     db_uri = current_app.config["POSTGRES_DATABASE_URI"]
-#     db_interface = DBInterface(db_uri)
-#     user_criteria = db_interface.get_all_criteria()
-
-#     criteria = [{
-#         "Minimum year": row["min_year"],
-#         "Maximum year": row["max_year"],
-#         "Minimum price": row["min_price"] if row["min_price"] else 0,
-#         "Maximum price": row["max_price"],
-#         "Maximum mileage": row["max_mileage"],
-#         "Search radius": row["search_distance"],
-#         "No accidents": row["no_accidents"],
-#         "Single owner": row["single_owner"],
-#         "Make": db_interface.get_make_by_id(db_interface.get_model_by_id(row["model_id"])["make_id"])["make_name"] if row["model_id"] else "No make",
-#         "Model": model_info["model_name"] if row["model_id"] and (model_info := db_interface.get_model_by_id(row["model_id"])) else "No model",
-#         "Body style": body_style if row["body_style_id"] and (body_style := db_interface.get_body_style_by_id(row["body_style_id"])["body_style_name"]) else db_interface.get_body_style_by_id(db_interface.get_model_by_id(row["model_id"])["body_style_id"])["body_style_name"]
-
-#     } for row in user_criteria]
-
-#     key_list = criteria[0].keys() if criteria else []
-
-#     logger.info(f"Criteria for user id: {current_user.user_id} accessed")
-
-#     return render_template("criteria.html", criteria=criteria, key_list=key_list)
 
 
 @bp.route("/criteria")
@@ -233,3 +204,11 @@ def add_criteria_make_model(make):
         return redirect("/criteria")
 
     return render_template("add_make_model_criteria.html", form=form, make=make)
+
+
+@bp.route("/logout")
+@login_required
+def logout():
+    logout_user()
+
+    return redirect("/login")
