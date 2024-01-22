@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import pytest
 import smtplib
 import useralerts.alerts as alerts
-from tests.utils.db_utils import *
+from tests.utils.db_utils import *  # noqa: F403
 
 
 @pytest.fixture

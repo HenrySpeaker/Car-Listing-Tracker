@@ -1,5 +1,4 @@
 from random import choice
-from time import sleep
 from bs4 import BeautifulSoup
 import pytest
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,14 +6,8 @@ from flaskapp import create_app
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.action_chains import ActionChains
 from config import DevConfig
 from db.dbi.db_interface import DBInterface
-
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
 
 
 DB_URI = DevConfig.POSTGRES_DATABASE_URI
@@ -235,7 +228,7 @@ def test_logout_with_selenium(flask_port, selenium_driver):
 
     selenium_driver.find_element(By.ID, "logout").find_element(By.XPATH, "*").click()
 
-    assert selenium_driver.current_url == f"http://localhost:{flask_port}/"
+    assert selenium_driver.current_url == f"http://localhost:{flask_port}/login"
 
 
 def go_to_add_criteria(selenium_driver, flask_port):
