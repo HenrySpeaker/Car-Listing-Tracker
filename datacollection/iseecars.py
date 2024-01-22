@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from dataCollection.headers import headers
+from datacollection.headers import headers
 
 
 def get_iseecars_listings(criteria: dict) -> list[dict]:
@@ -50,6 +50,9 @@ def get_iseecars_listings(criteria: dict) -> list[dict]:
                 additional_data["data-label"].split()[0])
         except ValueError:
             listing_info["model_year"] = None
+
+        if "vin" not in listing_info or "price" not in listing_info:
+            continue
 
         cars_found.append(listing_info)
 

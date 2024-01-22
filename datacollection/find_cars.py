@@ -7,7 +7,7 @@ from db.body_styles import body_styles
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-handler = logging.FileHandler("useralerts/alerts.log")
+handler = logging.FileHandler("datacollection/search.log")
 handler.setLevel(logging.DEBUG)
 format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(format)
