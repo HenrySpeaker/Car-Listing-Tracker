@@ -43,7 +43,8 @@ def get_iseecars_listings(criteria: dict) -> list[dict]:
         additional_data = listing.find(
             "div", attrs={"class": "storage"})
 
-        listing_info["zip_code"] = int(additional_data["data-zip"])
+        listing_info["zip_code"] = int(additional_data["data-zip"]
+                                       if "data-zip" in additional_data else criteria.get('zip_code', 1))
 
         try:
             listing_info["model_year"] = int(
