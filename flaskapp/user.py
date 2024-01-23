@@ -1,4 +1,3 @@
-from db.dbi.db_interface import DBInterface
 from flask_login import UserMixin
 
 

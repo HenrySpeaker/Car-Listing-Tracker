@@ -5,7 +5,6 @@ import aiosql
 from functools import wraps
 from datetime import datetime
 from db.body_styles import body_styles
-from datetime import datetime
 
 queries = aiosql.from_path('db/sql', 'psycopg')
 
@@ -203,6 +202,14 @@ class DBInterface:
     def add_zip_code(self, zip_code: int, city_id: int) -> None:  # pragma: no cover
         with psycopg.connect(self._connection_url) as conn:
             queries.add_zip_code(conn, zip_code=zip_code, city_id=city_id)
+
+    @check_connection
+    def add_zip_codes(self, zips_list: list[dict]) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            with conn.cursor() as cur:
+                query = sql.SQL(
+                    "INSERT INTO zip_code(zip_code, city_id) VALUES (%(zip_code)s, %(city_id)s);")
+                cur.executemany(query, zips_list)
 
 # --------------------- DELETE ZIP CODES ---------------------------------
 

@@ -1,0 +1,14 @@
+__pycache__/
+.pytest_cache/
+.vscode/
+instance/
+venv/
+.coveragerc
+.env
+docker.env
+.gitignore
+DB-XML-schema.txt
+geckodriver.log
+project-notes.txt
+todo.txt
+yoyo.ini

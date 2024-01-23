@@ -79,7 +79,7 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
-.env
+*.env
 .venv
 env/
 venv/
@@ -108,3 +108,5 @@ uszips.csv
 # Do not ignore these files
 !useralerts/templates/*.txt
 !requirements.txt
+!requirements-all.txt
+!DB-XML-schema.txt

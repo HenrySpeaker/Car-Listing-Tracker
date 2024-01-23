@@ -23,6 +23,8 @@ def add_data():  # pragma: no cover
         return
 
     rows = get_geo_data()
+    zips_list = []
+
     for row in rows:
         if row["state"] not in states:
             if not dbi.get_state_by_name(row["state"]):
@@ -37,8 +39,14 @@ def add_data():  # pragma: no cover
             cities[row["city"]] = dbi.get_city_id(row["city"])
 
         if not dbi.get_zip_code_info(row["zip"]):
-            dbi.add_zip_code(
-                zip_code=row["zip"], city_id=cities[row["city"]])
+            zips_list.append({"zip_code": row["zip"], "city_id": cities[row["city"]]})
+
+        if len(zips_list) == 100:
+            dbi.add_zip_codes(zips_list)
+            zips_list = []
+
+    if len(zips_list) > 0:
+        dbi.add_zip_codes(zips_list)
 
     return rows, states, cities
 

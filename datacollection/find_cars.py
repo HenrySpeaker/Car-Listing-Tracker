@@ -1,8 +1,17 @@
+import logging
+from datetime import datetime
 from config import ProdConfig
 from db.dbi.db_interface import DBInterface
 from datacollection.iseecars import get_iseecars_listings
 from db.body_styles import body_styles
-from datetime import datetime
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+handler = logging.FileHandler("datacollection/search.log")
+handler.setLevel(logging.DEBUG)
+format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(format)
+logger.addHandler(handler)
 
 dbi_url = ProdConfig.POSTGRES_DATABASE_URI
 
