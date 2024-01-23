@@ -4,3 +4,4 @@ concurrency = multiprocessing
 parallel = True
 sigterm = True
 omit = tests/*
+data_file=.coverage_logs/.coverage

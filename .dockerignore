@@ -12,3 +12,4 @@ geckodriver.log
 project-notes.txt
 todo.txt
 yoyo.ini
+.coverage_logs/
