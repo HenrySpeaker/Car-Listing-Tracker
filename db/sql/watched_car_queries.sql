@@ -7,6 +7,9 @@ SELECT * FROM watched_car WHERE vin = :vin LIMIT 1;
 -- name: get_watched_car_by_id^
 SELECT * FROM watched_car WHERE id = :id LIMIT 1;
 
+-- name: get_watched_car_by_criteria_id
+SELECT * FROM watched_car WHERE criteria_id = :criteria_id;
+
 -- name: add_watched_car!
 INSERT INTO watched_car (vin, listing_url, last_price, criteria_id, model_year) VALUES (:vin, :listing_url, :last_price, :criteria_id, :model_year);
 

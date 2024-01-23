@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Search results</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <a href="/account">Account</a>
+    <br>
+    <a href="/add-criteria">Add criteria</a>
+    <br>
+
+    Showing results for 
+    {% if criteria_data["model_id"] != None %}
+    {{ criteria_data["make_name"]}} {{ criteria_data["model_name"]}}
+    {% else %}
+    {{ criteria_data["body_style_name"]}}
+    {% endif %}
+    under {{ criteria_data["max_mileage"]}} miles from model year {{ criteria_data["min_year"]}} to {{ criteria_data["max_year"]}}  within {{ criteria_data["search_distance"]}} miles of zip code {{ criteria_data["zip_code"]}}
+    {% if cars %}
+    <table>
+        <tr>
+            {% for key in table_headers %}
+                <th>{{ table_headers[key] }}</th>
+            {% endfor %}
+            </tr>
+        {% for car in cars %}
+            <tr>
+                <td>${{ car["last_price"] }}</td>
+                <td>{{ car["model_year"] }}</td>
+                <td><a href="{{ car['listing_url'] }}" target="_blank">Link</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No cars to display.</p>
+    {% endif %}
+    <script src="" async defer></script>
+</body>
+
+</html>

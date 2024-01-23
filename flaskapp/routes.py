@@ -274,3 +274,35 @@ def change_info():
         return redirect("/account")
 
     return render_template("change-info.html", form=info_form)
+
+
+@bp.route("/found-cars/<int:criteria_id>")
+@login_required
+def found_cars(criteria_id=None):
+    logger.info(f"Accessing car search results for criteria id {criteria_id}")
+    db_uri = current_app.config["POSTGRES_DATABASE_URI"]
+    db_interface = DBInterface(db_uri)
+
+    criteria_data = db_interface.get_criteria_by_id(criteria_id)
+    if not criteria_data or int(criteria_data["user_id"]) != int(current_user.user_id):
+        return "Unauthorized", 400
+
+    criteria_data["zip_code"] = db_interface.get_zip_code_by_id(criteria_data["zip_code_id"])["zip_code"]
+    if criteria_data["model_id"]:
+        model_data = db_interface.get_model_by_id(criteria_data["model_id"])
+
+        criteria_data["model_name"] = model_data["model_name"]
+        criteria_data["make_name"] = db_interface.get_make_by_id(model_data["make_id"])["make_name"]
+    else:
+        criteria_data["body_style_name"] = db_interface.get_body_style_by_id(criteria_data["body_style_id"])[
+            "body_style_name"]
+
+    cars = db_interface.get_watched_car_by_criteria_id(criteria_id)
+
+    table_headers = {
+        "last_price": "Price",
+        "model_year": "Model year",
+        "listing_url": "Listing",
+    }
+
+    return render_template("found-cars.html", cars=cars, table_headers=table_headers, criteria_data=criteria_data)

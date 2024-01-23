@@ -432,6 +432,11 @@ class DBInterface:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             return queries.get_watched_car_by_id(conn, id=id)
 
+    @check_connection
+    def get_watched_car_by_criteria_id(self, criteria_id: int) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return [car for car in queries.get_watched_car_by_criteria_id(conn, criteria_id=criteria_id)]
+
 # ----------------------- ADD WATCHED CAR ----------------------------------
 
     @check_connection
