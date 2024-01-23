@@ -15,7 +15,8 @@ class Config:
     ALERTS_EMAIL_PASSWORD = environ.get("ALERTS_EMAIL_PASSWORD")
     CURRENT_DB = environ.get("CURRENT_DB")
     POSTGRES_DATABASE_URI = environ.get(environ.get("CURRENT_DB") + "_URI")
-    SMTP_RETRY_LIMIT = environ.get("SMTP_RETRY_LIMIT", 5)
+    SMTP_RETRY_LIMIT = environ.get("SMTP_RETRY_LIMIT", 10)
+    IMMEDIATE_ALERT_OVERRIDE = bool(environ.get("IMMEDIATE_ALERTS", False))
 
 
 class ProdConfig(Config):

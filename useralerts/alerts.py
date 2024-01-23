@@ -97,7 +97,8 @@ def send_alerts():
 
             notification_freq = user_info["notification_frequency"]
 
-            user_alerts_due[user_id] = time_difference.total_seconds() > notification_freq * 86400 - 43200
+            user_alerts_due[user_id] = time_difference.total_seconds() > notification_freq * 86400 - \
+                43200 or ProdConfig.IMMEDIATE_ALERT_OVERRIDE
 
         if not user_alerts_due[car_id_to_user_id[alert["car_id"]]]:
             continue
