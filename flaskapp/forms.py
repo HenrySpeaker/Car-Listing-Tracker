@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import current_app
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, SelectField, IntegerField, PasswordField, BooleanField
@@ -6,6 +7,7 @@ from db.body_styles import body_styles
 from db.dbi.db_interface import DBInterface
 
 body_style_list = [body for body in body_styles.keys()]
+CURR_YEAR = datetime.now().year
 
 
 class RegisterForm(FlaskForm):
@@ -46,13 +48,12 @@ class LoginForm(FlaskForm):
 
 class BaseCriteriaForm(FlaskForm):
     min_year = IntegerField("Minimum car year", validators=[
-                            InputRequired(), NumberRange(min=1992, max=2023)])
+                            InputRequired(), NumberRange(min=1992, max=CURR_YEAR)])
 
     max_year = IntegerField("Maximum car year", validators=[
-                            InputRequired(), NumberRange(min=1992, max=2023)])
+                            InputRequired(), NumberRange(min=1992, max=CURR_YEAR)])
 
-    min_price = IntegerField("Minimum car price", validators=[
-                             InputRequired(), NumberRange(min=1, max=10000000)])
+    min_price = IntegerField("Minimum car price", default=0, validators=[NumberRange(min=0, max=10000000)])
 
     max_price = IntegerField("Max car price", validators=[
                              InputRequired(), NumberRange(min=1, max=10000000)])
