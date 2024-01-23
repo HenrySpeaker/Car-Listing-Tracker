@@ -1,5 +1,5 @@
 import logging
-from flask import Blueprint, render_template, current_app, redirect
+from flask import Blueprint, render_template, current_app, redirect, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_required, login_user, current_user, logout_user
 from flaskapp.forms import RegisterForm, LoginForm, MakeModelCriteriaForm, BodyStyleCriteriaForm
@@ -95,7 +95,21 @@ criteria_map = {'min_year': 'Minimum year', 'max_year': 'Maximum year', 'min_pri
                 'search_distance': 'Search radius', 'no_accidents': 'No accidents', 'single_owner': 'Single owner', 'make_name': 'Make', 'model_name': 'Model', 'body_style_name': 'Body style'}
 
 
-@bp.route("/criteria")
+@bp.route("/criteria/<crit_id>", methods=["POST"])
+@login_required
+def criteria_remove(crit_id=None):
+
+    if request.method == "POST":
+        db_uri = current_app.config["POSTGRES_DATABASE_URI"]
+        db_interface = DBInterface(db_uri)
+        for key in request.form:
+            logger.info(f"removing criteria {crit_id}")
+            db_interface.delete_criteria_by_id(id=int(crit_id))
+
+    return redirect("/criteria")
+
+
+@bp.route("/criteria", methods=["GET"])
 @login_required
 def criteria():
     db_uri = current_app.config["POSTGRES_DATABASE_URI"]
@@ -104,6 +118,7 @@ def criteria():
         user_id=current_user.user_id)
 
     criteria = [{
+        "id": row["id"],
         "min_year": row["min_year"],
         "max_year": row["max_year"],
         "min_price": row["min_price"] if row["min_price"] else 0,
@@ -118,11 +133,14 @@ def criteria():
 
     } for row in user_criteria]
 
-    key_list = criteria[0].keys() if criteria else []
+    key_list = list(criteria[0].keys()) if criteria else []
+
+    if "id" in key_list:
+        key_list.remove("id")
 
     logger.info(f"Criteria for user id: {current_user.user_id} accessed")
 
-    return render_template("criteria.html", criteria=criteria, key_map=criteria_map, key_list=key_list)
+    return render_template("criteria.html", criteria=criteria, key_map=criteria_map, key_list=key_list, criteria_id_list=[row["id"] for row in user_criteria])
 
 
 @bp.route("/add-criteria", methods=["GET", "POST"])

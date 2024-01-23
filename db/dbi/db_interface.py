@@ -579,6 +579,11 @@ class DBInterface:
                                             model_id=model_id,
                                             body_style_id=body_style_id)
 
+    @check_connection
+    def delete_criteria_by_id(self, id: int) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            queries.delete_criteria_by_id(conn, id=id)
+
 
 # ----------------------------- Listing Alerts --------------------------------------
 

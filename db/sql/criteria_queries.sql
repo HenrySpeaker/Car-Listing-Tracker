@@ -73,3 +73,7 @@ WHERE
     (:model_id::integer IS NULL OR model_id=:model_id) AND
     (:body_style_id::integer IS NULL OR body_style_id=:body_style_id) AND
     (:id::integer IS NULL OR id=:id);
+
+-- name: delete_criteria_by_id!
+DELETE FROM criteria 
+WHERE id=:id;
