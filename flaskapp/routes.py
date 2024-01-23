@@ -6,6 +6,10 @@ from flaskapp.forms import RegisterForm, LoginForm, MakeModelCriteriaForm, BodyS
 from db.dbi.db_interface import DBInterface
 from flaskapp.user import User
 
+
+criteria_map = {'min_year': 'Minimum year', 'max_year': 'Maximum year', 'min_price': 'Minimum price', 'max_price': 'Maximum price', 'max_mileage': 'Maximum mileage',
+                'search_distance': 'Search radius', 'no_accidents': 'No accidents', 'single_owner': 'Single owner', 'make_name': 'Make', 'model_name': 'Model', 'body_style_name': 'Body style'}
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("routes_logger")
 handler = logging.FileHandler("flaskapp/routes.log")
@@ -98,20 +102,14 @@ def account():
     return render_template("account.html")
 
 
-criteria_map = {'min_year': 'Minimum year', 'max_year': 'Maximum year', 'min_price': 'Minimum price', 'max_price': 'Maximum price', 'max_mileage': 'Maximum mileage',
-                'search_distance': 'Search radius', 'no_accidents': 'No accidents', 'single_owner': 'Single owner', 'make_name': 'Make', 'model_name': 'Model', 'body_style_name': 'Body style'}
-
-
 @bp.route("/criteria/<crit_id>", methods=["POST"])
 @login_required
 def criteria_remove(crit_id=None):
 
-    if request.method == "POST":
-        db_uri = current_app.config["POSTGRES_DATABASE_URI"]
-        db_interface = DBInterface(db_uri)
-        for key in request.form:
-            logger.info(f"removing criteria {crit_id}")
-            db_interface.delete_criteria_by_id(id=int(crit_id))
+    db_uri = current_app.config["POSTGRES_DATABASE_URI"]
+    db_interface = DBInterface(db_uri)
+    logger.info(f"removing criteria {crit_id}")
+    db_interface.delete_criteria_by_id(id=int(crit_id))
 
     return redirect("/criteria")
 
