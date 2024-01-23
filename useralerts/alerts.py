@@ -21,6 +21,7 @@ logger.addHandler(handler)
 EMAIL = ProdConfig.ALERTS_EMAIL
 PASSWORD = ProdConfig.ALERTS_EMAIL_PASSWORD
 DB_URI = ProdConfig.POSTGRES_DATABASE_URI
+RETRY_LIMIT = ProdConfig.SMTP_RETRY_LIMIT
 
 dbi = DBInterface(DB_URI)
 
@@ -137,21 +138,30 @@ def send_alerts():
             logger.info(
                 f"Alerting user {user_id} of new listings and price drops")
 
-            try:
-                connection.starttls()
-                connection.login(user=EMAIL, password=PASSWORD)
+            num_tries = 0
 
-                connection.sendmail(
-                    from_addr=EMAIL,
-                    to_addrs=user_email,
-                    msg=email.as_string(),
-                )
+            while num_tries < RETRY_LIMIT:
 
-                for car in new_listings:
-                    dbi.delete_alerts_by_info(car_id=car["car_id"])
+                try:
+                    connection.starttls()
+                    connection.login(user=EMAIL, password=PASSWORD)
 
-                for car in price_drops:
-                    dbi.delete_alerts_by_info(car_id=car["car_id"])
-            except (SMTPRecipientsRefused, SMTPNotSupportedError, SMTPHeloError, SMTPDataError) as error:
-                logger.error(
-                    f"email alerts to user {user_id} failed with error {error}")
+                    connection.sendmail(
+                        from_addr=EMAIL,
+                        to_addrs=user_email,
+                        msg=email.as_string(),
+                    )
+
+                    for car in new_listings:
+                        dbi.delete_alerts_by_info(car_id=car["car_id"])
+
+                    for car in price_drops:
+                        dbi.delete_alerts_by_info(car_id=car["car_id"])
+
+                    break
+
+                except (SMTPRecipientsRefused, SMTPNotSupportedError, SMTPHeloError, SMTPDataError) as error:
+                    logger.error(
+                        f"email alerts to user {user_id} failed with error {error}")
+
+                num_tries += 1
