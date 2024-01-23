@@ -27,7 +27,7 @@ def add_models_to_db():
         body_style_ids[body_style] = dbi.get_body_style_info(
             body_style_name=body_style)["id"]
 
-    with open("car-data/all-models.csv", "r") as file:
+    with open("cardata/all-models.csv", "r") as file:
         reader = DictReader(file)
         models_list = []
 

@@ -18,7 +18,7 @@ def get_first_model(model_str):
 data_collected = {}
 
 for year in range(1992, 2025):
-    with open(f"car-data/{year}.csv", "r") as file:
+    with open(f"cardata/{year}.csv", "r") as file:
         reader = DictReader(file)
 
         for row in reader:
@@ -30,7 +30,7 @@ for year in range(1992, 2025):
                                             ] = get_first_model(row["body_styles"])
 
 
-with open("car-data/all-models.csv", "w", newline="") as file:
+with open("cardata/all-models.csv", "w", newline="") as file:
     writer = DictWriter(
         file, fieldnames=["make", "model", "body_style"])
     writer.writeheader()

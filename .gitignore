@@ -101,7 +101,6 @@ ENV/
 # Project-specific additions
 .vscode
 *.txt
-car-data/
 scrapers/
 uszips.csv
 .coverage_logs/
