@@ -2,7 +2,7 @@ import logging
 from flask import Blueprint, render_template, current_app, redirect, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_required, login_user, current_user, logout_user
-from flaskapp.forms import RegisterForm, LoginForm, MakeModelCriteriaForm, BodyStyleCriteriaForm
+from flaskapp.forms import RegisterForm, LoginForm, MakeModelCriteriaForm, BodyStyleCriteriaForm, ChangeAccountInfoForm
 from db.dbi.db_interface import DBInterface
 from flaskapp.user import User
 
@@ -72,6 +72,13 @@ def register():
     db_uri = current_app.config["POSTGRES_DATABASE_URI"]
     db_interface = DBInterface(db_uri)
     if form.validate_on_submit():
+
+        new_username = form.username.data
+        new_email = form.email.data
+
+        if db_interface.get_user_by_username(new_username) or db_interface.get_user_by_email(new_email):
+            return redirect("/register")
+
         password_hash = generate_password_hash(form.password.data)
         user_info = {"username": form.username.data, "email": form.email.data,
                      "password_hash": password_hash, "notification_frequency": form.notification_frequency.data}
@@ -230,3 +237,42 @@ def logout():
     logout_user()
 
     return redirect("/login")
+
+
+@bp.route("/change-info", methods=["GET", "POST"])
+@login_required
+def change_info():
+    db_uri = current_app.config["POSTGRES_DATABASE_URI"]
+    db_interface = DBInterface(db_uri)
+
+    user_info = db_interface.get_user_by_id((user_id := int(current_user.user_id)))
+
+    class DefaultValues(object):
+        username = user_info["username"]
+        email = user_info["email"]
+        notification_frequency = user_info["notification_frequency"]
+
+    default_values = DefaultValues()
+
+    info_form = ChangeAccountInfoForm(obj=default_values)
+
+    if info_form.validate_on_submit():
+        logger.info(f"updating user {user_id} information")
+
+        new_username = info_form.username.data
+        new_email = info_form.email.data
+
+        if (possible_user := db_interface.get_user_by_username(new_username)) and possible_user["id"] != user_id:
+            return redirect("/change-info")
+
+        if (possible_user := db_interface.get_user_by_email(new_email)) and possible_user["id"] != user_id:
+            return redirect("/change-info")
+
+        user_info = {"id": user_id, "username": new_username, "email": new_email,
+                     "notification_frequency": info_form.notification_frequency.data}
+
+        db_interface.update_user_info(user_info)
+
+        return redirect("/account")
+
+    return render_template("change-info.html", form=info_form)

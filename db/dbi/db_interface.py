@@ -76,7 +76,7 @@ class DBInterface:
 
 
     @check_connection
-    def add_user(self, user_info: dict = {}) -> int:
+    def add_user(self, user_info: dict = {}) -> None:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.add_user(
                 conn, username=user_info["username"], email=user_info["email"], password_hash=user_info["password_hash"], notification_frequency=user_info["notification_frequency"])
@@ -120,6 +120,12 @@ class DBInterface:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             queries.update_last_alerted_by_id(
                 conn, id=id, last_alerted=last_alerted)
+
+    @check_connection
+    def update_user_info(self, user_info: dict = {}) -> None:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            queries.update_user_info(conn, id=user_info["id"], username=user_info["username"],
+                                     email=user_info["email"], notification_frequency=user_info["notification_frequency"])
 
 
 # ----------------------- DELETE USERS ---------------------------------------

@@ -31,6 +31,13 @@ UPDATE user_account SET last_login = :last_login WHERE username = :username;
 --name: update_last_alerted_by_id!
 UPDATE user_account SET last_alerted = :last_alerted WHERE id = :id;
 
+--name: update_user_info!
+UPDATE user_account SET 
+username = :username, 
+email = :email,
+notification_frequency = :notification_frequency 
+WHERE id = :id;
+
 -- name: delete_all_users!
 DELETE FROM user_account;
 

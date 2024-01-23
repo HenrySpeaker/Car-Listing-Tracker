@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Account Info</title>
+    <title>Change Account Information</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="">
@@ -18,22 +18,16 @@
     <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-    {% if current_user.is_authenticated %}
-    Hi {{ current_user.username }}!
-    {% endif %}
-    <br>
-    <a href="/criteria" id="criteria">
-        <p>List all criteria</p>
-    </a>
-    <a href="/add-criteria" id="add-criteria">
-        <p>Add a new search criteria</p>
-    </a>
-    <a href="/change-info" id="change-info">
-        <p>Change account information</p>
-    </a>
-    <a href="/logout" id="logout">
-        <p>Log out</p>
-    </a>
+    <form method="POST" action="/change-info">
+        {{ form.csrf_token }}
+        {{ form.username.label }} {{ form.username }}
+        <br>
+        {{ form.email.label }} {{ form.email }}
+        <br>
+        {{ form.notification_frequency.label }} {{ form.notification_frequency }}
+        <br>
+        <input type="submit" id="submit" value="Update">
+    </form>
     <script src="" async defer></script>
 </body>
 

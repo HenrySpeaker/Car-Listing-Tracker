@@ -101,3 +101,11 @@ class BodyStyleCriteriaForm(BaseCriteriaForm):
 
 class MakeModelCriteriaForm(BaseCriteriaForm):
     model_name = SelectField("Model", validators=[InputRequired()])
+
+
+class ChangeAccountInfoForm(FlaskForm):
+    username = StringField("Username", validators=[Length(min=1, max=50)])
+
+    email = EmailField("Email", validators=[Length(min=1, max=100)])
+
+    notification_frequency = IntegerField("Notification frequency", validators=[NumberRange(min=1, max=30)])
