@@ -30,6 +30,11 @@
     {{ criteria_data["body_style_name"]}}
     {% endif %}
     under {{ criteria_data["max_mileage"]}} miles from model year {{ criteria_data["min_year"]}} to {{ criteria_data["max_year"]}}  within {{ criteria_data["search_distance"]}} miles of zip code {{ criteria_data["zip_code"]}}
+
+    <form action="/remove-criteria/{{ criteria_data['id'] }}" method="POST" id="{{ criteria_data['id'] }}">
+        <button type="submit" id="{{ criteria_data['id'] }}" form="{{ criteria_data['id'] }}" name="{{ criteria_data['id'] }}">Delete criteria</button>
+    </form>
+
     {% if cars %}
     <table>
         <tr>

@@ -102,18 +102,6 @@ def account():
     return render_template("account.html")
 
 
-@bp.route("/criteria/<crit_id>", methods=["POST"])
-@login_required
-def criteria_remove(crit_id=None):
-
-    db_uri = current_app.config["POSTGRES_DATABASE_URI"]
-    db_interface = DBInterface(db_uri)
-    logger.info(f"removing criteria {crit_id}")
-    db_interface.delete_criteria_by_id(id=int(crit_id))
-
-    return redirect("/criteria")
-
-
 @bp.route("/criteria", methods=["GET"])
 @login_required
 def criteria():
@@ -306,3 +294,19 @@ def found_cars(criteria_id=None):
     }
 
     return render_template("found-cars.html", cars=cars, table_headers=table_headers, criteria_data=criteria_data)
+
+
+@bp.route("/remove-criteria/<int:criteria_id>", methods=["POST"])
+@login_required
+def remove_criteria(criteria_id=None):
+    logger.info(f"Deleting criteria with id {criteria_id}")
+    db_uri = current_app.config["POSTGRES_DATABASE_URI"]
+    db_interface = DBInterface(db_uri)
+
+    criteria_data = db_interface.get_criteria_by_id(criteria_id)
+    if not criteria_data or int(criteria_data["user_id"]) != int(current_user.user_id):
+        return "Unauthorized", 400
+
+    db_interface.delete_criteria_by_id(criteria_id)
+
+    return redirect("/criteria")
