@@ -35,6 +35,9 @@
             <td id="{{ key }}">{{ row[key] }}</td>
             {% endfor %}
             <td>
+                <a href="/found-cars/{{ row['id'] }}">View found cars</a>
+            </td>
+            <td>
                 <form action="/remove-criteria/{{ row['id'] }}" method="POST" id="{{ row['id'] }}">
                     <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}" name="{{ row['id'] }}">Remove</button>
                 </form>
