@@ -359,11 +359,12 @@ def send_car_alerts(criteria_id=None):
     return redirect(f"/found-cars/{criteria_id}")
 
 
-@bp.route("/send-new-alerts", methods=["GET", "POST"])
-def send_new_alerts():
+@bp.route("/send-new-alerts/<int:criteria_id>", methods=["GET", "POST"])
+def send_new_alerts(criteria_id=None):
     logger.info("Starting pending new and price drop alerts")
 
-    response = requests.post(f"http://{ProdConfig.ALERTS_SERVICE_NAME}:{ProdConfig.ALERTS_PORT}/alert-new")
+    response = requests.post(
+        f"http://{ProdConfig.ALERTS_SERVICE_NAME}:{ProdConfig.ALERTS_PORT}/alert-new/{criteria_id}")
 
     try:
         response.raise_for_status()

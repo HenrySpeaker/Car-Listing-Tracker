@@ -14,10 +14,10 @@ def alert_all(criteria_id=None):
     return "Success", 200
 
 
-@alerts_bp.route("/alert-new", methods=["POST"])
-def alert_new():
+@alerts_bp.route("/alert-new/<int:criteria_id>", methods=["POST"])
+def alert_new(criteria_id=None):
     logger.info("Sending out all pending new listing and price drop alerts")
 
-    send_new_alerts()
+    send_new_alerts(criteria_id)
 
     return "Success", 200

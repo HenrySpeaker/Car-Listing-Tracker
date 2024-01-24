@@ -604,9 +604,14 @@ class DBInterface:
             return [row for row in queries.get_all_alerts(conn)]
 
     @check_connection
-    def get_alert_by_info(self, car_id: int | None):
+    def get_alert_by_info(self, car_id: int | None) -> list[dict]:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
             return [row for row in queries.get_alerts_by_info(conn, car_id=car_id)]
+
+    @check_connection
+    def get_alerts_by_criteria_id(self, criteria_id: int | None) -> list[dict]:
+        with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
+            return [row for row in queries.get_alerts_by_criteria_id(conn, criteria_id=criteria_id)]
 
     @check_connection
     def add_alert(self, car_id: int, change: str) -> None:

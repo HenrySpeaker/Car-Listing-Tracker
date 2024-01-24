@@ -38,14 +38,23 @@
                 <a href="/found-cars/{{ row['id'] }}">View found cars</a>
             </td>
             <td id="start-search">
-                <form action="/start-search/{{ row['id'] }}" method="POST" id="{{ row['id'] }}">
-                    <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}" name="{{ row['id'] }}">Run search now</button>
+                <form action="/start-search/{{ row['id'] }}" method="POST" id="{{ row['id'] }}-start-search">
+                    <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}-start-search" name="{{ row['id'] }}">Run search now</button>
                 </form>
-                <!-- <a href="/start-search/{{ row['id'] }}">Run search now</a> -->
+            </td>
+            <td id="send-car-alerts">
+                <form action="/send-car-alerts/{{ row['id'] }}" method="POST" id="{{ row['id'] }}-remove-criteria">
+                    <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}-remove-criteria" name="{{ row['id'] }}">Email all cars found</button>
+                </form>
+            </td>
+            <td id="send-new-alerts">
+                <form action="/send-new-alerts/{{ row['id'] }}" method="POST" id="{{ row['id'] }}-send-all-cars">
+                    <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}-send-all-cars" name="{{ row['id'] }}">Email pending alerts</button>
+                </form>
             </td>
             <td id="remove-criteria">
-                <form action="/remove-criteria/{{ row['id'] }}" method="POST" id="{{ row['id'] }}">
-                    <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}" name="{{ row['id'] }}">Remove</button>
+                <form action="/remove-criteria/{{ row['id'] }}" method="POST" id="{{ row['id'] }}-send-pending-alerts">
+                    <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}-send-pending-alerts" name="{{ row['id'] }}">Remove</button>
                 </form>
             </td>
             

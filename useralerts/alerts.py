@@ -77,11 +77,15 @@ def get_listing_details(listings: list[dict]):
     return listings
 
 
-def send_new_alerts():
+def send_new_alerts(criteria_id=-1):
     """
     Fetches all current alerts, attempts to send them to their respective users, and clears any alerts that were successfully sent.
     """
-    alerts = dbi.get_all_alerts()
+
+    if criteria_id < 0:
+        alerts = dbi.get_all_alerts()
+    else:
+        alerts = dbi.get_alerts_by_criteria_id(criteria_id)
 
     user_alerts = defaultdict(UserAlerts)
     user_alerts_due = defaultdict(bool)
