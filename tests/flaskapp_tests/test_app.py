@@ -812,7 +812,7 @@ def check_criteria_page_for_db_match(html):
 
     for tr in soup.find('table').find_all('tr'):
         row = {td.get('id'): td.text for td in tr.find_all('td')
-               if td.get('id') not in ("view-cars", "remove-criteria")}
+               if td.get('id') not in ("view-cars", "remove-criteria", "start-search")}
 
         # avoids including the header row since there are no tr elements
         if row == {}:
