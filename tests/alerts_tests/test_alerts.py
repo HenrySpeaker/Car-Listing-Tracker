@@ -29,7 +29,7 @@ def test_alerts(mocked_smtp, dao_with_adjusted_last_alerted):
     dao = dao_with_adjusted_last_alerted
 
     assert len(dao.get_all_alerts()) > 0
-    alerts.send_alerts()
+    alerts.send_new_alerts()
     mocked_smtp.return_value.__enter__.return_value.starttls.assert_called()
     mocked_smtp.return_value.__enter__.return_value.login.assert_called()
     mocked_smtp.return_value.__enter__.return_value.sendmail.assert_called()
@@ -37,7 +37,7 @@ def test_alerts(mocked_smtp, dao_with_adjusted_last_alerted):
 
 def test_alerts_not_sent_early(mocked_smtp, dbi_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]], mocker):
     mocker.patch("useralerts.alerts.ProdConfig.IMMEDIATE_ALERT_OVERRIDE", False)
-    alerts.send_alerts()
+    alerts.send_new_alerts()
     assert mocked_smtp.return_value.__enter__.return_value.starttls.call_count == 0
     assert mocked_smtp.return_value.__enter__.return_value.login.call_count == 0
     assert mocked_smtp.return_value.__enter__.return_value.sendmail.call_count == 0
@@ -48,5 +48,5 @@ def test_server_error(mocked_smtp, dao_with_adjusted_last_alerted):
     num_alerts = len(dao.get_all_alerts())
     mocked_smtp.return_value.__enter__.return_value.starttls.side_effect = smtplib.SMTPDataError(
         code=2, msg="Expected exception")
-    alerts.send_alerts()
+    alerts.send_new_alerts()
     assert num_alerts == len(dao.get_all_alerts())

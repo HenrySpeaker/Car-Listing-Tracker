@@ -326,6 +326,34 @@ def start_search(criteria_id=None):
         logger.info("unauthorized access of start search")
         return redirect("/criteria")
 
-    requests.post(f"http://{ProdConfig.SEARCH_SERVICE_NAME}:{ProdConfig.SEARCH_PORT}/search/{criteria_id}")
+    response = requests.post(f"http://{ProdConfig.SEARCH_SERVICE_NAME}:{ProdConfig.SEARCH_PORT}/search/{criteria_id}")
+
+    try:
+        response.raise_for_status()
+    except Exception as e:
+        logger.info(f"Start search failed with exception {e}")
+
+    return redirect(f"/found-cars/{criteria_id}")
+
+
+@bp.route("/send-car-alerts/<int:criteria_id>", methods=["GET", "POST"])
+@login_required
+def send_car_alerts(criteria_id=None):
+    logger.info(f"Starting full listing alerts for criteria with id {criteria_id}")
+    db_uri = current_app.config["POSTGRES_DATABASE_URI"]
+    db_interface = DBInterface(db_uri)
+
+    criteria_data = db_interface.get_criteria_by_id(criteria_id)
+    if not criteria_data or int(criteria_data["user_id"]) != int(current_user.user_id):
+        logger.info("unauthorized access of alerts send")
+        return redirect("/criteria")
+
+    response = requests.post(
+        f"http://{ProdConfig.ALERTS_SERVICE_NAME}:{ProdConfig.ALERTS_PORT}/alert-all/{criteria_id}")
+
+    try:
+        response.raise_for_status()
+    except Exception as e:
+        logger.info(f"Send car alerts failed with exception {e}")
 
     return redirect(f"/found-cars/{criteria_id}")

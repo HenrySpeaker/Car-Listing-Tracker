@@ -25,13 +25,19 @@ RETRY_LIMIT = ProdConfig.SMTP_RETRY_LIMIT
 
 dbi = DBInterface(DB_URI)
 
-column_order = OrderedDict()
-column_order["make_name"] = "Make"
-column_order["model_name"] = "Model"
-column_order["model_year"] = "Model year"
-column_order["current_price"] = "Current price"
-column_order["previous_price"] = "Previous price"
-column_order["url"] = "Link"
+new_alerts_column_order = OrderedDict()
+new_alerts_column_order["make_name"] = "Make"
+new_alerts_column_order["model_name"] = "Model"
+new_alerts_column_order["model_year"] = "Model year"
+new_alerts_column_order["current_price"] = "Current price"
+new_alerts_column_order["previous_price"] = "Previous price"
+new_alerts_column_order["url"] = "Link"
+
+all_watched_cars_columns = OrderedDict()
+all_watched_cars_columns["model_year"] = "Model year"
+all_watched_cars_columns["last_price"] = "Current price"
+all_watched_cars_columns["listing_url"] = "Link"
+all_watched_cars_columns["last_update"] = "Last Updated"
 
 email_template_environment = Environment(loader=FileSystemLoader("useralerts/templates/"))
 
@@ -71,7 +77,7 @@ def get_listing_details(listings: list[dict]):
     return listings
 
 
-def send_alerts():
+def send_new_alerts():
     """
     Fetches all current alerts, attempts to send them to their respective users, and clears any alerts that were successfully sent.
     """
@@ -131,9 +137,9 @@ def send_alerts():
             price_drops = get_listing_details(price_drops)
 
             html_body = html_template.render(
-                new_listings=new_listings, price_drops=price_drops, columns=column_order)
+                new_listings=new_listings, price_drops=price_drops, columns=new_alerts_column_order)
             text_body = text_template.render(
-                new_listings=new_listings, price_drops=price_drops, columns=column_order)
+                new_listings=new_listings, price_drops=price_drops, columns=new_alerts_column_order)
 
             user_email = dbi.get_user_by_id(id=user_id)["email"]
 
@@ -143,6 +149,36 @@ def send_alerts():
 
                 for car in price_drops:
                     dbi.delete_alerts_by_info(car_id=car["car_id"])
+
+
+def send_all_watched_cars(criteria_id: int):
+    logger.info(f"Sending all watched cars from criteria {criteria_id}")
+
+    listings = dbi.get_watched_car_by_criteria_id(criteria_id)
+
+    for listing in listings:
+        listing["last_update"] = listing["last_update"].strftime("%Y-%m-%d")
+        listing["last_price"] = f"${listing['last_price']}"
+    criteria_info = dbi.get_criteria_by_id(criteria_id)
+    criteria_info["zip_code"] = dbi.get_zip_code_by_id(criteria_info["zip_code_id"])["zip_code"]
+    if criteria_info["model_id"]:
+        model_data = dbi.get_model_by_id(criteria_info["model_id"])
+
+        criteria_info["model_name"] = model_data["model_name"]
+        criteria_info["make_name"] = dbi.get_make_by_id(model_data["make_id"])["make_name"]
+    else:
+        criteria_info["body_style_name"] = dbi.get_body_style_by_id(criteria_info["body_style_id"])[
+            "body_style_name"]
+
+    user_info = dbi.get_user_by_id(criteria_info["user_id"])
+
+    html_body = email_template_environment.get_template("all_alerts_html_template.txt").render(
+        listings=listings, columns=all_watched_cars_columns, criteria_info=criteria_info)
+    text_body = email_template_environment.get_template("all_alerts_text_template.txt").render(
+        listings=listings, columns=all_watched_cars_columns, criteria_info=criteria_info)
+
+    with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
+        send_emails(connection, user_info["email"], text_body, html_body, "Full Search Results", user_info["id"])
 
 
 def send_emails(connection: smtplib.SMTP, user_email: str, text_body: str, html_body: str, subject: str, user_id: int) -> bool:

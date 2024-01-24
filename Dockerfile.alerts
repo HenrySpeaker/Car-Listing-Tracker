@@ -14,9 +14,9 @@ COPY db/ db/
 
 COPY useralerts/ useralerts/
 
-COPY alerts_start.py .
+COPY alerts_server.py .
 
 COPY config.py .
 
-CMD ["/bin/bash", "-c", "source venv/bin/activate && python3 -m alerts_start"]
+CMD ["/bin/bash", "-c", "source venv/bin/activate && python3 -m alerts_server.py"]
 

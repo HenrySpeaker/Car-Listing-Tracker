@@ -1,15 +1,14 @@
-{% for key in columns %}{{ columns[key] }} {% if not loop.last %}|{% endif %} {% endfor %}
-{% if new_listings|length > 0 %}
-New Listings:
-{% for alert in new_listings %}
-{% for key in columns -%}{% if key != "prev_price" %}{{ alert[key] }} {% if not loop.last %}|{% endif %}  {% endif %}{% endfor %}
-{% endfor %}
+Showing results for 
+{% if criteria_info["model_id"] != None %}
+{{ criteria_info["make_name"]}} {{ criteria_info["model_name"]}}
+{% else %}
+{{ criteria_info["body_style_name"]}}
 {% endif %}
+under {{ criteria_info["max_mileage"]}} miles from model year {{ criteria_info["min_year"]}} to {{ criteria_info["max_year"]}}  within {{ criteria_info["search_distance"]}} miles of zip code {{ criteria_info["zip_code"]}}
 
-
-{% if price_drops|length > 0 %}
-Lower Prices:
-{% for alert in price_drops %}
-{% for key in columns %}{{ alert[key] }} {% if not loop.last %}|{% endif %} {% endfor %}
+{% for key in columns %}{{ columns[key] }} {% if not loop.last %}|{% endif %} {% endfor %}
+{% if listings|length > 0 %}
+{% for listing in listings %}
+{% for key in columns -%}{{ listing[key] }} {% if not loop.last %}|{% endif %}  {% endfor %}
 {% endfor %}
 {% endif %}

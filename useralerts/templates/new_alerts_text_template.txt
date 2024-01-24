@@ -1,0 +1,15 @@
+{% for key in columns %}{{ columns[key] }} {% if not loop.last %}|{% endif %} {% endfor %}
+{% if new_listings|length > 0 %}
+New Listings:
+{% for alert in new_listings %}
+{% for key in columns -%}{% if key != "prev_price" %}{{ alert[key] }} {% if not loop.last %}|{% endif %}  {% endif %}{% endfor %}
+{% endfor %}
+{% endif %}
+
+
+{% if price_drops|length > 0 %}
+Lower Prices:
+{% for alert in price_drops %}
+{% for key in columns %}{{ alert[key] }} {% if not loop.last %}|{% endif %} {% endfor %}
+{% endfor %}
+{% endif %}

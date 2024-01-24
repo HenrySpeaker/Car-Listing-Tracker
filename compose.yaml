@@ -12,3 +12,8 @@ services:
     image: henryspeaker/car-listing-search:0.0.6
     env_file:
       - docker.env
+
+  alerts:
+    image: henryspeaker/car-listing-alerts:0.0.6
+    env_file:
+      - docker.env

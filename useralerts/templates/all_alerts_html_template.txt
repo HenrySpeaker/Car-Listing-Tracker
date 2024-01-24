@@ -1,5 +1,12 @@
+Showing results for 
+{% if criteria_info["model_id"] != None %}
+{{ criteria_info["make_name"]}} {{ criteria_info["model_name"]}}
+{% else %}
+{{ criteria_info["body_style_name"]}}
+{% endif %}
+under {{ criteria_info["max_mileage"]}} miles from model year {{ criteria_info["min_year"]}} to {{ criteria_info["max_year"]}}  within {{ criteria_info["search_distance"]}} miles of zip code {{ criteria_info["zip_code"]}}
 
-{% if new_listings|length > 0 or price_drops|length > 0 %}
+{% if listings|length > 0 %}
 <table>
 <tr>
 {% for key in columns %}
@@ -7,34 +14,21 @@
 {% endfor %}
 </tr>
 
-{% if new_listings|length > 0 %}
-{% for alert in new_listings %}
-    <tr>
-        {% for key in columns %}
-            {% if key != "prev_price" %}
-                {% if key == "url" %}
-                    <td><a href={{ alert[key] }}>Link</a></td>
-                {% else %}
-                    <td>{{ alert[key] }}</td>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-    </tr>
-{% endfor %}
-{% endif %}
 
-{% if price_drops|length > 0 %}
-{% for alert in price_drops %}
+{% for alert in listings %}
     <tr>
         {% for key in columns %}
-            {% if key == "url" %}
+            {% if key == "listing_url" %}
                 <td><a href={{ alert[key] }}>Link</a></td>
             {% else %}
                 <td>{{ alert[key] }}</td>
             {% endif %}
+
         {% endfor %}
     </tr>
 {% endfor %}
-{% endif %}
+
 </table>
+{% else %}
+No listings found
 {% endif %}
