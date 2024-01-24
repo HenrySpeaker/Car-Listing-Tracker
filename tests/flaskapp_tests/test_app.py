@@ -284,7 +284,7 @@ def add_criteria(selenium_driver, test_criteria):
     max_year_element.send_keys(test_criteria["max_year"])
 
     min_price_element = selenium_driver.find_element(By.ID, "min_price")
-    min_price_element.send_keys(test_criteria["min_price"])
+    min_price_element.send_keys(str(test_criteria["min_price"])[:-1])
     max_price_element = selenium_driver.find_element(By.ID, "max_price")
     max_price_element.send_keys(test_criteria["max_price"])
 
@@ -339,7 +339,10 @@ def test_add_body_style_criteria_with_selenium(flask_port, selenium_driver):
 
     selenium_driver.find_element(By.ID, "submit").click()
 
-    criteria_response = dbi.get_criteria_by_info(**TEST_CRITERIA)[0]
+    criteria_response = dbi.get_all_criteria()[0]
+
+    print(DB_URI)
+    print(criteria_response)
 
     for key in TEST_CRITERIA:
         assert TEST_CRITERIA[key] == criteria_response[key]
@@ -385,7 +388,7 @@ def test_add_make_model_criteria_with_selenium(flask_port, selenium_driver):
     selenium_driver, curr_make, curr_model = add_make_model_criteria(
         selenium_driver, dbi)
 
-    criteria_response = dbi.get_criteria_by_info(**TEST_CRITERIA)[0]
+    criteria_response = dbi.get_all_criteria()[0]
 
     for key in TEST_CRITERIA:
         assert TEST_CRITERIA[key] == criteria_response[key]
@@ -808,7 +811,8 @@ def check_criteria_page_for_db_match(html):
     data = []
 
     for tr in soup.find('table').find_all('tr'):
-        row = {td.get('id'): td.text for td in tr.find_all('td')}
+        row = {td.get('id'): td.text for td in tr.find_all('td')
+               if td.get('id') not in ("view-cars", "remove-criteria")}
 
         # avoids including the header row since there are no tr elements
         if row == {}:

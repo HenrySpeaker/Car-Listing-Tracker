@@ -34,10 +34,10 @@
             {% for key in key_list %}
             <td id="{{ key }}">{{ row[key] }}</td>
             {% endfor %}
-            <td>
+            <td id="view-cars">
                 <a href="/found-cars/{{ row['id'] }}">View found cars</a>
             </td>
-            <td>
+            <td id="remove-criteria">
                 <form action="/remove-criteria/{{ row['id'] }}" method="POST" id="{{ row['id'] }}">
                     <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}" name="{{ row['id'] }}">Remove</button>
                 </form>
