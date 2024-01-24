@@ -20,6 +20,10 @@ class Config:
     POSTGRES_DATABASE_URI = environ.get(environ.get("CURRENT_DB") + "_URI")
     SMTP_RETRY_LIMIT = environ.get("SMTP_RETRY_LIMIT", 10)
     IMMEDIATE_ALERT_OVERRIDE = bool(environ.get("IMMEDIATE_ALERTS", False))
+    SEARCH_PORT = environ.get("SEARCH_PORT")
+    SEARCH_SERVICE_NAME = environ.get("SEARCH_SERVICE_NAME")
+    ALERTS_PORT = environ.get("ALERTS_PORT")
+    ALERTS_SERVICE_NAME = environ.get("ALERTS_SERVICE_NAME")
 
 
 class ProdConfig(Config):

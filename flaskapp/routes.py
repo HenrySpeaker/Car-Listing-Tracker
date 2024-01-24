@@ -1,10 +1,12 @@
 import logging
-from flask import Blueprint, render_template, current_app, redirect, request
+import requests
+from flask import Blueprint, render_template, current_app, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_required, login_user, current_user, logout_user
 from flaskapp.forms import RegisterForm, LoginForm, MakeModelCriteriaForm, BodyStyleCriteriaForm, ChangeAccountInfoForm
 from db.dbi.db_interface import DBInterface
 from flaskapp.user import User
+from config import ProdConfig
 
 
 criteria_map = {'min_year': 'Minimum year', 'max_year': 'Maximum year', 'min_price': 'Minimum price', 'max_price': 'Maximum price', 'max_mileage': 'Maximum mileage',
@@ -310,3 +312,20 @@ def remove_criteria(criteria_id=None):
     db_interface.delete_criteria_by_id(criteria_id)
 
     return redirect("/criteria")
+
+
+@bp.route("/start-search/<int:criteria_id>", methods=["GET", "POST"])
+@login_required
+def start_search(criteria_id=None):
+    logger.info(f"Starting search for criteria with id {criteria_id}")
+    db_uri = current_app.config["POSTGRES_DATABASE_URI"]
+    db_interface = DBInterface(db_uri)
+
+    criteria_data = db_interface.get_criteria_by_id(criteria_id)
+    if not criteria_data or int(criteria_data["user_id"]) != int(current_user.user_id):
+        logger.info("unauthorized access of start search")
+        return redirect("/criteria")
+
+    requests.post(f"http://{ProdConfig.SEARCH_SERVICE_NAME}:{ProdConfig.SEARCH_PORT}/search/{criteria_id}")
+
+    return redirect(f"/found-cars/{criteria_id}")
