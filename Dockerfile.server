@@ -14,5 +14,5 @@ COPY . .
 
 EXPOSE 80
 
-CMD ["/bin/bash", "-c", "source venv/bin/activate && python3 -m server.py"]
+CMD ["/bin/bash", "-c", "source venv/bin/activate && python3 -m webapp_server.py"]
 
