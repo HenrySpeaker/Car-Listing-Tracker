@@ -1,6 +1,6 @@
 import logging
 import requests
-from flask import Blueprint, render_template, current_app, redirect
+from flask import Blueprint, render_template, current_app, redirect, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_required, login_user, current_user, logout_user
 from flaskapp.forms import RegisterForm, LoginForm, MakeModelCriteriaForm, BodyStyleCriteriaForm, ChangeAccountInfoForm
@@ -155,7 +155,7 @@ def add_criteria():
 
 @bp.route("/add-criteria/body-style", methods=["GET", "POST"])
 @login_required
-def add_criteria_body_style():
+def add_criteria_body_style(run_search=None):
     form = BodyStyleCriteriaForm()
     if form.validate_on_submit():
         db_uri = current_app.config["POSTGRES_DATABASE_URI"]
@@ -176,14 +176,18 @@ def add_criteria_body_style():
         }
         logger.info("new body style criteria submitted")
         logger.info(criteria)
-        db_interface.add_criteria(**criteria)
+        criteria_id = db_interface.add_criteria(**criteria)["id"]
+
+        if request.args.get("start_search") == "true":
+            return redirect(f"/start-search/{criteria_id}")
+
         return redirect("/criteria")
     return render_template("add_body_style_criteria.html", form=form)
 
 
 @bp.route("/add-criteria/<make>", methods=["GET", "POST"])
 @login_required
-def add_criteria_make_model(make):
+def add_criteria_make_model(make, run_search=None):
     form = MakeModelCriteriaForm()
 
     db_uri = current_app.config["POSTGRES_DATABASE_URI"]
@@ -213,7 +217,11 @@ def add_criteria_make_model(make):
         }
         logger.info("new make/model criteria submitted")
         logger.info(criteria)
-        db_interface.add_criteria(**criteria)
+        criteria_id = db_interface.add_criteria(**criteria)["id"]
+
+        if request.args.get("start_search") == "true":
+            return redirect(f"/start-search/{criteria_id}")
+
         return redirect("/criteria")
 
     return render_template("add_make_model_criteria.html", form=form, make=make)

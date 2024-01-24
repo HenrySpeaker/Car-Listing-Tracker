@@ -533,9 +533,9 @@ class DBInterface:
                      zip_code_id: int,
                      model_id: int,
                      body_style_id: int
-                     ) -> None:
+                     ) -> int:
         with psycopg.connect(self._connection_url, row_factory=dict_row) as conn:
-            queries.add_criteria(conn,
+            return queries.add_criteria(conn,
 
                                  min_year=min_year,
                                  max_year=max_year,

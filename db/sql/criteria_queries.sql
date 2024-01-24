@@ -23,7 +23,7 @@ SELECt * FROM criteria WHERE user_id = :user_id;
 --name: get_criteria_by_id^
 SELECT * FROM criteria WHERE id = :id LIMIT 1;
 
--- name: add_criteria!
+-- name: add_criteria^
 INSERT INTO criteria (
     min_year,
     max_year,
@@ -52,7 +52,8 @@ VALUES
     :zip_code_id,
     :model_id,
     :body_style_id
-);
+)
+RETURNING id;
 
 -- name: delete_all_criteria!
 DELETE FROM criteria;
