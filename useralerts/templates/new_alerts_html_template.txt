@@ -8,15 +8,18 @@
 </tr>
 
 {% if new_listings|length > 0 %}
+<tr>New Listings</tr>
 {% for alert in new_listings %}
     <tr>
         {% for key in columns %}
-            {% if key != "prev_price" %}
+            {% if key != "previous_price" %}
                 {% if key == "url" %}
                     <td><a href={{ alert[key] }}>Link</a></td>
                 {% else %}
                     <td>{{ alert[key] }}</td>
                 {% endif %}
+            {% else %}
+            <td>-</td>
             {% endif %}
         {% endfor %}
     </tr>
@@ -24,6 +27,7 @@
 {% endif %}
 
 {% if price_drops|length > 0 %}
+<tr>Price Drops</tr>
 {% for alert in price_drops %}
     <tr>
         {% for key in columns %}

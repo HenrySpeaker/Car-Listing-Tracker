@@ -357,3 +357,17 @@ def send_car_alerts(criteria_id=None):
         logger.info(f"Send car alerts failed with exception {e}")
 
     return redirect(f"/found-cars/{criteria_id}")
+
+
+@bp.route("/send-new-alerts", methods=["GET", "POST"])
+def send_new_alerts():
+    logger.info("Starting pending new and price drop alerts")
+
+    response = requests.post(f"http://{ProdConfig.ALERTS_SERVICE_NAME}:{ProdConfig.ALERTS_PORT}/alert-new")
+
+    try:
+        response.raise_for_status()
+    except Exception as e:
+        logger.info(f"Send new/price drop alerts failed with exception {e}")
+
+    return redirect("/criteria")

@@ -65,8 +65,8 @@ def get_listing_details(listings: list[dict]):
         car_id = listing["car_id"]
         car_info = dbi.get_watched_car_by_id(id=car_id)
         listing["url"] = car_info["listing_url"]
-        listing["current_price"] = car_info["last_price"]
-        listing["previous_price"] = car_info["prev_price"]
+        listing["current_price"] = f"${car_info['last_price']}"
+        listing["previous_price"] = f"${car_info['prev_price']}"
         listing["model_year"] = car_info["model_year"]
         model_info = dbi.get_model_by_id(model_id=dbi.get_criteria_by_id(
             id=car_info["criteria_id"])["model_id"])
@@ -149,6 +149,8 @@ def send_new_alerts():
 
                 for car in price_drops:
                     dbi.delete_alerts_by_info(car_id=car["car_id"])
+
+                dbi.update_last_alerted_by_id(user_id, datetime.now())
 
 
 def send_all_watched_cars(criteria_id: int):
