@@ -33,6 +33,8 @@ column_order["current_price"] = "Current price"
 column_order["previous_price"] = "Previous price"
 column_order["url"] = "Link"
 
+email_template_environment = Environment(loader=FileSystemLoader("useralerts/templates/"))
+
 
 class UserAlerts:
 
@@ -117,9 +119,8 @@ def send_alerts():
             user_alerts[car_id_to_user_id[alert["car_id"]]
                         ].add_new_listing(alert)
 
-    environment = Environment(loader=FileSystemLoader("useralerts/templates/"))
-    html_template = environment.get_template("html_template.txt")
-    text_template = environment.get_template("text_template.txt")
+    html_template = email_template_environment.get_template("new_alerts_html_template.txt")
+    text_template = email_template_environment.get_template("new_alerts_text_template.txt")
 
     with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
         for user_id in user_alerts:
@@ -135,41 +136,47 @@ def send_alerts():
                 new_listings=new_listings, price_drops=price_drops, columns=column_order)
 
             user_email = dbi.get_user_by_id(id=user_id)["email"]
-            email = MIMEMultipart("alternative")
-            email["Subject"] = "Car Listing Alerts"
-            email["From"] = EMAIL
-            email["To"] = user_email
 
-            email.attach(MIMEText(text_body, "plain"))
-            email.attach(MIMEText(html_body, "html"))
+            if send_emails(connection, user_email, text_body, html_body, "New Listings and Price Drops", user_id):
+                for car in new_listings:
+                    dbi.delete_alerts_by_info(car_id=car["car_id"])
 
-            logger.info(
-                f"Alerting user {user_id} of new listings and price drops")
+                for car in price_drops:
+                    dbi.delete_alerts_by_info(car_id=car["car_id"])
 
-            num_tries = 0
 
-            while num_tries < RETRY_LIMIT:
+def send_emails(connection: smtplib.SMTP, user_email: str, text_body: str, html_body: str, subject: str, user_id: int) -> bool:
+    email = MIMEMultipart("alternative")
+    email["Subject"] = subject
+    email["From"] = EMAIL
+    email["To"] = user_email
 
-                try:
-                    connection.starttls()
-                    connection.login(user=EMAIL, password=PASSWORD)
+    email.attach(MIMEText(text_body, "plain"))
+    email.attach(MIMEText(html_body, "html"))
 
-                    connection.sendmail(
-                        from_addr=EMAIL,
-                        to_addrs=user_email,
-                        msg=email.as_string(),
-                    )
+    logger.info(
+        f"Alerting user {user_id} of {subject}")
 
-                    for car in new_listings:
-                        dbi.delete_alerts_by_info(car_id=car["car_id"])
+    num_tries = 0
 
-                    for car in price_drops:
-                        dbi.delete_alerts_by_info(car_id=car["car_id"])
+    while num_tries < RETRY_LIMIT:
 
-                    break
+        try:
+            connection.starttls()
+            connection.login(user=EMAIL, password=PASSWORD)
 
-                except (SMTPRecipientsRefused, SMTPNotSupportedError, SMTPHeloError, SMTPDataError) as error:
-                    logger.error(
-                        f"email alerts to user {user_id} failed with error {error}")
+            connection.sendmail(
+                from_addr=EMAIL,
+                to_addrs=user_email,
+                msg=email.as_string(),
+            )
 
-                num_tries += 1
+            break
+
+        except (SMTPRecipientsRefused, SMTPNotSupportedError, SMTPHeloError, SMTPDataError) as error:
+            logger.error(
+                f"email alerts to user {user_id} failed with error {error}")
+
+        num_tries += 1
+
+    return num_tries < RETRY_LIMIT

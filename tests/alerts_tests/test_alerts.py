@@ -35,8 +35,8 @@ def test_alerts(mocked_smtp, dao_with_adjusted_last_alerted):
     mocked_smtp.return_value.__enter__.return_value.sendmail.assert_called()
 
 
-def test_alerts_not_sent_early(mocked_smtp, dbi_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]]):
-
+def test_alerts_not_sent_early(mocked_smtp, dbi_with_listing_alerts: list[DBInterface, list[dict], list[dict], list[dict]], mocker):
+    mocker.patch("useralerts.alerts.ProdConfig.IMMEDIATE_ALERT_OVERRIDE", False)
     alerts.send_alerts()
     assert mocked_smtp.return_value.__enter__.return_value.starttls.call_count == 0
     assert mocked_smtp.return_value.__enter__.return_value.login.call_count == 0
