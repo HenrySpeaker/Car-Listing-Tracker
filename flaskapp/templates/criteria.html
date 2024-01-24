@@ -37,6 +37,12 @@
             <td id="view-cars">
                 <a href="/found-cars/{{ row['id'] }}">View found cars</a>
             </td>
+            <td id="start-search">
+                <form action="/start-search/{{ row['id'] }}" method="POST" id="{{ row['id'] }}">
+                    <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}" name="{{ row['id'] }}">Run search now</button>
+                </form>
+                <!-- <a href="/start-search/{{ row['id'] }}">Run search now</a> -->
+            </td>
             <td id="remove-criteria">
                 <form action="/remove-criteria/{{ row['id'] }}" method="POST" id="{{ row['id'] }}">
                     <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}" name="{{ row['id'] }}">Remove</button>
