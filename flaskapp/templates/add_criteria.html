@@ -30,11 +30,19 @@
 
     <a href="/add-criteria/body-style" id="add-body-style">Add a body style search</a>
     <br>
-    {% for make in makes %}
+    <!-- {% for make in makes %}
     <a href="/add-criteria/{{ make['make_name'] }}" class="add-make" id="{{ make['make_name'] }}">Add a {{
         make['make_name'] }} search</a><br>
-    {% endfor %}
-
+    {% endfor %} -->
+    Add criteria by make
+    <form action="/add-criteria" method="post">
+        <select name="make" id="make">
+            {% for make in makes %}
+            <option value="{{ make['make_name'] }}">{{ make['make_name'] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" value="Add Criteria">Add Criteria</button>
+    </form>
 
 
     <script src="" async defer></script>

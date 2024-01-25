@@ -141,6 +141,9 @@ def criteria():
 @bp.route("/add-criteria", methods=["GET", "POST"])
 @login_required
 def add_criteria():
+    if request.method == "POST":
+        make_name = request.form.get("make")
+        return redirect(f"/add-criteria/{make_name}")
 
     db_uri = current_app.config["POSTGRES_DATABASE_URI"]
     db_interface = DBInterface(db_uri)
@@ -188,6 +191,7 @@ def add_criteria_body_style(run_search=None):
 @bp.route("/add-criteria/<make>", methods=["GET", "POST"])
 @login_required
 def add_criteria_make_model(make, run_search=None):
+
     form = MakeModelCriteriaForm()
 
     db_uri = current_app.config["POSTGRES_DATABASE_URI"]
@@ -218,6 +222,8 @@ def add_criteria_make_model(make, run_search=None):
         logger.info("new make/model criteria submitted")
         logger.info(criteria)
         criteria_id = db_interface.add_criteria(**criteria)["id"]
+
+        logger.info(f"Adding criteria for {make}")
 
         if request.args.get("start_search") == "true":
             return redirect(f"/start-search/{criteria_id}")
