@@ -24,6 +24,7 @@ class Config:
     SEARCH_SERVICE_NAME = environ.get("SEARCH_SERVICE_NAME")
     ALERTS_PORT = environ.get("ALERTS_PORT")
     ALERTS_SERVICE_NAME = environ.get("ALERTS_SERVICE_NAME")
+    SCHEDULE_CYCLE = environ.get("SCHEDULE_CYCLE", 24 * 60 * 60)
 
 
 class ProdConfig(Config):

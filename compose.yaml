@@ -7,13 +7,43 @@ services:
       - "80:80"
     env_file:
       - docker.env
+    depends_on:
+      - search
+      - alerts
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 1G
 
   search:
     image: henryspeaker/car-listing-search:0.0.6
     env_file:
       - docker.env
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 1G
 
   alerts:
     image: henryspeaker/car-listing-alerts:0.0.6
     env_file:
       - docker.env
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 1G
+
+  scheduler:
+    image: henryspeaker/car-listing-scheduler:0.0.6
+    env_file:
+      - docker.env
+    depends_on:
+      - webapp
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 1G
