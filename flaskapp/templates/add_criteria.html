@@ -16,32 +16,24 @@
 
 <body>
     <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
     <a href="/account">Account</a>
     <br>
     <a href="/criteria">Criteria</a>
     <br>
     <p>Create a new search criteria</p>
 
-
-
-
-
     <a href="/add-criteria/body-style" id="add-body-style">Add a body style search</a>
     <br>
-    <!-- {% for make in makes %}
-    <a href="/add-criteria/{{ make['make_name'] }}" class="add-make" id="{{ make['make_name'] }}">Add a {{
-        make['make_name'] }} search</a><br>
-    {% endfor %} -->
     Add criteria by make
     <form action="/add-criteria" method="post">
-        <select name="make" id="make">
+        <select name="make" class="make">
             {% for make in makes %}
-            <option value="{{ make['make_name'] }}">{{ make['make_name'] }}</option>
+            <option value="{{ make['make_name'] }}" id="{{ make['make_name'] }}" class="make-opt">{{ make['make_name'] }}</option>
             {% endfor %}
         </select>
-        <button type="submit" value="Add Criteria">Add Criteria</button>
+        <button type="submit" value="Add Criteria" id="submit">Add Criteria</button>
     </form>
 
 
