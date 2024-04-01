@@ -11,15 +11,17 @@
 </header>
 
 <main>
-    <form method="POST" action="/change-info">
-        {{ form.csrf_token }}
-        {{ form.username.label }} {{ form.username }}
-        <br>
-        {{ form.email.label }} {{ form.email }}
-        <br>
-        {{ form.notification_frequency.label }} {{ form.notification_frequency }}
-        <br>
-        <input type="submit" id="submit" value="Update">
-    </form>
+    <div class="container">
+        <form method="POST" action="/change-info">
+            {{ form.csrf_token }}
+            {{ form.username.label }} {{ form.username }}
+            <br>
+            {{ form.email.label }} {{ form.email }}
+            <br>
+            {{ form.notification_frequency.label }} {{ form.notification_frequency }}
+            <br>
+            <input type="submit" id="submit" value="Update">
+        </form>
+    </div>
 </main>
 {% endblock %}

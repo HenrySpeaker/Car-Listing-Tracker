@@ -6,18 +6,20 @@
 <header>
 </header>
 
-<main>
-    <form method="POST" action="/register">
-        {{ form.csrf_token }}
-        {{ form.username.label }} {{ form.username }}
-        <br>
-        {{ form.email.label }} {{ form.email }}
-        <br>
-        {{ form.password.label }} {{ form.password }}
-        <br>
-        {{ form.notification_frequency.label }} {{ form.notification_frequency }}
-        <br>
-        <input type="submit" id="submit" value="Register">
-    </form>
+<div>
+    <div class="container">
+        <form method="POST" action="/register">
+            {{ form.csrf_token }}
+            {{ form.username.label }} {{ form.username }}
+            <br>
+            {{ form.email.label }} {{ form.email }}
+            <br>
+            {{ form.password.label }} {{ form.password }}
+            <br>
+            {{ form.notification_frequency.label }} {{ form.notification_frequency }}
+            <br>
+            <input type="submit" id="submit" value="Register">
+        </form>
+    </div>
 </main>
 {% endblock %}
