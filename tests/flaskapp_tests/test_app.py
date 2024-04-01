@@ -813,13 +813,9 @@ def check_criteria_page_for_db_match(html):
 
     data = []
 
-    for tr in soup.find('table').find_all('tr'):
-        row = {td.get('id'): td.text for td in tr.find_all('td')
-               if td.get('id') not in ("view-cars", "remove-criteria", "start-search", "send-new-alerts")}
-
-        # avoids including the header row since there are no tr elements
-        if row == {}:
-            continue
+    for crit in soup.find_all('div', class_='criteria-info-container'):
+        row = {p.get('id'): p.text for p in crit.find_all('p') if (p.get('id') and p.get('id') not in (
+            "view-cars", "remove-criteria", "start-search", "send-new-alerts"))}
 
         data.append(row)
 

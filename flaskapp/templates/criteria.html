@@ -2,51 +2,53 @@
 
 {% block title %}Account Info{% endblock %}
 
+{% block head %}<link rel="stylesheet" href="/static/criteria-styles.css">{% endblock %}
+
 {% block body %}
-    <a href="/account">Account</a>
-    <br>
-    <a href="/add-criteria">Add criteria</a>
-    <br>
-    {% if criteria %}
-    <table>
-        <tr>
-            {% for key in key_list %}
-            <th>{{ key_map[key] }}</th>
-            {% endfor %}
-        </tr>
-        {% for row in criteria %}
-        <tr>
-            {% for key in key_list %}
-            <td id="{{ key }}">{{ row[key] }}</td>
-            {% endfor %}
-            <td id="view-cars">
-                <a href="/found-cars/{{ row['id'] }}">View found cars</a>
-            </td>
-            <td id="start-search">
-                <form action="/start-search/{{ row['id'] }}" method="POST" id="{{ row['id'] }}-start-search">
-                    <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}-start-search" name="{{ row['id'] }}">Run search now</button>
-                </form>
-            </td>
-            <td id="send-car-alerts">
-                <form action="/send-car-alerts/{{ row['id'] }}" method="POST" id="{{ row['id'] }}-remove-criteria">
-                    <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}-remove-criteria" name="{{ row['id'] }}">Email all cars found</button>
-                </form>
-            </td>
-            <td id="send-new-alerts">
-                <form action="/send-new-alerts/{{ row['id'] }}" method="POST" id="{{ row['id'] }}-send-all-cars">
-                    <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}-send-all-cars" name="{{ row['id'] }}">Email pending alerts</button>
-                </form>
-            </td>
-            <td id="remove-criteria">
-                <form action="/remove-criteria/{{ row['id'] }}" method="POST" id="{{ row['id'] }}-send-pending-alerts">
-                    <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}-send-pending-alerts" name="{{ row['id'] }}">Remove</button>
-                </form>
-            </td>
-            
-        </tr>
-        {% endfor %}
-    </table>
-    {% else %}
-    <p>No criteria to display.</p>
-    {% endif %}
+    <header>
+        <a href="/account">Account</a>
+        <a href="/add-criteria">Add criteria</a>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="criteria-list">
+                {% if criteria %}
+                    {% for row in criteria %}
+                    <div class="criteria-info-container">
+                        <p class="view-cars-link">
+                            <a href="/found-cars/{{ row['id'] }}">View found cars</a>
+                        </p>
+                        <div class="criteria-info">
+                            {% for key in key_list %}
+                            <p class="{{ key }}">{{ key_map[key] }}: {{ row[key] }}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="criteria-info">
+                            
+                            <form action="/send-car-alerts/{{ row['id'] }}" method="POST" id="{{ row['id'] }}-remove-criteria">
+                                <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}-remove-criteria" name="{{ row['id'] }}">Email all cars found</button>
+                            </form>
+                            
+                            <form action="/send-new-alerts/{{ row['id'] }}" method="POST" id="{{ row['id'] }}-send-all-cars">
+                                <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}-send-all-cars" name="{{ row['id'] }}">Email pending alerts</button>
+                            </form>
+                            
+                            <form action="/remove-criteria/{{ row['id'] }}" method="POST" id="{{ row['id'] }}-send-pending-alerts">
+                                <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}-send-pending-alerts" name="{{ row['id'] }}">Remove</button>
+                            </form>               
+                            
+                            <form action="/start-search/{{ row['id'] }}" method="POST" id="{{ row['id'] }}-start-search">
+                                <button type="submit" id="{{ row['id'] }}" form="{{ row['id'] }}-start-search" name="{{ row['id'] }}">Run search now</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+                {% else %}
+                <p>No criteria to display.</p>
+            {% endif %}
+        </div>
+    </main>
 {% endblock %}
