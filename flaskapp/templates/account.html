@@ -18,15 +18,15 @@
         Hi {{ current_user.username }}!
         {% endif %}
         <br>
-        <a href="/criteria" id="criteria">
-            <p>List all criteria</p>
-        </a>
-        <a href="/add-criteria" id="add-criteria">
-            <p>Add a new search criteria</p>
-        </a>
-        <a href="/change-info" id="change-info">
-            <p>Change account information</p>
-        </a>
+        <p class="main-link">
+            <a href="/criteria" id="criteria">List all criteria</a>
+        </p>
+        <p class="main-link">
+            <a href="/add-criteria" id="add-criteria">Add a new search criteria</a>
+        </p>
+        <p class="main-link">
+            <a href="/change-info" id="change-info">Change account information</a>
+        </p>
     </div>
 </main>
 {% endblock %}

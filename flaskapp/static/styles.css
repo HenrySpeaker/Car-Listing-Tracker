@@ -39,6 +39,22 @@ button {
     margin: 0 auto;
 }
 
+.main-link {
+    margin: 1.5em 0;
+}
+
+button,
+input[type="submit"],
+main a,
+.criteria-info-container button {
+    background-color: var(--dark-blue);
+    margin: 8px 0;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: whitesmoke;
+    border: none;
+}
+
 
 @media (min-width: 650px) and (max-width: 1400px) {
     .container {

@@ -232,8 +232,7 @@ def test_logout_with_selenium(flask_port, selenium_driver):
 def go_to_add_criteria(selenium_driver, flask_port):
     selenium_driver = login_user(flask_port, selenium_driver)
 
-    selenium_driver.find_element(
-        By.ID, "add-criteria").find_element(By.XPATH, "*").click()
+    selenium_driver.find_element(By.ID, "add-criteria").click()
 
     return selenium_driver
 

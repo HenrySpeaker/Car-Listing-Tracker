@@ -22,15 +22,6 @@
     margin: 20px auto 0;
 }
 
-.view-cars-link a,
-.criteria-info-container button {
-    background-color: var(--dark-blue);
-    padding: 10px 20px;
-    border-radius: 20px;
-    color: whitesmoke;
-    border: none;
-}
-
 .criteria-info-container button {
     margin: 8px 0;
 }
