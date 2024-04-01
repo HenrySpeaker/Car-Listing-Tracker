@@ -3,10 +3,14 @@
 {% block title %}Add Criteria{% endblock %}
 
 {% block body %}
+<header>
     <a href="/account">Account</a>
-    <br>
     <a href="/criteria">Criteria</a>
-    <br>
+    <a href="/add-criteria">Add criteria</a>
+    <a href="/logout" id="logout">Log out</a>
+</header>
+
+<main>
     <p>Create a new search criteria</p>
 
     <a href="/add-criteria/body-style" id="add-body-style">Add a body style search</a>
@@ -20,5 +24,5 @@
         </select>
         <button type="submit" value="Add Criteria" id="submit">Add Criteria</button>
     </form>
-
+</main>
 {% endblock %}

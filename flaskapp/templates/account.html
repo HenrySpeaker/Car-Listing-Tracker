@@ -4,7 +4,15 @@
 {% block title %}Account Info{% endblock %}
 
 {% block body %}
-{% if current_user.is_authenticated %}
+<header>
+    <a href="/account">Account</a>
+    <a href="/criteria">Criteria</a>
+    <a href="/add-criteria">Add criteria</a>
+    <a href="/logout" id="logout">Log out</a>
+</header>
+
+<main>
+    {% if current_user.is_authenticated %}
     Hi {{ current_user.username }}!
     {% endif %}
     <br>
@@ -17,8 +25,5 @@
     <a href="/change-info" id="change-info">
         <p>Change account information</p>
     </a>
-    <a href="/logout" id="logout">
-        <p>Log out</p>
-    </a>
-
+</main>
 {% endblock %}

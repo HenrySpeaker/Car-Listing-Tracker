@@ -3,7 +3,14 @@
 {% block title %}Add Body Style Criteria{% endblock %}
 
 {% block body %}
+<header>
+    <a href="/account">Account</a>
+    <a href="/criteria">Criteria</a>
+    <a href="/add-criteria">Add criteria</a>
+    <a href="/logout" id="logout">Log out</a>
+</header>
 
+<main>
     <a href="/criteria">View criteria</a>
     <br>
     <form method="POST">
@@ -61,4 +68,5 @@
         <input type="submit" id="submit" value="Create criteria" formaction="/add-criteria/body-style" formmethod="post">
         <input type="submit" id="submit" value="Create criteria and run search" formaction="/add-criteria/body-style?start_search=true" formmethod="post">
     </form>
+</main>
 {% endblock %}

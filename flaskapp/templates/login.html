@@ -3,6 +3,10 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
+<header>
+</header>
+
+<main>
     <p>Don't have an account yet? <a href="register">Register here.</a></p>
     <form method="POST" action="/login">
         {{ form.csrf_token }}
@@ -21,4 +25,5 @@
         <input type="submit" id="submit" value="Login">
 
     </form>
+</main>
 {% endblock %}

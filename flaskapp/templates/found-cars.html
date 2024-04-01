@@ -3,12 +3,14 @@
 {% block title %}Found Cars{% endblock %}
 
 {% block body %}
+<header>
     <a href="/account">Account</a>
-    <br>
     <a href="/criteria">Criteria</a>
-    <br>
     <a href="/add-criteria">Add criteria</a>
-    <br>
+    <a href="/logout" id="logout">Log out</a>
+</header>
+
+<main>
 
     Showing results for 
     {% if criteria_data["model_id"] != None %}
@@ -53,4 +55,5 @@
     {% else %}
     <p>No cars to display.</p>
     {% endif %}
+</main>
 {% endblock %}

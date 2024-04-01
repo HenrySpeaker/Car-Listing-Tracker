@@ -3,6 +3,10 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
+<header>
+</header>
+
+<main>
     <form method="POST" action="/register">
         {{ form.csrf_token }}
         {{ form.username.label }} {{ form.username }}
@@ -15,4 +19,5 @@
         <br>
         <input type="submit" id="submit" value="Register">
     </form>
+</main>
 {% endblock %}

@@ -224,9 +224,7 @@ def test_logout_with_selenium(flask_port, selenium_driver):
 
     assert selenium_driver.current_url == f"http://localhost:{flask_port}/account"
 
-    # WebDriverWait(selenium_driver, 20).until(EC.element_to_be_clickable((By.ID, "logout"))).click()
-
-    selenium_driver.find_element(By.ID, "logout").find_element(By.XPATH, "*").click()
+    selenium_driver.find_element(By.ID, "logout").click()
 
     assert selenium_driver.current_url == f"http://localhost:{flask_port}/login"
 

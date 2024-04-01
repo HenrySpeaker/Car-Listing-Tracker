@@ -3,6 +3,14 @@
 {% block title %}Change Account Info{% endblock %}
 
 {% block body %}
+<header>
+    <a href="/account">Account</a>
+    <a href="/criteria">Criteria</a>
+    <a href="/add-criteria">Add criteria</a>
+    <a href="/logout" id="logout">Log out</a>
+</header>
+
+<main>
     <form method="POST" action="/change-info">
         {{ form.csrf_token }}
         {{ form.username.label }} {{ form.username }}
@@ -13,4 +21,5 @@
         <br>
         <input type="submit" id="submit" value="Update">
     </form>
+</main>
 {% endblock %}
