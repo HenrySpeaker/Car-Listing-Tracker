@@ -1,17 +1,9 @@
-import logging
 from datetime import datetime
 from config import ProdConfig
 from db.dbi.db_interface import DBInterface
-from datacollection.iseecars import get_iseecars_listings
 from db.body_styles import body_styles
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-handler = logging.FileHandler("datacollection/search.log")
-handler.setLevel(logging.DEBUG)
-format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(format)
-logger.addHandler(handler)
+from datacollection.iseecars import get_iseecars_listings
+from datacollection.dc_logger import logger
 
 dbi_url = ProdConfig.POSTGRES_DATABASE_URI
 
@@ -66,6 +58,8 @@ def find_cars_by_criteria_id(criteria_id: int):
 
             if car["mileage"] > max_mileage:
                 continue
+
+            logger.info(f"adding car with vin {car['vin']}")
 
             dbi.add_watched_car(
                 vin=car["vin"], listing_url=car["url"], last_price=car["price"], criteria_id=criteria["id"], model_year=car["model_year"])

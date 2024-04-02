@@ -105,6 +105,7 @@ scrapers/
 uszips.csv
 .coverage_logs/
 .pytest_cache/
+datacollection/page_dump
 
 # Do not ignore these files
 !useralerts/templates/*.txt
