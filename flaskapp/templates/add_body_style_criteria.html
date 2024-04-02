@@ -1,82 +1,74 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
-</head>
+{% block title %}Add Body Style Criteria{% endblock %}
 
-<body>
-    <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+{% block body %}
+<header>
+    <a href="/account">Account</a>
+    <a href="/criteria">Criteria</a>
+    <a href="/add-criteria">Add criteria</a>
+    <a href="/logout" id="logout">Log out</a>
+</header>
 
-    <a href="/criteria">View criteria</a>
-    <br>
-    <form method="POST">
-        {{ form.csrf_token }}
-        {{ form.min_year.label }} {{ form.min_year }}
-        {% if form.min_year.errors %}
-        <ul class="errors">{% for error in form.min_year.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-        {% endif %}
+<main>
+    <div class="container">
+        <a href="/criteria">View criteria</a>
         <br>
-        {{ form.max_year.label }} {{ form.max_year }}
-        {% if form.max_year.errors %}
-        <ul class="errors">{% for error in form.max_year.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-        {% endif %}
-        <br>
-        {{ form.min_price.label }} {{ form.min_price }}
-        {% if form.min_price.errors %}
-        <ul class="errors">{% for error in form.min_price.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-        {% endif %}
-        <br>
-        {{ form.max_price.label }} {{ form.max_price }}
-        {% if form.max_price.errors %}
-        <ul class="errors">{% for error in form.max_price.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-        {% endif %}
-        <br>
-        {{ form.max_mileage.label }} {{ form.max_mileage }}
-        {% if form.max_mileage.errors %}
-        <ul class="errors">{% for error in form.max_mileage.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-        {% endif %}
-        <br>
-        {{ form.search_distance.label }} {{ form.search_distance }}
-        {% if form.search_distance.errors %}
-        <ul class="errors">{% for error in form.search_distance.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-        {% endif %}
-        <br>
-        {{ form.no_accidents.label }} {{ form.no_accidents }}
-        {% if form.no_accidents.errors %}
-        <ul class="errors">{% for error in form.no_accidents.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-        {% endif %}
-        <br>
-        {{ form.single_owner.label }} {{ form.single_owner }}
-        {% if form.single_owner.errors %}
-        <ul class="errors">{% for error in form.single_owner.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-        {% endif %}
-        <br>
-        {{ form.body_style.label }} {{ form.body_style }}
-        {% if form.body_style.errors %}
-        <ul class="errors">{% for error in form.body_style.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-        {% endif %}
-        <br>
-        {{ form.zip_code.label }} {{ form.zip_code }}
-        {% if form.zip_code.errors %}
-        <ul class="errors">{% for error in form.zip_code.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-        {% endif %}
-        <br>
-        <input type="submit" id="submit" value="Create criteria" formaction="/add-criteria/body-style" formmethod="post">
-        <input type="submit" id="submit" value="Create criteria and run search" formaction="/add-criteria/body-style?start_search=true" formmethod="post">
-    </form>
-    <script src="" async defer></script>
-</body>
-
-</html>
+        <form method="POST">
+            {{ form.csrf_token }}
+            {{ form.min_year.label }} {{ form.min_year }}
+            {% if form.min_year.errors %}
+            <ul class="errors">{% for error in form.min_year.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+            <br>
+            {{ form.max_year.label }} {{ form.max_year }}
+            {% if form.max_year.errors %}
+            <ul class="errors">{% for error in form.max_year.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+            <br>
+            {{ form.min_price.label }} {{ form.min_price }}
+            {% if form.min_price.errors %}
+            <ul class="errors">{% for error in form.min_price.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+            <br>
+            {{ form.max_price.label }} {{ form.max_price }}
+            {% if form.max_price.errors %}
+            <ul class="errors">{% for error in form.max_price.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+            <br>
+            {{ form.max_mileage.label }} {{ form.max_mileage }}
+            {% if form.max_mileage.errors %}
+            <ul class="errors">{% for error in form.max_mileage.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+            <br>
+            {{ form.search_distance.label }} {{ form.search_distance }}
+            {% if form.search_distance.errors %}
+            <ul class="errors">{% for error in form.search_distance.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+            <br>
+            {{ form.no_accidents.label }} {{ form.no_accidents }}
+            {% if form.no_accidents.errors %}
+            <ul class="errors">{% for error in form.no_accidents.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+            <br>
+            {{ form.single_owner.label }} {{ form.single_owner }}
+            {% if form.single_owner.errors %}
+            <ul class="errors">{% for error in form.single_owner.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+            <br>
+            {{ form.body_style.label }} {{ form.body_style }}
+            {% if form.body_style.errors %}
+            <ul class="errors">{% for error in form.body_style.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+            <br>
+            {{ form.zip_code.label }} {{ form.zip_code }}
+            {% if form.zip_code.errors %}
+            <ul class="errors">{% for error in form.zip_code.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+            <br>
+            <input type="submit" id="submit" value="Create criteria" formaction="/add-criteria/body-style" formmethod="post">
+            <input type="submit" id="submit" value="Create criteria and run search" formaction="/add-criteria/body-style?start_search=true" formmethod="post">
+        </form>
+    </div>
+</main>
+{% endblock %}

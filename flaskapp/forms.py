@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import current_app
 from flask_wtf import FlaskForm
-from wtforms import StringField, EmailField, SelectField, IntegerField, PasswordField, BooleanField
+from wtforms import StringField, EmailField, SelectField, IntegerField, PasswordField, BooleanField, DecimalField
 from wtforms.validators import InputRequired, Length, NumberRange
 from db.body_styles import body_styles
 from db.dbi.db_interface import DBInterface
@@ -61,8 +61,8 @@ class BaseCriteriaForm(FlaskForm):
     max_mileage = IntegerField("Maximum car mileage (miles)", validators=[
                                InputRequired(), NumberRange(min=1, max=100000000)])
 
-    search_distance = IntegerField("Maximum search radius from zip code", default=5, validators=[
-                                   InputRequired(), NumberRange(min=1, max=50)])
+    search_distance = DecimalField("Maximum search radius from zip code", default=5, validators=[
+                                   InputRequired(), NumberRange(min=1, max=50)], places=0)
 
     no_accidents = BooleanField("No accidents")
 

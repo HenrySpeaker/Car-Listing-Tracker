@@ -1,0 +1,87 @@
+:root {
+    --dark-blue: #006d77;
+    --light-blue: #83c5be;
+    --light-gray: #edf6f9;
+    --light-accent: #ffddd2;
+    --dark-accent: #e29578;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    color: #2E2E2E;
+}
+
+header {
+    display: flex;
+    justify-content: end;
+    padding: 20px;
+    background-color: var(--light-blue);
+}
+
+header a {
+    color: var(--dark-blue);
+    margin-left: 20px;
+}
+
+a {
+    text-decoration: none;
+}
+
+button,
+input.submit-input {
+    cursor: pointer;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: center;
+}
+
+.centered-element {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.main-link {
+    margin: 1.5em 0;
+}
+
+button,
+input[type="submit"],
+input.submit-input,
+main a,
+.criteria-info-container button {
+    background-color: var(--dark-blue);
+    margin: 8px 0;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: whitesmoke;
+    border: none;
+}
+
+input.submit-input {
+    min-width: 200px;
+    text-align: center;
+}
+
+
+@media (min-width: 650px) and (max-width: 1400px) {
+    .container {
+        width: 70%;
+    }
+}
+
+@media (min-width: 1401px) {
+    .container {
+        width: 60%;
+    }
+}

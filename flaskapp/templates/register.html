@@ -1,52 +1,25 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Register</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
-</head>
+{% block title %}Register{% endblock %}
 
-<body>
-    <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-    <form method="POST" action="/register">
-        {{ form.csrf_token }}
-        <!-- <label for="username">Username:</label>
-        <input type="text" name="username">
-        <br>
-        <label for="email">Email:</label>
-        <input type="text" name="email">
-        <br>
-        <label for="password">Password:</label>
-        <input type="password" name="password">
-        <br>
-        <label for="notification_frequency">Notification frequency (days):</label>
-        <input list="notification_frequency">
-        <datalist id="notification_frequency">
-            {% for num in range(7, 29, 7) %}
-            <option value="{{ num }}"></option>
-            {% endfor %}
-        </datalist> -->
-        {{ form.username.label }} {{ form.username }}
-        <br>
-        {{ form.email.label }} {{ form.email }}
-        <br>
-        {{ form.password.label }} {{ form.password }}
-        <br>
-        {{ form.notification_frequency.label }} {{ form.notification_frequency }}
-        <br>
-        <input type="submit" id="submit" value="Register">
-    </form>
-    <script src="" async defer></script>
-</body>
+{% block body %}
+<header>
+</header>
 
-</html>
+<div>
+    <div class="container">
+        <form method="POST" action="/register">
+            {{ form.csrf_token }}
+            {{ form.username.label }} {{ form.username }}
+            <br>
+            {{ form.email.label }} {{ form.email }}
+            <br>
+            {{ form.password.label }} {{ form.password }}
+            <br>
+            {{ form.notification_frequency.label }} {{ form.notification_frequency }}
+            <br>
+            <input type="submit" id="submit" value="Register">
+        </form>
+    </div>
+</main>
+{% endblock %}

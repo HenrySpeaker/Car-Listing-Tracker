@@ -1,0 +1,39 @@
+.criteria-list {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
+}
+
+.criteria-info-container {
+    text-align: center;
+    background-color: var(--light-gray);
+    border-radius: 10px;
+}
+
+.criteria-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-bottom: 10px;
+}
+
+.view-cars-link {
+    margin: 20px auto 0;
+}
+
+.criteria-info-container button {
+    margin: 8px 0;
+}
+
+@media (min-width: 650px) and (max-width: 1400px) {
+    .criteria-list {
+        grid-template-columns: 1fr 1fr;
+    } 
+}
+
+@media (min-width: 1401px) {
+    .criteria-list {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}

@@ -1,34 +1,27 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Change Account Information</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
-</head>
+{% block title %}Change Account Info{% endblock %}
 
-<body>
-    <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-    <form method="POST" action="/change-info">
-        {{ form.csrf_token }}
-        {{ form.username.label }} {{ form.username }}
-        <br>
-        {{ form.email.label }} {{ form.email }}
-        <br>
-        {{ form.notification_frequency.label }} {{ form.notification_frequency }}
-        <br>
-        <input type="submit" id="submit" value="Update">
-    </form>
-    <script src="" async defer></script>
-</body>
+{% block body %}
+<header>
+    <a href="/account">Account</a>
+    <a href="/criteria">Criteria</a>
+    <a href="/add-criteria">Add criteria</a>
+    <a href="/logout" id="logout">Log out</a>
+</header>
 
-</html>
+<main>
+    <div class="container">
+        <form method="POST" action="/change-info">
+            {{ form.csrf_token }}
+            {{ form.username.label }} {{ form.username }}
+            <br>
+            {{ form.email.label }} {{ form.email }}
+            <br>
+            {{ form.notification_frequency.label }} {{ form.notification_frequency }}
+            <br>
+            <input type="submit" id="submit" value="Update">
+        </form>
+    </div>
+</main>
+{% endblock %}

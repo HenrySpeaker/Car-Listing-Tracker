@@ -224,9 +224,7 @@ def test_logout_with_selenium(flask_port, selenium_driver):
 
     assert selenium_driver.current_url == f"http://localhost:{flask_port}/account"
 
-    # WebDriverWait(selenium_driver, 20).until(EC.element_to_be_clickable((By.ID, "logout"))).click()
-
-    selenium_driver.find_element(By.ID, "logout").find_element(By.XPATH, "*").click()
+    selenium_driver.find_element(By.ID, "logout").click()
 
     assert selenium_driver.current_url == f"http://localhost:{flask_port}/login"
 
@@ -234,8 +232,7 @@ def test_logout_with_selenium(flask_port, selenium_driver):
 def go_to_add_criteria(selenium_driver, flask_port):
     selenium_driver = login_user(flask_port, selenium_driver)
 
-    selenium_driver.find_element(
-        By.ID, "add-criteria").find_element(By.XPATH, "*").click()
+    selenium_driver.find_element(By.ID, "add-criteria").click()
 
     return selenium_driver
 
@@ -260,7 +257,7 @@ def test_add_criteria_page_with_selenium(flask_port, selenium_driver):
     href_val = "/add-criteria/body-style"
     assert body_style_link.get_attribute("href")[-len(href_val):] == href_val
 
-    make_elements = selenium_driver.find_elements(By.CLASS_NAME, "add-make")
+    make_elements = selenium_driver.find_elements(By.CLASS_NAME, "make-opt")
 
     makes_list = dbi.get_all_makes()
 
@@ -359,12 +356,15 @@ def add_make_model_criteria(selenium_driver, dbi):
 
     selenium_driver.find_element(By.ID, curr_make).click()
 
+    selenium_driver.find_element(By.ID, "submit").click()
+
     selenium_driver = add_criteria(selenium_driver, TEST_CRITERIA)
 
     model_element = Select(selenium_driver.find_element(By.ID, "model_name"))
+
     model_element.select_by_visible_text(curr_model)
 
-    selenium_driver.find_element(By.ID, "submit").click()
+    selenium_driver.find_element(By.ID, "add-criteria").click()
 
     return selenium_driver, curr_make, curr_model
 
@@ -810,13 +810,9 @@ def check_criteria_page_for_db_match(html):
 
     data = []
 
-    for tr in soup.find('table').find_all('tr'):
-        row = {td.get('id'): td.text for td in tr.find_all('td')
-               if td.get('id') not in ("view-cars", "remove-criteria", "start-search")}
-
-        # avoids including the header row since there are no tr elements
-        if row == {}:
-            continue
+    for crit in soup.find_all('div', class_='criteria-info-container'):
+        row = {p.get('id'): p.text for p in crit.find_all('p') if (p.get('id') and p.get('id') not in (
+            "view-cars", "remove-criteria", "start-search", "send-new-alerts"))}
 
         data.append(row)
 
@@ -826,7 +822,7 @@ def check_criteria_page_for_db_match(html):
 
     for criteria in data:
         assert dbi.get_criteria_by_info(
-            **{key: criteria[key] for key in criteria if key not in ("make_name", "model_name", "body_style_name")}) != []
+            **{key: criteria[key] for key in criteria if key not in ("make_name", "model_name", "body_style_name", "send-car-alerts")}) != []
 
 
 def test_add_criteria_page():
@@ -862,8 +858,8 @@ def test_add_criteria_page():
 
             soup = BeautifulSoup(criteria_response.data, "html.parser")
 
-            page_makes = [a.get("id")
-                          for a in soup.find_all("a", class_="add-make")]
+            page_makes = [opt.get("value")
+                          for opt in soup.find_all("option", class_="make-opt")]
 
             page_makes.sort()
             print(page_makes)

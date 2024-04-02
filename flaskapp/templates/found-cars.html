@@ -1,74 +1,68 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Search results</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
-</head>
+{% block title %}Found Cars{% endblock %}
 
-<body>
-    <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+{% block head %}<link rel="stylesheet" href="/static/styles/found-cars-styles.css">{% endblock %}
+
+{% block body %}
+<header>
     <a href="/account">Account</a>
-    <br>
     <a href="/criteria">Criteria</a>
-    <br>
     <a href="/add-criteria">Add criteria</a>
-    <br>
+    <a href="/logout" id="logout">Log out</a>
+</header>
 
-    Showing results for 
-    {% if criteria_data["model_id"] != None %}
-    {{ criteria_data["make_name"]}} {{ criteria_data["model_name"]}}
-    {% else %}
-    {{ criteria_data["body_style_name"]}}
-    {% endif %}
-    under {{ criteria_data["max_mileage"]}} miles from model year {{ criteria_data["min_year"]}} to {{ criteria_data["max_year"]}}  within {{ criteria_data["search_distance"]}} miles of zip code {{ criteria_data["zip_code"]}}
+<main>
+    <div class="container">
 
-    <form action="/start-search/{{ criteria_data['id'] }}" method="POST" id="{{ criteria_data['id'] }}-start-search">
-        <button type="submit" id="{{ criteria_data['id'] }}" form="{{ criteria_data['id'] }}-start-search" name="{{ criteria_data['id'] }}">Run search now</button>
-    </form>
+        <p class="centered-element">
 
-    <form action="/remove-criteria/{{ criteria_data['id'] }}" method="POST" id="{{ criteria_data['id'] }}-remove-criteria">
-        <button type="submit" id="{{ criteria_data['id'] }}" form="{{ criteria_data['id'] }}-remove-criteria" name="{{ criteria_data['id'] }}">Delete criteria</button>
-    </form>
-
-    <form action="/send-car-alerts/{{ criteria_data['id'] }}" method="POST" id="{{ criteria_data['id'] }}-send-all-cars">
-        <button type="submit" id="{{ criteria_data['id'] }}" form="{{ criteria_data['id'] }}-send-all-cars" name="{{ criteria_data['id'] }}">Email all cars found</button>
-    </form>
-
-    <form action="/send-new-alerts/{{ criteria_data['id'] }}" method="POST" id="{{ criteria_data['id'] }}-send-pending-alerts">
-        <button type="submit" id="{{ criteria_data['id'] }}" form="{{ criteria_data['id'] }}-send-pending-alerts" name="{{ criteria_data['id'] }}">Email pending alerts</button>
-    </form>
-
-
-    {% if cars %}
-    <table>
-        <tr>
-            {% for key in table_headers %}
+            Showing results for 
+            {% if criteria_data["model_id"] != None %}
+            {{ criteria_data["make_name"]}} {{ criteria_data["model_name"]}}
+            {% else %}
+            {{ criteria_data["body_style_name"]}}
+            {% endif %}
+            under {{ criteria_data["max_mileage"]}} miles from model year {{ criteria_data["min_year"]}} to {{ criteria_data["max_year"]}}  within {{ criteria_data["search_distance"]}} miles of zip code {{ criteria_data["zip_code"]}}
+        </p>
+        
+        <div class="flex-container">
+            <form action="/start-search/{{ criteria_data['id'] }}" method="POST" id="{{ criteria_data['id'] }}-start-search">
+                <button type="submit" id="{{ criteria_data['id'] }}" form="{{ criteria_data['id'] }}-start-search" name="{{ criteria_data['id'] }}">Run search now</button>
+            </form>
+            
+            <form action="/remove-criteria/{{ criteria_data['id'] }}" method="POST" id="{{ criteria_data['id'] }}-remove-criteria">
+                <button type="submit" id="{{ criteria_data['id'] }}" form="{{ criteria_data['id'] }}-remove-criteria" name="{{ criteria_data['id'] }}">Delete criteria</button>
+            </form>
+            
+            <form action="/send-car-alerts/{{ criteria_data['id'] }}" method="POST" id="{{ criteria_data['id'] }}-send-all-cars">
+                <button type="submit" id="{{ criteria_data['id'] }}" form="{{ criteria_data['id'] }}-send-all-cars" name="{{ criteria_data['id'] }}">Email all cars found</button>
+            </form>
+            
+            <form action="/send-new-alerts/{{ criteria_data['id'] }}" method="POST" id="{{ criteria_data['id'] }}-send-pending-alerts">
+                <button type="submit" id="{{ criteria_data['id'] }}" form="{{ criteria_data['id'] }}-send-pending-alerts" name="{{ criteria_data['id'] }}">Email pending alerts</button>
+            </form>
+        </div>
+        
+        
+        {% if cars %}
+        <table class="centered-element">
+            <tr>
+                {% for key in table_headers %}
                 <th>{{ table_headers[key] }}</th>
-            {% endfor %}
+                {% endfor %}
             </tr>
-        {% for car in cars %}
+            {% for car in cars %}
             <tr>
                 <td>${{ car["last_price"] }}</td>
                 <td>{{ car["model_year"] }}</td>
                 <td><a href="{{ car['listing_url'] }}" target="_blank">Link</a></td>
             </tr>
-        {% endfor %}
-    </table>
-    {% else %}
-    <p>No cars to display.</p>
-    {% endif %}
-    <script src="" async defer></script>
-</body>
-
-</html>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No cars to display.</p>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}
