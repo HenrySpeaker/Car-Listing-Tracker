@@ -104,6 +104,7 @@ ENV/
 scrapers/
 uszips.csv
 .coverage_logs/
+datacollection/page_dump
 
 # Do not ignore these files
 !useralerts/templates/*.txt

@@ -139,6 +139,9 @@ def send_new_alerts(criteria_id=0):
             new_listings = user_alerts[user_id].new_listings
             price_drops = user_alerts[user_id].price_drops
 
+            if max(len(new_listings), len(price_drops)) == 0:
+                continue
+
             new_listings = get_listing_details(new_listings)
             price_drops = get_listing_details(price_drops)
 
