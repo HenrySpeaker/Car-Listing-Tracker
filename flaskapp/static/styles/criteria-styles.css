@@ -29,9 +29,7 @@
 @media (min-width: 650px) and (max-width: 1400px) {
     .criteria-list {
         grid-template-columns: 1fr 1fr;
-    }
-
-    
+    } 
 }
 
 @media (min-width: 1401px) {

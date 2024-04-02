@@ -364,7 +364,7 @@ def add_make_model_criteria(selenium_driver, dbi):
 
     model_element.select_by_visible_text(curr_model)
 
-    selenium_driver.find_element(By.ID, "submit").click()
+    selenium_driver.find_element(By.ID, "add-criteria").click()
 
     return selenium_driver, curr_make, curr_model
 

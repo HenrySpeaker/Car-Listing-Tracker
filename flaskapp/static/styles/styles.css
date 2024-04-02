@@ -30,7 +30,8 @@ a {
     text-decoration: none;
 }
 
-button {
+button,
+input.submit-input {
     cursor: pointer;
 }
 
@@ -45,6 +46,7 @@ button {
 
 button,
 input[type="submit"],
+input.submit-input,
 main a,
 .criteria-info-container button {
     background-color: var(--dark-blue);
@@ -53,6 +55,11 @@ main a,
     border-radius: 20px;
     color: whitesmoke;
     border: none;
+}
+
+input.submit-input {
+    min-width: 200px;
+    text-align: center;
 }
 
 

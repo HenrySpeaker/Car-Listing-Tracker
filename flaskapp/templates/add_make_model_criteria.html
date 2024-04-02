@@ -14,7 +14,7 @@
     <div class="container">
         <a href="/criteria">View criteria</a>
         <br>
-        <form method="POST">
+        <form method="POST" id="add-criteria-form">
             {{ form.csrf_token }}
             {{ form.min_year.label }} {{ form.min_year }}
             {% if form.min_year.errors %}
@@ -42,6 +42,10 @@
             {% endif %}
             <br>
             {{ form.search_distance.label }} {{ form.search_distance }}
+            <select name="dist-units" id="dist-units">
+                <option value="mi">mi</option>
+                <option value="km">km</option>
+            </select>
             {% if form.search_distance.errors %}
             <ul class="errors">{% for error in form.search_distance.errors %}<li>{{ error }}</li>{% endfor %}</ul>
             {% endif %}
@@ -66,9 +70,11 @@
             <ul class="errors">{% for error in form.zip_code.errors %}<li>{{ error }}</li>{% endfor %}</ul>
             {% endif %}
             <br>
-            <input type="submit" id="submit" value="Create criteria" formaction="/add-criteria/{{ make }}" formmethod="post">
-            <input type="submit" id="submit" value="Create criteria and run search" formaction="/add-criteria/{{ make }}?start_search=true" formmethod="post">
+            <input class="submit-input" id="add-criteria" value="Create criteria" data-formaction="/add-criteria/{{ make }}">
+            <input class="submit-input" id="add-criteria-search" value="Create criteria and run search" data-formaction="/add-criteria/{{ make }}?start_search=true">
         </form>
     </div>
 </main>
 {% endblock %}
+
+{% block script %}/static/scripts/add-criteria-make-model.js{% endblock %}
