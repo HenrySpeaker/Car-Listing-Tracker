@@ -40,6 +40,17 @@ input.submit-input {
     margin: 0 auto;
 }
 
+.flex-container {
+    display: flex;
+    justify-content: center;
+}
+
+.centered-element {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
 .main-link {
     margin: 1.5em 0;
 }
