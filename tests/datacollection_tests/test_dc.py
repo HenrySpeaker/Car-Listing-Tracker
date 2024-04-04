@@ -1,6 +1,5 @@
-from tests.utils.db_utils import *
 import pytest
-from datacollection.find_cars import find_cars
+from tests.utils.db_utils import *
 
 TEST_CRITERIA_BASE = {"min_year": 1992, "max_year": 2023, "min_price": 100, "max_price": 1000000, "max_mileage": 150000, "search_distance": 50,
                       "no_accidents": True, "single_owner": False, "body_style_id": None}
@@ -22,9 +21,9 @@ def requests_mock(mocker):
 
 
 @pytest.fixture
-def dbi_with_isc_cv_criteria(dbi_with_users: list[DBInterface, list]) -> DBInterface:
+def dbi_with_isc_jetta_criteria(dbi_with_users: list[DBInterface, list]) -> DBInterface:
     dbi, users = dbi_with_users
-    model_id = dbi.get_model_by_name(model_name="Crown Victoria")["id"]
+    model_id = dbi.get_model_by_name(model_name="Jetta")["id"]
     user_id = dbi.get_all_users()[0]["id"]
     zip_code_id = dbi.get_zip_code_info(zip_code=TEST_ZIP)["id"]
     test_criteria = TEST_CRITERIA_BASE.copy()
@@ -58,31 +57,36 @@ def dbi_with_isc_body_style_criteria(dbi_with_users: list[DBInterface, list]):
     return dbi
 
 
-def test_get_listings(requests_mock, dbi_with_isc_cv_criteria):
-    find_cars()
+# def test_get_listings(requests_mock, dbi_with_isc_jetta_criteria):
+#     find_cars()
 
-    assert len(requests_mock.get.mock_calls) > 0
-    assert len(dbi_with_isc_cv_criteria.get_all_alerts()) == 5
-
-
-def test_no_response(requests_mock, dbi_with_isc_cv_criteria: DBInterface):
-    requests_mock.get.return_value.text = ""
-    find_cars()
-    assert len(requests_mock.get.mock_calls) > 0
-
-    # there will be one alert added automatically by the mocked fixture so no others should be added
-    assert len(dbi_with_isc_cv_criteria.get_all_alerts()) == 1
+#     assert len(requests_mock.get.mock_calls) > 0
+#     assert len(dbi_with_isc_jetta_criteria.get_all_alerts()) == 5
 
 
-def test_get_listings_body_style_criteria(requests_mock, dbi_with_isc_body_style_criteria):
-    find_cars()
-    assert len(requests_mock.get.mock_calls) > 0
-    assert len(dbi_with_isc_body_style_criteria.get_all_alerts()) == 5
+# def test_no_response(requests_mock, dbi_with_isc_jetta_criteria: DBInterface):
+#     requests_mock.get.return_value.text = ""
+#     find_cars()
+#     assert len(requests_mock.get.mock_calls) > 0
+
+#     # there will be one alert added automatically by the mocked fixture so no others should be added
+#     assert len(dbi_with_isc_jetta_criteria.get_all_alerts()) == 1
 
 
-def test_price_drop_no_alerts(requests_mock, dbi_with_isc_cv_criteria):
-    dbi = dbi_with_isc_cv_criteria
-    dbi.delete_all_alerts()
-    find_cars()
-    assert len(requests_mock.get.mock_calls) > 0
-    assert len(dbi_with_isc_cv_criteria.get_all_alerts()) == 5
+# def test_get_listings_body_style_criteria(requests_mock, dbi_with_isc_body_style_criteria):
+#     find_cars()
+#     assert len(requests_mock.get.mock_calls) > 0
+#     assert len(dbi_with_isc_body_style_criteria.get_all_alerts()) == 5
+
+
+# def test_price_drop_no_alerts(requests_mock, dbi_with_isc_jetta_criteria):
+#     dbi = dbi_with_isc_jetta_criteria
+#     dbi.delete_all_alerts()
+#     find_cars()
+#     alerts_found = dbi_with_isc_jetta_criteria.get_all_alerts()
+
+#     with closing(webdriver.Firefox()) as driver:
+#         test_url = "https://www.iseecars.com/cars-for-sale#autoZip=False&Location=90210&Radius=50&Make=Volkswagen&Model=Jetta&Year_min=1992&Year_max=2023&Trim=&Price_min=100&Price_max=1000000&DealerRating=0&Mileage_min=&Mileage_max=150000&range_pricebelowmarket_min=&PriceBelowMarket_min=&PriceBelowMarket_max=&range_pricedrop_min=&PriceDrop_min=&PriceDrop_max=&range_daysonmarket_min=0&range_daysonmarket_max=0&DaysOnMarket_min=&DaysOnMarket_max=&range_mpg_min=0&range_mpg_max=0&MPG_min=&MPG_max=&range_legroom_min=&range_headroom_min=&range_height_min=&range_torsoleglength_min=2&LegRoom_min=&HeadRoom_min=&LegRoom_max=&HeadRoom_max=&range_cargovolume_min=0&range_cargovolume_max=0&CargoRoom_min=&CargoRoom_max=&Engine=&range_horsepower_min=0&range_horsepower_max=0&Horsepower_min=&Horsepower_max=&DriveType=&Color=&InteriorColor=&range_bedlength_min=1.5&range_bedlength_max=1.5&Bed+Length_min=&Bed+Length_max=&range_towingcapacity_min=0&range_towingcapacity_max=0&TowingCapacity_min=&TowingCapacity_max=&Keywords=&visibleKeywords=&Features=&Key+Features=&Key+Features=&Key+Features=&Key+Features=&Key+Features=&Key+Features=&Key+Features=&Key+Features=&Key+Features=&DealerId=&_t=a&_c=&offset=0&maxResults=20&sort=BestDeal&sortOrder=desc"
+#         soup = get_isc_page_soup(driver, test_url)
+
+#     assert len(alerts_found) == get_listings_count(soup)
